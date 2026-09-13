@@ -12,6 +12,7 @@ func _physics_process(_delta: float) -> void:
 	if Input.is_action_pressed("drill"):
 		velocity.y = drill_speed
 		dig()
+		#oragn you can add the sound right here
 
 	move_and_slide()
 

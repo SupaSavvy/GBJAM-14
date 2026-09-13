@@ -1,10 +1,19 @@
 [gd_scene format=3 uid="uid://c0w6mj1sk6mt5"]
 
+[ext_resource type="Script" uid="uid://d3y51c5or6coe" path="res://Drill/drill_boi.gd" id="1_7v0r5"]
+[ext_resource type="Texture2D" uid="uid://ctrplw0kk75sw" path="res://Ores/MinerSpriteSheet (2).png" id="2_5hiix"]
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_235n8"]
 
 [node name="DrillBoi" type="CharacterBody2D" unique_id=64158737]
+script = ExtResource("1_7v0r5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=503879945]
 shape = SubResource("CapsuleShape2D_235n8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=242510719]
+texture = ExtResource("2_5hiix")
+region_enabled = true
+region_rect = Rect2(16, 0, 8, 8)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=31554539]
