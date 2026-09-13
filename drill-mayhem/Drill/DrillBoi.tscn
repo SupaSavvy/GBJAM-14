@@ -1,19 +1,24 @@
 [gd_scene format=3 uid="uid://c0w6mj1sk6mt5"]
 
 [ext_resource type="Script" uid="uid://d3y51c5or6coe" path="res://Drill/drill_boi.gd" id="1_7v0r5"]
+[ext_resource type="Shape2D" uid="uid://8xffe7cy54wa" path="res://Drill/drill_shape.tres" id="2_0gowb"]
 [ext_resource type="Texture2D" uid="uid://ctrplw0kk75sw" path="res://Ores/MinerSpriteSheet (2).png" id="2_5hiix"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_235n8"]
+[ext_resource type="Script" uid="uid://da248aabnoikv" path="res://Drill/camera_rig.gd" id="3_hdnf4"]
 
 [node name="DrillBoi" type="CharacterBody2D" unique_id=64158737]
+collision_mask = 62
 script = ExtResource("1_7v0r5")
+drill_damage = 3.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=503879945]
-shape = SubResource("CapsuleShape2D_235n8")
+shape = ExtResource("2_0gowb")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=31554539 node_paths=PackedStringArray("target")]
+script = ExtResource("3_hdnf4")
+target = NodePath("..")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=242510719]
+position = Vector2(0, -4)
 texture = ExtResource("2_5hiix")
 region_enabled = true
 region_rect = Rect2(16, 0, 8, 8)
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=31554539]
