@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://lgo4y3trp0yo"]
+
+[ext_resource type="PackedScene" uid="uid://c0w6mj1sk6mt5" path="res://Drill/DrillBoi.tscn" id="1_fppky"]
+[ext_resource type="Script" uid="uid://d3y51c5or6coe" path="res://Drill/drill_boi.gd" id="2_5fdol"]
+
+[node name="DrillingTest" type="Node2D" unique_id=1496016345]
+
+[node name="Dirt" type="TileMapLayer" parent="." unique_id=1518521994]
+
+[node name="DrillBoi" parent="." unique_id=64158737 node_paths=PackedStringArray("dirt") instance=ExtResource("1_fppky")]
+script = ExtResource("2_5fdol")
+dirt = NodePath("../Dirt")
