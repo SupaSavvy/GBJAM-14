@@ -14,17 +14,35 @@ extends CharacterBody2D
 # DIGGING
 @export var ores: Ores
 @export var drill_damage: float = 1.0
-@export var damage_interval: float = 0.3
+@export var damage_interval: float = 0.08
 @export var dig_radius_pixels: float = 8.0
 
 
+# PLAYER VALUES
+@export var max_health: float = 100.0
+@export var health_drain_rate: float = 10.0
+@export var starting_fuel: float = 50.0
+@export var max_fuel: float = 100.0
+@export var fuel_drain_rate: float = 2.0
+
+
+
+var health: float = 0.0
 var current_speed: float = 0.0
 var damage_timer: float = 0.0
+
+var gold: int = 0
+var fuel: float = 0.0
 
 
 func _ready() -> void:
 	current_speed = min_speed
+	fuel = starting_fuel
+	health = max_health
 
+	ores.gold_collected.connect(_on_gold_collected)
+	ores.stardust_collected.connect(_on_stardust_collected)
+	ores.bomb_triggered.connect(_on_bomb_triggered)
 
 func _physics_process(delta: float) -> void:
 	# TURNING
@@ -50,6 +68,22 @@ func _physics_process(delta: float) -> void:
 	velocity = move_direction * current_speed
 
 
+	# FUEL
+	# FUEL / HEALTH
+	if fuel > 0.0:
+		# Drain fuel normally
+		fuel -= fuel_drain_rate * delta
+		fuel = max(fuel, 0.0)
+
+	else:
+		# Once fuel is empty, start draining health
+		health -= health_drain_rate * delta
+		health = max(health, 0.0)
+
+	# Die when health reaches 0
+	if health <= 0.0:
+		die()
+
 	# DIGGING
 	damage_timer -= delta
 
@@ -62,17 +96,12 @@ func _physics_process(delta: float) -> void:
 		damage_timer = damage_interval
 
 
-	# MOVEMENT / COLLISION
 	move_and_slide()
-
 
 func get_tiles_in_dig_radius() -> Array[Vector2i]:
 	var cells_in_radius: Array[Vector2i] = []
 
-	# Drill tip position inside the Ores TileMapLayer
 	var tip_local_position: Vector2 = ores.to_local(global_position)
-
-	# Find the TileMap cell closest to the drill tip
 	var center_cell: Vector2i = ores.local_to_map(tip_local_position)
 
 	# Check the nearby cells around the drill tip
@@ -80,11 +109,27 @@ func get_tiles_in_dig_radius() -> Array[Vector2i]:
 		for y: int in range(-1, 2):
 			var cell: Vector2i = center_cell + Vector2i(x, y)
 
-			# Get this tile's center position
 			var cell_position: Vector2 = ores.map_to_local(cell)
 
-			# Only include tiles close enough to the drill tip
 			if tip_local_position.distance_to(cell_position) <= dig_radius_pixels:
 				cells_in_radius.append(cell)
 
 	return cells_in_radius
+
+
+func _on_gold_collected() -> void:
+	ores.gold_behavior.collect(self)
+
+func _on_stardust_collected() -> void:
+	ores.stardust_behavior.collect(self)
+	# Prevent fuel from going above the maximum
+	fuel = min(fuel, max_fuel)
+
+
+func _on_bomb_triggered() -> void:
+	ores.bomb_behavior.trigger(self)
+	
+	
+func die() -> void:
+	# Temporary death behavior
+	queue_free()
