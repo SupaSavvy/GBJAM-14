@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://ctrplw0kk75sw" path="res://Ores/MinerSpriteSheet (2).png" id="2_5hiix"]
 [ext_resource type="Script" uid="uid://da248aabnoikv" path="res://Drill/camera_rig.gd" id="3_hdnf4"]
 
-[node name="DrillBoi" type="CharacterBody2D" unique_id=64158737]
-collision_mask = 62
+[node name="DrillBoi" type="CharacterBody2D" unique_id=64158737 groups=["drill"]]
+collision_mask = 64
 script = ExtResource("1_7v0r5")
 drill_damage = 3.0
 

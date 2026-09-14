@@ -65,6 +65,7 @@ drill={
 2d_physics/layer_4="Stardust"
 2d_physics/layer_5="Tar"
 2d_physics/layer_6="Gold"
+2d_physics/layer_7="wall"
 
 [physics]
 

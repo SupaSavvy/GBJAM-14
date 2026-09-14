@@ -11,6 +11,11 @@ extends CharacterBody2D
 @export var max_turn_angle: float = 45.0
 
 
+# HORIZONTAL LIMITS
+@export var left_limit: float = -200.0
+@export var right_limit: float = 200.0
+
+
 # DIGGING
 @export var ores: Ores
 @export var drill_damage: float = 1.0
@@ -18,21 +23,29 @@ extends CharacterBody2D
 @export var dig_radius_pixels: float = 8.0
 
 
-# PLAYER VALUES
-@export var max_health: float = 100.0
-@export var health_drain_rate: float = 10.0
+# FUEL / HEALTH
 @export var starting_fuel: float = 50.0
 @export var max_fuel: float = 100.0
 @export var fuel_drain_rate: float = 2.0
 
+@export var max_health: float = 100.0
+@export var health_drain_rate: float = 10.0
 
 
-var health: float = 0.0
+# TAR
+@export var tar_recovery_time: float = 0.5
+@export var tar_speed_multiplier: float = 0.35
+
+
 var current_speed: float = 0.0
 var damage_timer: float = 0.0
 
 var gold: int = 0
 var fuel: float = 0.0
+var health: float = 0.0
+
+var in_tar: bool = false
+var tar_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -40,27 +53,39 @@ func _ready() -> void:
 	fuel = starting_fuel
 	health = max_health
 
+	# Listen for ore events
 	ores.gold_collected.connect(_on_gold_collected)
 	ores.stardust_collected.connect(_on_stardust_collected)
 	ores.bomb_triggered.connect(_on_bomb_triggered)
 
+
 func _physics_process(delta: float) -> void:
+	# Check whether tar is currently affecting the drill
+	check_for_tar(delta)
+
+
 	# TURNING
-	var turn_input: float = Input.get_axis("ui_left", "ui_right")
+	if not in_tar:
+		var turn_input: float = Input.get_axis("ui_left", "ui_right")
 
-	rotation -= turn_input * turn_speed * delta
+		rotation -= turn_input * turn_speed * delta
 
-	rotation = clamp(
-		rotation,
-		deg_to_rad(-max_turn_angle),
-		deg_to_rad(max_turn_angle)
-	)
+		rotation = clamp(
+			rotation,
+			deg_to_rad(-max_turn_angle),
+			deg_to_rad(max_turn_angle)
+		)
 
 
 	# SPEED
+	var target_speed: float = max_speed
+
+	if in_tar:
+		target_speed = max_speed * tar_speed_multiplier
+
 	current_speed = move_toward(
 		current_speed,
-		max_speed,
+		target_speed,
 		acceleration * delta
 	)
 
@@ -68,21 +93,18 @@ func _physics_process(delta: float) -> void:
 	velocity = move_direction * current_speed
 
 
-	# FUEL
 	# FUEL / HEALTH
 	if fuel > 0.0:
-		# Drain fuel normally
 		fuel -= fuel_drain_rate * delta
 		fuel = max(fuel, 0.0)
 
 	else:
-		# Once fuel is empty, start draining health
 		health -= health_drain_rate * delta
 		health = max(health, 0.0)
 
-	# Die when health reaches 0
-	if health <= 0.0:
-		die()
+		if health <= 0.0:
+			die()
+
 
 	# DIGGING
 	damage_timer -= delta
@@ -96,7 +118,18 @@ func _physics_process(delta: float) -> void:
 		damage_timer = damage_interval
 
 
+	# MOVE
 	move_and_slide()
+
+
+	# HARD LEFT / RIGHT LIMITS
+	# The drill can never move outside these X positions.
+	global_position.x = clamp(
+		global_position.x,
+		left_limit,
+		right_limit
+	)
+
 
 func get_tiles_in_dig_radius() -> Array[Vector2i]:
 	var cells_in_radius: Array[Vector2i] = []
@@ -104,7 +137,6 @@ func get_tiles_in_dig_radius() -> Array[Vector2i]:
 	var tip_local_position: Vector2 = ores.to_local(global_position)
 	var center_cell: Vector2i = ores.local_to_map(tip_local_position)
 
-	# Check the nearby cells around the drill tip
 	for x: int in range(-1, 2):
 		for y: int in range(-1, 2):
 			var cell: Vector2i = center_cell + Vector2i(x, y)
@@ -117,19 +149,38 @@ func get_tiles_in_dig_radius() -> Array[Vector2i]:
 	return cells_in_radius
 
 
+func check_for_tar(delta: float) -> void:
+	var local_position: Vector2 = ores.to_local(global_position)
+	var cell: Vector2i = ores.local_to_map(local_position)
+
+	var ore_type: String = ores.get_ore_type(cell)
+
+	# While inside tar, keep refreshing the recovery timer
+	if ore_type == "tar":
+		in_tar = true
+		tar_timer = tar_recovery_time
+
+	# After leaving tar, keep the effect active briefly
+	else:
+		tar_timer -= delta
+
+		if tar_timer <= 0.0:
+			in_tar = false
+			tar_timer = 0.0
+
+
 func _on_gold_collected() -> void:
 	ores.gold_behavior.collect(self)
 
+
 func _on_stardust_collected() -> void:
 	ores.stardust_behavior.collect(self)
-	# Prevent fuel from going above the maximum
-	fuel = min(fuel, max_fuel)
 
 
 func _on_bomb_triggered() -> void:
 	ores.bomb_behavior.trigger(self)
-	
-	
+
+
 func die() -> void:
 	# Temporary death behavior
 	queue_free()
