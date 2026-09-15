@@ -4,7 +4,7 @@ extends TileMapLayer
 
 signal gold_collected
 signal stardust_collected
-signal bomb_triggered
+signal bomb_triggered(depth: int)
 
 
 # TILE HEALTH
@@ -23,21 +23,24 @@ signal bomb_triggered
 @export var chunk_height: int = 12
 @export var chunks_ahead: int = 3
 
-# Playable horizontal limits in TileMap cells
 @export var left_edge: int = -14
 @export var right_edge: int = 14
-
-# Extra tiles generated beyond the playable area
 @export var generation_padding: int = 5
 
-# Direct reference to the Drill
 @export var drill: Drill
+
+
+# DEPTH PROGRESSION
+@export var tar_start_depth: int = 30
+@export var gold_start_depth: int = 50
+@export var bomb_start_depth: int = 74
+@export var deep_start_depth: int = 120
 
 
 # Stores HP for damaged tiles
 var tile_health: Dictionary = {}
 
-# Remembers which vertical chunks have already been generated
+# Keeps track of which chunks already exist
 var generated_chunks: Dictionary = {}
 
 
@@ -51,16 +54,16 @@ func _process(_delta: float) -> void:
 	if drill == null:
 		return
 
-	# Convert the Drill's world position into a TileMap cell
+	# Convert the drill's world position into a TileMap cell
 	var drill_local_position: Vector2 = to_local(drill.global_position)
 	var drill_cell: Vector2i = local_to_map(drill_local_position)
 
-	# Figure out which vertical chunk the Drill is currently in
+	# Figure out which vertical chunk the drill is inside
 	var current_chunk_y: int = floori(
 		float(drill_cell.y) / float(chunk_height)
 	)
 
-	# Keep several chunks generated below the Drill
+	# Keep several chunks generated below the player
 	for chunk_offset: int in range(chunks_ahead + 1):
 		var chunk_y: int = current_chunk_y + chunk_offset
 
@@ -69,12 +72,11 @@ func _process(_delta: float) -> void:
 
 
 func generate_chunk(chunk_y: int) -> void:
-	# Prevent this chunk from being generated twice
+	# Don't generate the same chunk twice
 	generated_chunks[chunk_y] = true
 
 	var start_y: int = chunk_y * chunk_height
 
-	# Generate extra terrain past both edges
 	var generation_left: int = left_edge - generation_padding
 	var generation_right: int = right_edge + generation_padding
 
@@ -94,32 +96,43 @@ func generate_chunk(chunk_y: int) -> void:
 
 
 	# TAR CLUSTERS
-	# You can later make these only appear after a certain depth
-	var tar_cluster_amount: int = randi_range(1, 3)
+	# Tar doesn't begin appearing until tar_start_depth
+	if start_y >= tar_start_depth:
+		var tar_cluster_amount: int = randi_range(0, 2)
 
-	for i: int in range(tar_cluster_amount):
-		var tar_x: int = randi_range(
-			left_edge + 2,
-			right_edge - 2
-		)
+		for i: int in range(tar_cluster_amount):
+			var tar_x: int = randi_range(
+				left_edge + 2,
+				right_edge - 2
+			)
 
-		var tar_y: int = randi_range(
-			start_y + 2,
-			start_y + chunk_height - 3
-		)
+			var tar_y: int = randi_range(
+				start_y + 2,
+				start_y + chunk_height - 3
+			)
 
-		generate_tar_cluster(
-			Vector2i(tar_x, tar_y)
-		)
+			generate_tar_cluster(
+				Vector2i(tar_x, tar_y)
+			)
 
 
 func choose_random_tile(depth: int) -> Vector2i:
 	var roll: float = randf() * 100.0
 
 
-	# VERY SHALLOW
-	# Mostly stone with a little Stardust
-	if depth < 40:
+	# BEFORE TAR
+	# Mostly Stone with a little Stardust
+	if depth < tar_start_depth:
+		if roll < 96.0:
+			return stone_tile
+
+		else:
+			return stardust_tile
+
+
+	# TAR LAYER
+	# Tar itself is generated separately in clusters
+	elif depth < gold_start_depth:
 		if roll < 94.0:
 			return stone_tile
 
@@ -127,39 +140,43 @@ func choose_random_tile(depth: int) -> Vector2i:
 			return stardust_tile
 
 
-	# SHALLOW
-	# Still mostly stone
-	elif depth < 80:
-		if roll < 92.0:
+	# GOLD LAYER
+	elif depth < bomb_start_depth:
+		if roll < 89.0:
 			return stone_tile
 
-		else:
-			return stardust_tile
-
-
-	# MID
-	# Gold begins appearing
-	elif depth < 140:
-		if roll < 82.0:
-			return stone_tile
-
-		elif roll < 90.0:
+		elif roll < 95.0:
 			return stardust_tile
 
 		else:
 			return gold_tile
 
 
-	# DEEP
-	# Bombs finally appear and stay rarer than Gold
-	else:
-		if roll < 74.0:
+	# BOMB LAYER
+	# Bombs are still rare
+	elif depth < deep_start_depth:
+		if roll < 87.0:
 			return stone_tile
 
-		elif roll < 82.0:
+		elif roll < 93.0:
 			return stardust_tile
 
-		elif roll < 97.0:
+		elif roll < 98.5:
+			return gold_tile
+
+		else:
+			return bomb_tile
+
+
+	# DEEP LAYER
+	else:
+		if roll < 83.0:
+			return stone_tile
+
+		elif roll < 89.0:
+			return stardust_tile
+
+		elif roll < 98.0:
 			return gold_tile
 
 		else:
@@ -167,7 +184,7 @@ func choose_random_tile(depth: int) -> Vector2i:
 
 
 func generate_tar_cluster(center: Vector2i) -> void:
-	# Base tar blob
+	# Basic connected tar blob
 	var offsets: Array[Vector2i] = [
 		Vector2i.ZERO,
 		Vector2i.LEFT,
@@ -176,7 +193,7 @@ func generate_tar_cluster(center: Vector2i) -> void:
 		Vector2i.DOWN
 	]
 
-	# Random extra pieces make each tar cluster less uniform
+	# Random extras make each blob less uniform
 	if randf() < 0.5:
 		offsets.append(Vector2i(-1, -1))
 
@@ -201,7 +218,7 @@ func generate_tar_cluster(center: Vector2i) -> void:
 
 
 func damage_cell(cell: Vector2i, damage: float) -> void:
-	# Stop if there is no tile here
+	# Stop if there isn't a tile here
 	if get_cell_source_id(cell) == -1:
 		return
 
@@ -211,14 +228,13 @@ func damage_cell(cell: Vector2i, damage: float) -> void:
 	if ore_type == "tar":
 		return
 
-	# Give the tile starting HP the first time it gets hit
+	# Give the tile starting health the first time it's hit
 	if not tile_health.has(cell):
 		tile_health[cell] = get_tile_max_health(cell)
 
 	# Deal damage
 	tile_health[cell] -= damage
 
-	# Break the tile at 0 HP
 	if tile_health[cell] <= 0.0:
 		break_cell(cell)
 
@@ -256,7 +272,7 @@ func get_ore_type(cell: Vector2i) -> String:
 
 
 func break_cell(cell: Vector2i) -> void:
-	# Save the ore type before deleting the tile
+	# Save the ore type before removing the tile
 	var ore_type: String = get_ore_type(cell)
 
 	erase_cell(cell)
@@ -273,7 +289,8 @@ func break_cell(cell: Vector2i) -> void:
 			stardust_collected.emit()
 
 		"bomb":
-			bomb_triggered.emit()
+			# Pass the depth to Bomb.gd
+			bomb_triggered.emit(cell.y)
 
 		"tar":
 			pass

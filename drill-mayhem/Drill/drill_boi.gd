@@ -112,12 +112,26 @@ func _physics_process(delta: float) -> void:
 	if damage_timer <= 0.0:
 		var cells: Array[Vector2i] = get_tiles_in_dig_radius()
 
+		# Digging damage increases at specific speed thresholds
+		var speed_damage: float = 1.0
+
+		match current_speed:
+			var speed when speed >= 150.0:
+				speed_damage = 4.0
+
+			var speed when speed >= 70.0:
+				speed_damage = 3.0
+
+			var speed when speed >= 40.0:
+				speed_damage = 2.0
+
+			var speed when speed >= 20.0:
+				speed_damage = 1.0
+
 		for cell: Vector2i in cells:
-			ores.damage_cell(cell, drill_damage)
+			ores.damage_cell(cell, speed_damage)
 
 		damage_timer = damage_interval
-
-
 	# MOVE
 	move_and_slide()
 
@@ -177,8 +191,8 @@ func _on_stardust_collected() -> void:
 	ores.stardust_behavior.collect(self)
 
 
-func _on_bomb_triggered() -> void:
-	ores.bomb_behavior.trigger(self)
+func _on_bomb_triggered(depth: int) -> void:
+	ores.bomb_behavior.trigger(self, depth)
 
 
 func die() -> void:
