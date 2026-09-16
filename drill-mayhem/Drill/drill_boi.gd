@@ -1,6 +1,10 @@
 class_name Drill
 extends CharacterBody2D
 
+# STARTING POSITION
+@export var starting_move_speed: float = 150.0
+var drilling_started: bool = false
+
 
 # MOVEMENT
 @export var min_speed: float = 100.0
@@ -60,6 +64,31 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	
+	# STARTING BUFFER
+	if not drilling_started:
+		var start_direction: float = Input.get_axis("ui_left", "ui_right")
+
+		velocity.x = start_direction * starting_move_speed
+		velocity.y = 0.0
+
+		move_and_slide()
+
+		global_position.x = clamp(
+			global_position.x,
+			left_limit,
+			right_limit
+		)
+
+		if Input.is_action_just_pressed("ui_accept"):
+			drilling_started = true
+			velocity = Vector2.ZERO
+
+		return
+
+
+	# Normal game starts here
+	
 	# Check whether tar is currently affecting the drill
 	check_for_tar(delta)
 
@@ -185,14 +214,17 @@ func check_for_tar(delta: float) -> void:
 
 func _on_gold_collected() -> void:
 	ores.gold_behavior.collect(self)
+	print(gold)
 
 
 func _on_stardust_collected() -> void:
 	ores.stardust_behavior.collect(self)
+	#print(fuel)
 
 
 func _on_bomb_triggered(depth: int) -> void:
 	ores.bomb_behavior.trigger(self, depth)
+	#print(health)
 
 
 func die() -> void:

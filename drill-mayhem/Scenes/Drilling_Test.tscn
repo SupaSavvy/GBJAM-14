@@ -17,9 +17,9 @@ position = Vector2(73, -1)
 min_speed = 20.0
 max_speed = 300.0
 acceleration = 3.0
-left_limit = -4.0
 right_limit = 150.0
 ores = NodePath("../Ores")
+fuel_drain_rate = 5.0
 
 [node name="CollisionShape2D" parent="DrillBoi" index="0" unique_id=503879945]
 scale = Vector2(0.8049767, 0.8049767)

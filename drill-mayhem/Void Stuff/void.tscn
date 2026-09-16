@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c8aykun2hj71p"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_235n8"]
+
+[node name="Void" type="Node2D" unique_id=318766743]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1894625215]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1017758530]
+rotation = 3.1415927
+shape = SubResource("WorldBoundaryShape2D_235n8")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1201966049]
+offset_right = 143.0
+offset_bottom = 3.0
+color = Color(0.105882354, 0.105882354, 0.11764706, 1)
