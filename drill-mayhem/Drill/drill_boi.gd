@@ -44,7 +44,7 @@ var drilling_started: bool = false
 var current_speed: float = 0.0
 var damage_timer: float = 0.0
 
-var gold: int = 0
+
 var fuel: float = 0.0
 var health: float = 0.0
 
@@ -214,7 +214,7 @@ func check_for_tar(delta: float) -> void:
 
 func _on_gold_collected() -> void:
 	ores.gold_behavior.collect(self)
-	print(gold)
+
 
 
 func _on_stardust_collected() -> void:
@@ -225,6 +225,7 @@ func _on_stardust_collected() -> void:
 func _on_bomb_triggered(depth: int) -> void:
 	ores.bomb_behavior.trigger(self, depth)
 	#print(health)
+	print(current_speed)
 
 
 func die() -> void:
