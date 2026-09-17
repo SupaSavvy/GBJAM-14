@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://ddhcc1dn0uw4w" path="res://Drill/speed.gd" id="5_oqhhk"]
 [ext_resource type="Script" uid="uid://cxpqa440h020n" path="res://Drill/shield.gd" id="6_d31kr"]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_235n8"]
+
 [node name="DrillBoi" type="CharacterBody2D" unique_id=64158737 groups=["drill"]]
 collision_mask = 64
 script = ExtResource("1_7v0r5")
@@ -19,6 +21,7 @@ script = ExtResource("3_hdnf4")
 target = NodePath("..")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=242510719]
+visible = false
 position = Vector2(0, -4)
 texture = ExtResource("2_5hiix")
 region_enabled = true
@@ -32,3 +35,6 @@ drill = NodePath("../..")
 
 [node name="Shield" type="Node" parent="Powerups" unique_id=1419155714]
 script = ExtResource("6_d31kr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=450878597]
+sprite_frames = SubResource("SpriteFrames_235n8")
