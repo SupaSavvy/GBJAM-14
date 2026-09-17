@@ -1,16 +1,23 @@
 [gd_scene format=3 uid="uid://c8aykun2hj71p"]
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_235n8"]
+[ext_resource type="Script" uid="uid://bh2uyqts7n2us" path="res://Void Stuff/void.gd" id="1_sj7ks"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fppky"]
+size = Vector2(142, 2)
 
 [node name="Void" type="Node2D" unique_id=318766743]
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1894625215]
+script = ExtResource("1_sj7ks")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1017758530]
-rotation = 3.1415927
-shape = SubResource("WorldBoundaryShape2D_235n8")
+position = Vector2(72, 1)
+shape = SubResource("RectangleShape2D_fppky")
+debug_color = Color(0.98017436, 0, 0.38584283, 0.41960785)
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1201966049]
-offset_right = 143.0
-offset_bottom = 3.0
+[node name="ColorRect" type="ColorRect" parent="Area2D" unique_id=1180304215]
+offset_top = -1.0
+offset_right = 40.0
+offset_bottom = 39.0
+scale = Vector2(3.5932746, 0.10069947)
 color = Color(0.105882354, 0.105882354, 0.11764706, 1)

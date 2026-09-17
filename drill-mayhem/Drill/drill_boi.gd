@@ -1,12 +1,15 @@
 class_name Drill
 extends CharacterBody2D
 
-# STARTING POSITION
-@export var starting_move_speed: float = 150.0
-var drilling_started: bool = false
+
+signal health_changed(current_health: float, max_health: float)
+signal fuel_changed(current_fuel: float, max_fuel: float)
+signal speed_changed(current_speed: float)
 
 
 # MOVEMENT
+@export var starting_move_speed: float = 150.0
+
 @export var min_speed: float = 100.0
 @export var max_speed: float = 1000.0
 @export var acceleration: float = 30.0
@@ -15,16 +18,25 @@ var drilling_started: bool = false
 @export var max_turn_angle: float = 45.0
 
 
+# STARTING POSITION
+var drilling_started: bool = false
+
+
 # HORIZONTAL LIMITS
-@export var left_limit: float = -200.0
-@export var right_limit: float = 200.0
+@export var left_limit: float = -4.0
+@export var right_limit: float = 144.0
 
 
 # DIGGING
 @export var ores: Ores
-@export var drill_damage: float = 1.0
+
+@export var drill_damage: float = 3.0
 @export var damage_interval: float = 0.08
 @export var dig_radius_pixels: float = 8.0
+
+@export var slow_damage_interval: float = 0.08
+@export var fast_damage_interval: float = 0.02
+@export var interval_max_speed: float = 150.0
 
 
 # FUEL / HEALTH
@@ -41,10 +53,18 @@ var drilling_started: bool = false
 @export var tar_speed_multiplier: float = 0.35
 
 
+# MOVEMENT STATE
 var current_speed: float = 0.0
+
+# Extra speed added by the Speed Powerup
+var powerup_speed_bonus: float = 0.0
+
+
+# DIGGING STATE
 var damage_timer: float = 0.0
 
 
+# PLAYER STATE
 var fuel: float = 0.0
 var health: float = 0.0
 
@@ -52,22 +72,48 @@ var in_tar: bool = false
 var tar_timer: float = 0.0
 
 
+# POWERUPS
+@onready var speedPU: SpeedPowerup = $Powerups/Speed
+@onready var shieldPU: ShieldPowerup = $Powerups/Shield
+
+
 func _ready() -> void:
 	current_speed = min_speed
 	fuel = starting_fuel
 	health = max_health
 
-	# Listen for ore events
+	# Ore signals
 	ores.gold_collected.connect(_on_gold_collected)
 	ores.stardust_collected.connect(_on_stardust_collected)
 	ores.bomb_triggered.connect(_on_bomb_triggered)
 
+	# Starting UI values
+	health_changed.emit(
+		health,
+		max_health
+	)
+
+	fuel_changed.emit(
+		fuel,
+		max_fuel
+	)
+
+	speed_changed.emit(
+		current_speed
+	)
+
 
 func _physics_process(delta: float) -> void:
-	
-	# STARTING BUFFER
+
+	# --------------------------------------------------
+	# STARTING POSITION
+	# --------------------------------------------------
+	# Before drilling starts, the player can move left/right.
 	if not drilling_started:
-		var start_direction: float = Input.get_axis("ui_left", "ui_right")
+		var start_direction: float = Input.get_axis(
+			"ui_left",
+			"ui_right"
+		)
 
 		velocity.x = start_direction * starting_move_speed
 		velocity.y = 0.0
@@ -87,15 +133,26 @@ func _physics_process(delta: float) -> void:
 		return
 
 
-	# Normal game starts here
-	
-	# Check whether tar is currently affecting the drill
+	# --------------------------------------------------
+	# POWERUP INPUT
+	# --------------------------------------------------
+	check_powerup_input()
+
+
+	# --------------------------------------------------
+	# TAR
+	# --------------------------------------------------
 	check_for_tar(delta)
 
 
+	# --------------------------------------------------
 	# TURNING
+	# --------------------------------------------------
 	if not in_tar:
-		var turn_input: float = Input.get_axis("ui_left", "ui_right")
+		var turn_input: float = Input.get_axis(
+			"ui_left",
+			"ui_right"
+		)
 
 		rotation -= turn_input * turn_speed * delta
 
@@ -106,7 +163,9 @@ func _physics_process(delta: float) -> void:
 		)
 
 
+	# --------------------------------------------------
 	# SPEED
+	# --------------------------------------------------
 	var target_speed: float = max_speed
 
 	if in_tar:
@@ -118,31 +177,66 @@ func _physics_process(delta: float) -> void:
 		acceleration * delta
 	)
 
-	var move_direction: Vector2 = Vector2.DOWN.rotated(rotation)
-	velocity = move_direction * current_speed
+
+	# Add temporary powerup speed on top of normal speed
+	var final_speed: float = (
+		current_speed
+		+ powerup_speed_bonus
+	)
+
+	var move_direction: Vector2 = Vector2.DOWN.rotated(
+		rotation
+	)
+
+	velocity = move_direction * final_speed
+
+	speed_changed.emit(
+		final_speed
+	)
 
 
+	# --------------------------------------------------
 	# FUEL / HEALTH
+	# --------------------------------------------------
 	if fuel > 0.0:
 		fuel -= fuel_drain_rate * delta
-		fuel = max(fuel, 0.0)
+		fuel = max(
+			fuel,
+			0.0
+		)
+
+		fuel_changed.emit(
+			fuel,
+			max_fuel
+		)
 
 	else:
 		health -= health_drain_rate * delta
-		health = max(health, 0.0)
+		health = max(
+			health,
+			0.0
+		)
+
+		health_changed.emit(
+			health,
+			max_health
+		)
 
 		if health <= 0.0:
 			die()
 
 
+	# --------------------------------------------------
 	# DIGGING
+	# --------------------------------------------------
 	damage_timer -= delta
 
 	if damage_timer <= 0.0:
 		var cells: Array[Vector2i] = get_tiles_in_dig_radius()
 
-		# Digging damage increases at specific speed thresholds
-		var speed_damage: float = 1.0
+
+		# Damage increases at specific speed thresholds
+		var speed_damage: float = drill_damage
 
 		match current_speed:
 			var speed when speed >= 150.0:
@@ -157,16 +251,37 @@ func _physics_process(delta: float) -> void:
 			var speed when speed >= 20.0:
 				speed_damage = 1.0
 
-		for cell: Vector2i in cells:
-			ores.damage_cell(cell, speed_damage)
 
-		damage_timer = damage_interval
-	# MOVE
+		for cell: Vector2i in cells:
+			ores.damage_cell(
+				cell,
+				speed_damage
+			)
+
+
+		# Faster movement = shorter time between damage ticks
+		var speed_percent: float = clamp(
+			current_speed / interval_max_speed,
+			0.0,
+			1.0
+		)
+
+		var current_damage_interval: float = lerp(
+			slow_damage_interval,
+			fast_damage_interval,
+			speed_percent
+		)
+
+		damage_timer = current_damage_interval
+
+
+	# --------------------------------------------------
+	# MOVEMENT
+	# --------------------------------------------------
 	move_and_slide()
 
 
-	# HARD LEFT / RIGHT LIMITS
-	# The drill can never move outside these X positions.
+	# Keep Drill inside horizontal boundaries
 	global_position.x = clamp(
 		global_position.x,
 		left_limit,
@@ -177,33 +292,56 @@ func _physics_process(delta: float) -> void:
 func get_tiles_in_dig_radius() -> Array[Vector2i]:
 	var cells_in_radius: Array[Vector2i] = []
 
-	var tip_local_position: Vector2 = ores.to_local(global_position)
-	var center_cell: Vector2i = ores.local_to_map(tip_local_position)
+	var tip_local_position: Vector2 = ores.to_local(
+		global_position
+	)
+
+	var center_cell: Vector2i = ores.local_to_map(
+		tip_local_position
+	)
+
 
 	for x: int in range(-1, 2):
 		for y: int in range(-1, 2):
-			var cell: Vector2i = center_cell + Vector2i(x, y)
+			var cell: Vector2i = (
+				center_cell
+				+ Vector2i(x, y)
+			)
 
-			var cell_position: Vector2 = ores.map_to_local(cell)
+			var cell_position: Vector2 = ores.map_to_local(
+				cell
+			)
 
-			if tip_local_position.distance_to(cell_position) <= dig_radius_pixels:
-				cells_in_radius.append(cell)
+			if tip_local_position.distance_to(
+				cell_position
+			) <= dig_radius_pixels:
+				cells_in_radius.append(
+					cell
+				)
+
 
 	return cells_in_radius
 
 
 func check_for_tar(delta: float) -> void:
-	var local_position: Vector2 = ores.to_local(global_position)
-	var cell: Vector2i = ores.local_to_map(local_position)
+	var local_position: Vector2 = ores.to_local(
+		global_position
+	)
 
-	var ore_type: String = ores.get_ore_type(cell)
+	var cell: Vector2i = ores.local_to_map(
+		local_position
+	)
 
-	# While inside tar, keep refreshing the recovery timer
+	var ore_type: String = ores.get_ore_type(
+		cell
+	)
+
+
+	# While inside Tar, keep refreshing the timer
 	if ore_type == "tar":
 		in_tar = true
 		tar_timer = tar_recovery_time
 
-	# After leaving tar, keep the effect active briefly
 	else:
 		tar_timer -= delta
 
@@ -212,22 +350,63 @@ func check_for_tar(delta: float) -> void:
 			tar_timer = 0.0
 
 
-func _on_gold_collected() -> void:
-	ores.gold_behavior.collect(self)
+func check_powerup_input() -> void:
+	if Input.is_action_just_pressed(
+		"power_up_1"
+	):
+		use_powerup(
+			GameData.equipped_powerup_1
+		)
 
+	if Input.is_action_just_pressed(
+		"power_up_2"
+	):
+		use_powerup(
+			GameData.equipped_powerup_2
+		)
+
+
+func use_powerup(powerup_name: String) -> void:
+	match powerup_name:
+		"speed":
+			speedPU.use()
+
+		"shield":
+			shieldPU.use()
+
+		_:
+			pass
+
+
+func _on_gold_collected() -> void:
+	ores.gold_behavior.collect(
+		self
+	)
 
 
 func _on_stardust_collected() -> void:
-	ores.stardust_behavior.collect(self)
-	#print(fuel)
+	ores.stardust_behavior.collect(
+		self
+	)
 
 
 func _on_bomb_triggered(depth: int) -> void:
-	ores.bomb_behavior.trigger(self, depth)
-	#print(health)
-	print(current_speed)
+	ores.bomb_behavior.trigger(
+		self,
+		depth
+	)
+
+	# Update UI after bomb effects
+	health_changed.emit(
+		health,
+		max_health
+	)
+
+	speed_changed.emit(
+		current_speed
+		+ powerup_speed_bonus
+	)
 
 
 func die() -> void:
-	# Temporary death behavior
 	queue_free()

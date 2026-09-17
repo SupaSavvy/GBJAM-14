@@ -6,7 +6,6 @@ extends Node
 
 
 func collect(_drill: Drill) -> void:
-	GameData.gold += gold_amount
-	GameData.save_game()
+	GameData.add_gold(gold_amount)
 
-	
+	print("Gold: ", GameData.gold)

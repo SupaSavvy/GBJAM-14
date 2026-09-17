@@ -4,13 +4,12 @@
 [ext_resource type="Shape2D" uid="uid://8xffe7cy54wa" path="res://Drill/drill_shape.tres" id="2_0gowb"]
 [ext_resource type="Texture2D" uid="uid://ctrplw0kk75sw" path="res://Ores/MinerSpriteSheet (2).png" id="2_5hiix"]
 [ext_resource type="Script" uid="uid://da248aabnoikv" path="res://Drill/camera_rig.gd" id="3_hdnf4"]
+[ext_resource type="Script" uid="uid://ddhcc1dn0uw4w" path="res://Drill/speed.gd" id="5_oqhhk"]
+[ext_resource type="Script" uid="uid://cxpqa440h020n" path="res://Drill/shield.gd" id="6_d31kr"]
 
 [node name="DrillBoi" type="CharacterBody2D" unique_id=64158737 groups=["drill"]]
 collision_mask = 64
 script = ExtResource("1_7v0r5")
-left_limit = -4.0
-right_limit = 144.0
-drill_damage = 3.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=503879945]
 shape = ExtResource("2_0gowb")
@@ -24,3 +23,12 @@ position = Vector2(0, -4)
 texture = ExtResource("2_5hiix")
 region_enabled = true
 region_rect = Rect2(16, 0, 8, 8)
+
+[node name="Powerups" type="Node" parent="." unique_id=412374624]
+
+[node name="Speed" type="Node" parent="Powerups" unique_id=5517835 node_paths=PackedStringArray("drill")]
+script = ExtResource("5_oqhhk")
+drill = NodePath("../..")
+
+[node name="Shield" type="Node" parent="Powerups" unique_id=1419155714]
+script = ExtResource("6_d31kr")
