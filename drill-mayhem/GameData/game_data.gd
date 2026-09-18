@@ -100,7 +100,7 @@ func save_game() -> void:
 		JSON.stringify(save_data)
 	)
 
-	print("Game Saved")
+	#print("Game Saved")
 
 
 func load_game() -> void:

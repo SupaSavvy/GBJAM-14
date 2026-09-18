@@ -8,4 +8,4 @@ extends Node
 func collect(_drill: Drill) -> void:
 	GameData.add_gold(gold_amount)
 
-	print("Gold: ", GameData.gold)
+	#print("Gold: ", GameData.gold)
