@@ -76,11 +76,15 @@ var tar_timer: float = 0.0
 @onready var speedPU: SpeedPowerup = $Powerups/Speed
 @onready var shieldPU: ShieldPowerup = $Powerups/Shield
 
+@onready var drill_particles: CPUParticles2D = $DrillParticles
+
+
 
 func _ready() -> void:
 	current_speed = min_speed
 	fuel = starting_fuel
 	health = max_health
+	drill_particles.emitting = false
 
 	# Ore signals
 	ores.gold_collected.connect(_on_gold_collected)
@@ -129,6 +133,7 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("ui_accept"):
 			drilling_started = true
 			velocity = Vector2.ZERO
+			drill_particles.emitting = true
 
 		return
 
@@ -280,7 +285,11 @@ func _physics_process(delta: float) -> void:
 	# --------------------------------------------------
 	move_and_slide()
 
+	#-------------------------------------------------
+	#DRILLING PARTICLES
 
+	update_drill_particles()
+	#-------------------------------------------------
 	# Keep Drill inside horizontal boundaries
 	global_position.x = clamp(
 		global_position.x,
@@ -406,6 +415,41 @@ func _on_bomb_triggered(depth: int) -> void:
 		current_speed
 		+ powerup_speed_bonus
 	)
+
+
+
+func update_drill_particles() -> void:
+	var cells: Array[Vector2i] = get_tiles_in_dig_radius()
+
+	for cell: Vector2i in cells:
+		var ore_type: String = ores.get_ore_type(cell)
+
+		if ore_type == "":
+			continue
+
+		set_particle_color(ore_type)
+		return
+
+
+func set_particle_color(ore_type: String) -> void:
+	match ore_type:
+		"stone":
+			drill_particles.color = Color.GRAY
+
+		"gold":
+			drill_particles.color = Color.GOLD
+
+		"stardust":
+			drill_particles.color = Color.WHITE
+
+		"bomb":
+			drill_particles.color = Color.WHITE
+
+		"tar":
+			drill_particles.color = Color.BLACK
+
+		_:
+			drill_particles.color = Color.WHITE
 
 
 func die() -> void:

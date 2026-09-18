@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://t60fuvtb7k0e"]
 
-[ext_resource type="Texture2D" uid="uid://ctrplw0kk75sw" path="res://Ores/MinerSpriteSheet (2).png" id="1_2mdd2"]
+[ext_resource type="Texture2D" uid="uid://ctrplw0kk75sw" path="res://Ores/sprites/MinerSpriteSheet (2).png" id="1_2mdd2"]
 [ext_resource type="Script" uid="uid://cgald01v5180m" path="res://Ores/ores.gd" id="2_s7lcl"]
-[ext_resource type="Script" uid="uid://bb6ay8nk0e1by" path="res://Ores/bomb.gd" id="3_6bbuu"]
-[ext_resource type="Script" uid="uid://dtolswvtqkc6" path="res://Ores/stardust.gd" id="4_1wc72"]
-[ext_resource type="Script" uid="uid://dgom0nij2ygry" path="res://Ores/gold.gd" id="5_52s1d"]
+[ext_resource type="Script" uid="uid://bb6ay8nk0e1by" path="res://Ores/bomb/bomb.gd" id="3_6bbuu"]
+[ext_resource type="Script" uid="uid://dtolswvtqkc6" path="res://Ores/stardust/stardust.gd" id="4_1wc72"]
+[ext_resource type="Script" uid="uid://dgom0nij2ygry" path="res://Ores/gold/gold.gd" id="5_52s1d"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s7lcl"]
 texture = ExtResource("1_2mdd2")
@@ -50,7 +50,6 @@ script = ExtResource("3_6bbuu")
 
 [node name="Stardust" type="Node" parent="." unique_id=1069147352]
 script = ExtResource("4_1wc72")
-fuel_amount = 5.0
 
 [node name="Gold" type="Node" parent="." unique_id=1149353983]
 script = ExtResource("5_52s1d")

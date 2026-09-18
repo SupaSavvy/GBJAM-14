@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d3y51c5or6coe" path="res://Drill/drill_boi.gd" id="1_7v0r5"]
 [ext_resource type="Shape2D" uid="uid://8xffe7cy54wa" path="res://Drill/drill_shape.tres" id="2_0gowb"]
-[ext_resource type="Texture2D" uid="uid://ctrplw0kk75sw" path="res://Ores/MinerSpriteSheet (2).png" id="2_5hiix"]
+[ext_resource type="Texture2D" uid="uid://ctrplw0kk75sw" path="res://Ores/sprites/MinerSpriteSheet (2).png" id="2_5hiix"]
 [ext_resource type="Script" uid="uid://da248aabnoikv" path="res://Drill/camera_rig.gd" id="3_hdnf4"]
 [ext_resource type="Texture2D" uid="uid://dvmjolry5fh5v" path="res://Drill/Sprites/Shield png.png" id="5_hetgd"]
 [ext_resource type="Script" uid="uid://ddhcc1dn0uw4w" path="res://Drill/speed.gd" id="5_oqhhk"]
@@ -254,3 +254,13 @@ animation_player = NodePath("../../AnimationPlayer")
 script = ExtResource("6_d31kr")
 drill = NodePath("../..")
 animation_player = NodePath("../../AnimationPlayer")
+
+[node name="DrillParticles" type="CPUParticles2D" parent="." unique_id=1813411747]
+position = Vector2(0.3035965, 2.949566)
+emission_shape = 1
+emission_sphere_radius = 3.1
+gravity = Vector2(0, -80)
+orbit_velocity_min = -0.2
+orbit_velocity_max = 0.2
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=523821715]

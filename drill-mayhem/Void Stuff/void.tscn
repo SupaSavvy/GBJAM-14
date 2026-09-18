@@ -16,8 +16,9 @@ shape = SubResource("RectangleShape2D_fppky")
 debug_color = Color(0.98017436, 0, 0.38584283, 0.41960785)
 
 [node name="ColorRect" type="ColorRect" parent="Area2D" unique_id=1180304215]
-offset_top = -1.0
-offset_right = 40.0
-offset_bottom = 39.0
+offset_left = -13.269007
+offset_top = -101.0
+offset_right = 34.116463
+offset_bottom = 932.05396
 scale = Vector2(3.5932746, 0.10069947)
 color = Color(0.105882354, 0.105882354, 0.11764706, 1)

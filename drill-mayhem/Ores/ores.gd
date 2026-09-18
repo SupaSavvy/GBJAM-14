@@ -19,6 +19,7 @@ signal bomb_triggered(depth: int)
 @export var tar_tile: Vector2i
 @export var stardust_tile: Vector2i
 @export var bomb_tile: Vector2i
+@export var bomb_explosion_scene: PackedScene
 
 @export var chunk_height: int = 12
 @export var chunks_ahead: int = 3
@@ -272,8 +273,11 @@ func get_ore_type(cell: Vector2i) -> String:
 
 
 func break_cell(cell: Vector2i) -> void:
-	# Save the ore type before removing the tile
 	var ore_type: String = get_ore_type(cell)
+
+	# Spawn the effect BEFORE deleting the bomb tile.
+	if ore_type == "bomb":
+		spawn_bomb_explosion(cell)
 
 	erase_cell(cell)
 	tile_health.erase(cell)
@@ -289,8 +293,26 @@ func break_cell(cell: Vector2i) -> void:
 			stardust_collected.emit()
 
 		"bomb":
-			# Pass the depth to Bomb.gd
 			bomb_triggered.emit(cell.y)
 
 		"tar":
 			pass
+
+func spawn_bomb_explosion(cell: Vector2i) -> void:
+	if bomb_explosion_scene == null:
+		print("ERROR: Bomb explosion scene is not assigned!")
+		return
+
+	var explosion: BombExplosion = bomb_explosion_scene.instantiate()
+
+	get_tree().current_scene.add_child(explosion)
+
+	# Put the explosion at the bomb first.
+	var local_position: Vector2 = map_to_local(cell)
+
+	explosion.global_position = to_global(local_position)
+
+	# NOW fire the particles.
+	explosion.explode()
+
+	print("Bomb explosion spawned at: ", explosion.global_position)
