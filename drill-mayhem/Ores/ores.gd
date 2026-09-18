@@ -35,7 +35,8 @@ signal bomb_triggered(depth: int)
 @export var tar_start_depth: int = 30
 @export var gold_start_depth: int = 50
 @export var bomb_start_depth: int = 74
-@export var deep_start_depth: int = 120
+@export var bomb_full_rate_depth: int = 8000
+@export var deep_start_depth: int = 1000
 
 
 # Stores HP for damaged tiles
@@ -118,13 +119,45 @@ func generate_chunk(chunk_y: int) -> void:
 
 
 func choose_random_tile(depth: int) -> Vector2i:
-	var roll: float = randf() * 100.0
+	# --------------------------------------------------
+	# BOMB CHANCE
+	# --------------------------------------------------
+	# Bombs start very rare and slowly become more common
+	# until they reach their full spawn rate around depth 8000.
+
+	var bomb_depth_percent: float = clamp(
+		float(depth - bomb_start_depth)
+		/ float(bomb_full_rate_depth - bomb_start_depth),
+		0.0,
+		1.0
+	)
+
+	var bomb_chance: float = lerp(
+		0.2,  # 0.2% chance when bombs first appear
+		2.0,  # 2% chance once we reach bomb_full_rate_depth
+		bomb_depth_percent
+	)
+
+	var bomb_roll: float = randf() * 100.0
+
+
+	# Bombs cannot spawn before bomb_start_depth.
+	if depth >= bomb_start_depth:
+		if bomb_roll < bomb_chance:
+			return bomb_tile
+
+
+	# --------------------------------------------------
+	# NORMAL ORE CHANCE
+	# --------------------------------------------------
+	# This roll is separate from the bomb roll.
+	var ore_roll: float = randf() * 100.0
 
 
 	# BEFORE TAR
-	# Mostly Stone with a little Stardust
+	# Mostly Stone with a little Stardust.
 	if depth < tar_start_depth:
-		if roll < 96.0:
+		if ore_roll < 96.0:
 			return stone_tile
 
 		else:
@@ -132,9 +165,9 @@ func choose_random_tile(depth: int) -> Vector2i:
 
 
 	# TAR LAYER
-	# Tar itself is generated separately in clusters
+	# Tar itself still spawns separately as clusters.
 	elif depth < gold_start_depth:
-		if roll < 94.0:
+		if ore_roll < 94.0:
 			return stone_tile
 
 		else:
@@ -142,47 +175,42 @@ func choose_random_tile(depth: int) -> Vector2i:
 
 
 	# GOLD LAYER
+	# Gold begins appearing here.
 	elif depth < bomb_start_depth:
-		if roll < 89.0:
+		if ore_roll < 89.0:
 			return stone_tile
 
-		elif roll < 95.0:
+		elif ore_roll < 95.0:
 			return stardust_tile
 
 		else:
 			return gold_tile
 
 
-	# BOMB LAYER
-	# Bombs are still rare
+	# BOMB AREA
+	# Bombs are handled above, so this part only
+	# chooses Stone, Stardust, or Gold.
 	elif depth < deep_start_depth:
-		if roll < 87.0:
+		if ore_roll < 87.0:
 			return stone_tile
 
-		elif roll < 93.0:
+		elif ore_roll < 93.0:
 			return stardust_tile
 
-		elif roll < 98.5:
+		else:
 			return gold_tile
 
-		else:
-			return bomb_tile
 
-
-	# DEEP LAYER
+	# DEEP AREA
 	else:
-		if roll < 83.0:
+		if ore_roll < 83.0:
 			return stone_tile
 
-		elif roll < 89.0:
+		elif ore_roll < 89.0:
 			return stardust_tile
 
-		elif roll < 98.0:
-			return gold_tile
-
 		else:
-			return bomb_tile
-
+			return gold_tile
 
 func generate_tar_cluster(center: Vector2i) -> void:
 	# Basic connected tar blob
