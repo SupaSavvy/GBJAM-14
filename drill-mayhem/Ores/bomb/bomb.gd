@@ -10,7 +10,7 @@ extends Node
 @export var minimum_speed_after_bomb: float = 50.0
 
 
-func trigger(drill: Drill, depth: int) -> void:
+func trigger(drill: Drill, depth: int) -> bool:
 	# Figure out how far down the player is.
 	var depth_percent: float = clamp(
 		float(depth) / max_damage_depth,
@@ -28,7 +28,7 @@ func trigger(drill: Drill, depth: int) -> void:
 
 	# If the Shield is active, block the bomb completely.
 	if drill.shieldPU.block_hit():
-		return
+		return false
 
 
 	# SCREEN SHAKE
@@ -62,3 +62,7 @@ func trigger(drill: Drill, depth: int) -> void:
 	# KILL THE PLAYER IF HEALTH REACHES ZERO
 	if drill.health <= 0.0:
 		drill.die()
+
+
+	# Bomb successfully hit the player.
+	return true

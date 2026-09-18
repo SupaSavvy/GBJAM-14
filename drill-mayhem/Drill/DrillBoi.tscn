@@ -263,4 +263,5 @@ gravity = Vector2(0, -80)
 orbit_velocity_min = -0.2
 orbit_velocity_max = 0.2
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=523821715]
+[node name="DrillSound" type="AudioStreamPlayer2D" parent="." unique_id=523821715]
+volume_db = 0.1

@@ -29,13 +29,14 @@ var drilling_started: bool = false
 
 # DIGGING
 @export var ores: Ores
+@onready var drill_sound: AudioStreamPlayer2D = $DrillSound
 
 @export var drill_damage: float = 3.0
-@export var damage_interval: float = 0.08
 @export var dig_radius_pixels: float = 8.0
 
+@export var damage_interval: float = 0.08
 @export var slow_damage_interval: float = 0.08
-@export var fast_damage_interval: float = 0.02
+@export var fast_damage_interval: float = 0.001
 @export var interval_max_speed: float = 150.0
 
 
@@ -82,6 +83,10 @@ var tar_timer: float = 0.0
 var current_depth: int = 0
 var deepest_depth: int = 0
 
+#RUN STATS
+var stones_mined: int = 0
+var bombs_hit: int = 0
+var gold_collected_this_run: int = 0
 
 
 func _ready() -> void:
@@ -94,6 +99,7 @@ func _ready() -> void:
 	ores.gold_collected.connect(_on_gold_collected)
 	ores.stardust_collected.connect(_on_stardust_collected)
 	ores.bomb_triggered.connect(_on_bomb_triggered)
+	ores.stone_mined.connect(_on_stone_mined)
 
 	# Starting UI values
 	health_changed.emit(
@@ -138,6 +144,7 @@ func _physics_process(delta: float) -> void:
 			drilling_started = true
 			velocity = Vector2.ZERO
 			drill_particles.emitting = true
+			drill_sound.play()
 
 		return
 
@@ -403,10 +410,11 @@ func use_powerup(powerup_name: String) -> void:
 
 
 func _on_gold_collected() -> void:
-	ores.gold_behavior.collect(
-		self
-	)
+	gold_collected_this_run += 1
 
+	ores.gold_behavior.collect(self)
+
+	print("Gold This Run: ", gold_collected_this_run)
 
 func _on_stardust_collected() -> void:
 	ores.stardust_behavior.collect(
@@ -415,22 +423,28 @@ func _on_stardust_collected() -> void:
 
 
 func _on_bomb_triggered(depth: int) -> void:
-	ores.bomb_behavior.trigger(
+	var bomb_hit: bool = ores.bomb_behavior.trigger(
 		self,
 		depth
 	)
 
-	# Update UI after bomb effects
+	if bomb_hit:
+		bombs_hit += 1
+		print("Bombs Hit: ", bombs_hit)
+
 	health_changed.emit(
 		health,
 		max_health
 	)
 
 	speed_changed.emit(
-		current_speed
-		+ powerup_speed_bonus
+		current_speed + powerup_speed_bonus
 	)
 
+func _on_stone_mined() -> void:
+	stones_mined += 1
+
+	print("Stones Mined: ", stones_mined)
 
 
 func update_drill_particles() -> void:

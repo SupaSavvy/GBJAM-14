@@ -5,6 +5,7 @@ extends TileMapLayer
 signal gold_collected
 signal stardust_collected
 signal bomb_triggered(depth: int)
+signal stone_mined
 
 
 # TILE HEALTH
@@ -50,6 +51,11 @@ var generated_chunks: Dictionary = {}
 @onready var bomb_behavior: BombBehavior = $Bomb
 @onready var stardust_behavior: StardustBehavior = $Stardust
 @onready var gold_behavior: GoldBehavior = $Gold
+
+#FEAT TRAKER
+var stones_mined: int = 0
+var gold_collected_this_run: int = 0
+var bombs_hit: int = 0
 
 
 func _process(_delta: float) -> void:
@@ -312,7 +318,7 @@ func break_cell(cell: Vector2i) -> void:
 
 	match ore_type:
 		"stone":
-			pass
+			stone_mined.emit()
 
 		"gold":
 			gold_collected.emit()
@@ -344,3 +350,5 @@ func spawn_bomb_explosion(cell: Vector2i) -> void:
 	explosion.explode()
 
 	print("Bomb explosion spawned at: ", explosion.global_position)
+	
+	

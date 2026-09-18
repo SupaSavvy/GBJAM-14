@@ -2,27 +2,25 @@ class_name BombExplosion
 extends CPUParticles2D
 
 
-@export var cleanup_time: float = 1.5
-
 @onready var white_sparks: CPUParticles2D = $WhiteSparks
+@onready var boom: AudioStreamPlayer2D = $Boom
 
 
 func _ready() -> void:
-	# Don't automatically start when entering the scene tree.
 	emitting = false
 	white_sparks.emitting = false
 
 
 func explode() -> void:
-	# Start both particle systems after we've been positioned.
 	restart()
 	emitting = true
 
 	white_sparks.restart()
 	white_sparks.emitting = true
+	print("Playing BOomb")
+	boom.play()
 
-	print("Explosion particles started at: ", global_position)
-
-	await get_tree().create_timer(cleanup_time).timeout
+	# Wait for the sound to finish before deleting the scene.
+	await boom.finished
 
 	queue_free()
