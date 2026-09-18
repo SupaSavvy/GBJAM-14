@@ -78,6 +78,10 @@ var tar_timer: float = 0.0
 
 @onready var drill_particles: CPUParticles2D = $DrillParticles
 
+#LEADERBOARD MECHANICS
+var current_depth: int = 0
+var deepest_depth: int = 0
+
 
 
 func _ready() -> void:
@@ -296,7 +300,18 @@ func _physics_process(delta: float) -> void:
 		left_limit,
 		right_limit
 	)
+	#--------------------------------------------------
+	#STUFF TO TRACK LEADERBOARD
+	#--------------------------------------------------
+	var drill_local_position: Vector2 = ores.to_local(global_position)
+	var drill_cell: Vector2i = ores.local_to_map(drill_local_position)
 
+	current_depth = drill_cell.y
+
+	deepest_depth = max(
+	deepest_depth,
+	current_depth
+	)
 
 func get_tiles_in_dig_radius() -> Array[Vector2i]:
 	var cells_in_radius: Array[Vector2i] = []
@@ -453,4 +468,6 @@ func set_particle_color(ore_type: String) -> void:
 
 
 func die() -> void:
+	GameData.submit_depth(deepest_depth)
+
 	queue_free()

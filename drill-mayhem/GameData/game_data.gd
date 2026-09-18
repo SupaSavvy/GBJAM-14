@@ -29,6 +29,9 @@ var equipped_powerup_2: String = "shield"
 var save_path: String = "user://save.json"
 
 
+# LEADER BOARD
+var best_depth: int = 0
+
 func _ready() -> void:
 	load_game()
 
@@ -83,7 +86,11 @@ func save_game() -> void:
 		"magnet_level": magnet_level,
 
 		"equipped_powerup_1": equipped_powerup_1,
-		"equipped_powerup_2": equipped_powerup_2
+		"equipped_powerup_2": equipped_powerup_2,
+	
+		"best_depth": best_depth
+	
+	
 	}
 
 	var file: FileAccess = FileAccess.open(
@@ -133,6 +140,7 @@ func load_game() -> void:
 	gold = save_data.get(
 		"gold",
 		0
+		
 	)
 
 
@@ -163,7 +171,11 @@ func load_game() -> void:
 		"equipped_powerup_2",
 		"shield"
 	)
-
+	
+	best_depth = save_data.get(
+	"best_depth",
+	0
+	)
 
 	# Tell the UI what the loaded gold amount is.
 	gold_changed.emit(gold)
@@ -171,3 +183,11 @@ func load_game() -> void:
 	print("Loaded Gold: ", gold)
 	print("Power Up 1: ", equipped_powerup_1)
 	print("Power Up 2: ", equipped_powerup_2)
+	
+func submit_depth(depth: int) -> void:
+	if depth > best_depth:
+		best_depth = depth
+		save_game()
+
+	print("Run Depth: ", depth)
+	print("Best Depth: ", best_depth)
