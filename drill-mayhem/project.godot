@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameData="*uid://c0pejfa1vanv7"
+LootLockerSDK="*uid://bkq3fmp26k1k6"
 
 [display]
 
@@ -27,6 +28,10 @@ window/size/window_width_override=640
 window/size/window_height_override=640
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/LootLockerSDK/plugin.cfg")
 
 [input]
 

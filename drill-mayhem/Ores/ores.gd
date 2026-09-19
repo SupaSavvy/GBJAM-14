@@ -334,7 +334,7 @@ func break_cell(cell: Vector2i) -> void:
 
 func spawn_bomb_explosion(cell: Vector2i) -> void:
 	if bomb_explosion_scene == null:
-		print("ERROR: Bomb explosion scene is not assigned!")
+		#print("ERROR: Bomb explosion scene is not assigned!")
 		return
 
 	var explosion: BombExplosion = bomb_explosion_scene.instantiate()
@@ -349,6 +349,6 @@ func spawn_bomb_explosion(cell: Vector2i) -> void:
 	# NOW fire the particles.
 	explosion.explode()
 
-	print("Bomb explosion spawned at: ", explosion.global_position)
+	#print("Bomb explosion spawned at: ", explosion.global_position)
 	
 	

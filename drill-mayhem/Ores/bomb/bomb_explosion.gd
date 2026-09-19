@@ -17,7 +17,7 @@ func explode() -> void:
 
 	white_sparks.restart()
 	white_sparks.emitting = true
-	print("Playing BOomb")
+	#print("Playing BOomb")
 	boom.play()
 
 	# Wait for the sound to finish before deleting the scene.

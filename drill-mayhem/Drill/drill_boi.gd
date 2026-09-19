@@ -16,6 +16,7 @@ signal speed_changed(current_speed: float)
 
 @export var turn_speed: float = 2.0
 @export var max_turn_angle: float = 45.0
+@export_range(0.1,2.0,0.1) var turn_sensitivity: float = 1.0
 
 
 # STARTING POSITION
@@ -170,7 +171,7 @@ func _physics_process(delta: float) -> void:
 			"ui_right"
 		)
 
-		rotation -= turn_input * turn_speed * delta
+		rotation -= turn_input * turn_speed * delta * turn_sensitivity
 
 		rotation = clamp(
 			rotation,
@@ -414,7 +415,7 @@ func _on_gold_collected() -> void:
 
 	ores.gold_behavior.collect(self)
 
-	print("Gold This Run: ", gold_collected_this_run)
+	#print("Gold This Run: ", gold_collected_this_run)
 
 func _on_stardust_collected() -> void:
 	ores.stardust_behavior.collect(
@@ -430,7 +431,7 @@ func _on_bomb_triggered(depth: int) -> void:
 
 	if bomb_hit:
 		bombs_hit += 1
-		print("Bombs Hit: ", bombs_hit)
+		#print("Bombs Hit: ", bombs_hit)
 
 	health_changed.emit(
 		health,
@@ -444,7 +445,7 @@ func _on_bomb_triggered(depth: int) -> void:
 func _on_stone_mined() -> void:
 	stones_mined += 1
 
-	print("Stones Mined: ", stones_mined)
+	#print("Stones Mined: ", stones_mined)
 
 
 func update_drill_particles() -> void:
