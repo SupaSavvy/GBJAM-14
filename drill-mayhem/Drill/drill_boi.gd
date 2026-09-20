@@ -39,7 +39,7 @@ var drilling_started: bool = false
 @onready var drill_sound: AudioStreamPlayer2D = $DrillSound
 
 @export var drill_damage: float = 3.0
-@export var dig_radius_pixels: float = 8.0
+@export var dig_radius_pixels: float = 12.0
 
 @export var damage_interval: float = 0.08
 @export var slow_damage_interval: float = 0.08
