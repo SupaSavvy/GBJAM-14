@@ -334,18 +334,10 @@ func break_cell(cell: Vector2i) -> void:
 	match ore_type:
 		"stone":
 			stone_mined.emit()
-			block_break.pitch_scale = randf_range(
-			0.9,
-			1.1
-			)
 			block_break.play()
 
 		"gold":
 			gold_collected.emit()
-			gold_break.pitch_scale = randf_range(
-			0.9,
-			1.1
-			)
 			gold_break.play()
 
 		"stardust":
