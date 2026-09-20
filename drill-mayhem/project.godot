@@ -29,6 +29,10 @@ window/size/window_height_override=640
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[dotnet]
+
+project/assembly_name="Drill Mayhem"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/LootLockerSDK/plugin.cfg")
