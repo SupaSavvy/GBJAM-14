@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Drill Mayhem"
-run/main_scene="uid://lgo4y3trp0yo"
+run/main_scene="uid://w52hmhdy43ci"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -22,8 +22,8 @@ LootLockerSDK="*uid://bkq3fmp26k1k6"
 
 [display]
 
-window/size/viewport_width=144
-window/size/viewport_height=160
+window/size/viewport_width=160
+window/size/viewport_height=144
 window/size/window_width_override=640
 window/size/window_height_override=640
 window/stretch/mode="canvas_items"
