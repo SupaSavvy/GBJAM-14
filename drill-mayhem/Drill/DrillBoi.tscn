@@ -226,7 +226,7 @@ _data = {
 [node name="DrillBoi" type="CharacterBody2D" unique_id=64158737 groups=["drill"]]
 collision_mask = 64
 script = ExtResource("1_7v0r5")
-turn_sensitivity = 0.5
+acceleration = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=503879945]
 shape = ExtResource("2_0gowb")
