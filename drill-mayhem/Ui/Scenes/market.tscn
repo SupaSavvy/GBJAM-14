@@ -6,8 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://cfymx4ccqo6n2" path="res://Ui/MainMenuImages/shopbackgroundgirl.png" id="4_xo7pe"]
 [ext_resource type="FontFile" uid="uid://b52kyl2lgwk0y" path="res://Ui/Spirtes/fonts/pixelFont-7-8x14-sproutLands.ttf" id="5_nikpj"]
 [ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="6_h22jl"]
-[ext_resource type="Script" uid="uid://cwfk17i7nyi2" path="res://Ui/Scenes/menu_button.gd" id="7_6px0c"]
-[ext_resource type="AudioStream" path="res://Sounds/ButtonClick.wav" id="15_vl6j6"]
+[ext_resource type="Script" uid="uid://cwfk17i7nyi2" path="res://Ui/Scrips/menu_button.gd" id="7_6px0c"]
+[ext_resource type="AudioStream" uid="uid://rahh7x164krx" path="res://Master/SFX/ButtonClick.wav" id="8_6px0c"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yhxw7"]
 texture = ExtResource("6_h22jl")
@@ -137,4 +137,4 @@ layout_mode = 2
 autoplay = true
 
 [node name="ButtonClick" type="AudioStreamPlayer" parent="." unique_id=1841831802]
-stream = ExtResource("15_vl6j6")
+stream = ExtResource("8_6px0c")
