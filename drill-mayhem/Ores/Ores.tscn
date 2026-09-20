@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://bb6ay8nk0e1by" path="res://Ores/bomb/bomb.gd" id="3_6bbuu"]
 [ext_resource type="Script" uid="uid://dtolswvtqkc6" path="res://Ores/stardust/stardust.gd" id="4_1wc72"]
 [ext_resource type="Script" uid="uid://dgom0nij2ygry" path="res://Ores/gold/gold.gd" id="5_52s1d"]
+[ext_resource type="AudioStream" uid="uid://bj6w01v6in5sa" path="res://Master/SFX/Block_Break.mp3" id="6_0grod"]
+[ext_resource type="AudioStream" uid="uid://5g5ir6jvc45r" path="res://Master/SFX/Gold_Break.mp3" id="7_ui6mu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s7lcl"]
 texture = ExtResource("1_2mdd2")
@@ -39,6 +41,7 @@ sources/0 = SubResource("TileSetAtlasSource_s7lcl")
 [node name="Ores" type="TileMapLayer" unique_id=1976111818]
 tile_set = SubResource("TileSet_6bbuu")
 script = ExtResource("2_s7lcl")
+block_break_sound_interval = 5.0
 stone_tile = Vector2i(1, 1)
 tar_tile = Vector2i(1, 0)
 stardust_tile = Vector2i(0, 1)
@@ -57,3 +60,13 @@ script = ExtResource("4_1wc72")
 script = ExtResource("5_52s1d")
 
 [node name="Tar" type="Node" parent="." unique_id=1063141255]
+
+[node name="BlockBreak" type="AudioStreamPlayer" parent="." unique_id=1255460969]
+stream = ExtResource("6_0grod")
+volume_db = -10.0
+max_polyphony = 8
+
+[node name="GoldBreak" type="AudioStreamPlayer" parent="." unique_id=2093815725]
+stream = ExtResource("7_ui6mu")
+volume_db = -15.0
+max_polyphony = 8

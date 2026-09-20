@@ -7,6 +7,12 @@ signal stardust_collected
 signal bomb_triggered(depth: int)
 signal stone_mined
 
+#SOUND
+@onready var block_break: AudioStreamPlayer = $BlockBreak
+@export var block_break_sound_interval: float = 0.08
+var block_break_sound_timer: float = 0.0
+@onready var gold_break: AudioStreamPlayer = $GoldBreak
+
 
 # TILE HEALTH
 @export var default_tile_health: float = 3.0
@@ -38,6 +44,8 @@ signal stone_mined
 @export var bomb_start_depth: int = 74
 @export var bomb_full_rate_depth: int = 8000
 @export var deep_start_depth: int = 1000
+@export var stardust_fade_start_depth: int = 80
+@export var stardust_gone_depth: int = 300
 
 
 # Stores HP for damaged tiles
@@ -58,7 +66,7 @@ var gold_collected_this_run: int = 0
 var bombs_hit: int = 0
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if drill == null:
 		return
 
@@ -77,6 +85,9 @@ func _process(_delta: float) -> void:
 
 		if not generated_chunks.has(chunk_y):
 			generate_chunk(chunk_y)
+			
+	if block_break_sound_timer > 0.0:
+		block_break_sound_timer -= delta
 
 
 func generate_chunk(chunk_y: int) -> void:
@@ -106,7 +117,7 @@ func generate_chunk(chunk_y: int) -> void:
 	# TAR CLUSTERS
 	# Tar doesn't begin appearing until tar_start_depth
 	if start_y >= tar_start_depth:
-		var tar_cluster_amount: int = randi_range(0, 2)
+		var tar_cluster_amount: int = randi_range(1, 3)
 
 		for i: int in range(tar_cluster_amount):
 			var tar_x: int = randi_range(
@@ -126,11 +137,10 @@ func generate_chunk(chunk_y: int) -> void:
 
 func choose_random_tile(depth: int) -> Vector2i:
 	# --------------------------------------------------
-	# BOMB CHANCE
+	# BOMBS
 	# --------------------------------------------------
-	# Bombs start very rare and slowly become more common
-	# until they reach their full spawn rate around depth 8000.
-
+	# Bomb chance ramps from 0.2% at bomb_start_depth
+	# to 2% at bomb_full_rate_depth.
 	var bomb_depth_percent: float = clamp(
 		float(depth - bomb_start_depth)
 		/ float(bomb_full_rate_depth - bomb_start_depth),
@@ -139,84 +149,88 @@ func choose_random_tile(depth: int) -> Vector2i:
 	)
 
 	var bomb_chance: float = lerp(
-		0.2,  # 0.2% chance when bombs first appear
-		2.0,  # 2% chance once we reach bomb_full_rate_depth
+		0.2,
+		2.0,
 		bomb_depth_percent
 	)
 
-	var bomb_roll: float = randf() * 100.0
-
-
-	# Bombs cannot spawn before bomb_start_depth.
 	if depth >= bomb_start_depth:
+		var bomb_roll: float = randf() * 100.0
+
 		if bomb_roll < bomb_chance:
 			return bomb_tile
 
 
 	# --------------------------------------------------
-	# NORMAL ORE CHANCE
+	# STARDUST FADE
 	# --------------------------------------------------
-	# This roll is separate from the bomb roll.
+	# Starts at 100% of its normal spawn chance.
+	# Slowly fades to 0% as the player gets deeper.
+	var stardust_multiplier: float = 1.0
+
+	if depth >= stardust_fade_start_depth:
+		stardust_multiplier = 1.0 - clamp(
+			float(depth - stardust_fade_start_depth)
+			/ float(
+				stardust_gone_depth
+				- stardust_fade_start_depth
+			),
+			0.0,
+			1.0
+		)
+
+
+	# --------------------------------------------------
+	# NORMAL ORES
+	# --------------------------------------------------
+	var gold_chance: float = 0.0
+	var stardust_chance: float = 0.0
+
+
+	if depth < tar_start_depth:
+		# No gold yet.
+		stardust_chance = 4.0
+
+	elif depth < gold_start_depth:
+		# Still no gold.
+		stardust_chance = 4.0
+
+	elif depth < bomb_start_depth:
+		# Gold starts appearing, but it's rare.
+		gold_chance = 2.0
+		stardust_chance = 5.0
+
+	elif depth < deep_start_depth:
+		gold_chance = 3.0
+		stardust_chance = 5.0
+
+	else:
+		# Deep layer:
+		# Gold is still valuable and uncommon.
+		gold_chance = 4.0
+		stardust_chance = 5.0
+
+
+	# Reduce stardust chance based on depth.
+	stardust_chance *= stardust_multiplier
+
+
 	var ore_roll: float = randf() * 100.0
 
 
-	# BEFORE TAR
-	# Mostly Stone with a little Stardust.
-	if depth < tar_start_depth:
-		if ore_roll < 96.0:
-			return stone_tile
-
-		else:
-			return stardust_tile
+	# Gold
+	if ore_roll < gold_chance:
+		return gold_tile
 
 
-	# TAR LAYER
-	# Tar itself still spawns separately as clusters.
-	elif depth < gold_start_depth:
-		if ore_roll < 94.0:
-			return stone_tile
-
-		else:
-			return stardust_tile
+	# Stardust
+	if ore_roll < gold_chance + stardust_chance:
+		return stardust_tile
 
 
-	# GOLD LAYER
-	# Gold begins appearing here.
-	elif depth < bomb_start_depth:
-		if ore_roll < 89.0:
-			return stone_tile
+	# Everything else is stone.
+	return stone_tile
 
-		elif ore_roll < 95.0:
-			return stardust_tile
-
-		else:
-			return gold_tile
-
-
-	# BOMB AREA
-	# Bombs are handled above, so this part only
-	# chooses Stone, Stardust, or Gold.
-	elif depth < deep_start_depth:
-		if ore_roll < 87.0:
-			return stone_tile
-
-		elif ore_roll < 93.0:
-			return stardust_tile
-
-		else:
-			return gold_tile
-
-
-	# DEEP AREA
-	else:
-		if ore_roll < 83.0:
-			return stone_tile
-
-		elif ore_roll < 89.0:
-			return stardust_tile
-
-		else:
-			return gold_tile
 
 func generate_tar_cluster(center: Vector2i) -> void:
 	# Basic connected tar blob
@@ -315,13 +329,24 @@ func break_cell(cell: Vector2i) -> void:
 
 	erase_cell(cell)
 	tile_health.erase(cell)
-
+	
+	block_break_sound_timer = block_break_sound_interval
 	match ore_type:
 		"stone":
 			stone_mined.emit()
+			block_break.pitch_scale = randf_range(
+			0.9,
+			1.1
+			)
+			block_break.play()
 
 		"gold":
 			gold_collected.emit()
+			gold_break.pitch_scale = randf_range(
+			0.9,
+			1.1
+			)
+			gold_break.play()
 
 		"stardust":
 			stardust_collected.emit()

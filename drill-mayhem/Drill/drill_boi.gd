@@ -10,9 +10,9 @@ signal speed_changed(current_speed: float)
 # MOVEMENT
 @export var starting_move_speed: float = 150.0
 
-@export var min_speed: float = 50.0
-@export var max_speed: float = 1000.0
-@export var acceleration: float = 5.0
+@export var min_speed: float = 5.0
+@export var max_speed: float = 50.0
+@export var acceleration: float = 0.00025
 
 #@export var turn_speed: float = 2.0
 #@export var max_turn_angle: float = 45.0
