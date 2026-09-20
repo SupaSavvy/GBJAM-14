@@ -12,7 +12,7 @@ signal ready_again
 
 
 # SPEED BOOST SETTINGS
-@export var base_boost_amount: float = 200.0
+@export var base_boost_amount: float = 5.0
 
 # How long the drill stays at full boosted speed
 @export var hold_duration: float = 1.0
