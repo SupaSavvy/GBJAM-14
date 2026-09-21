@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c0w6mj1sk6mt5" path="res://Drill/DrillBoi.tscn" id="1_fppky"]
 [ext_resource type="PackedScene" uid="uid://b5kuhcao4dw8j" path="res://Ores/bomb/bomb_explosion.tscn" id="2_d0bd1"]
 [ext_resource type="PackedScene" uid="uid://c8aykun2hj71p" path="res://Void Stuff/void.tscn" id="3_5fdol"]
+[ext_resource type="AudioStream" uid="uid://xdi12iohkbff" path="res://Master/SFX/GB Jam Main Theme.mp3" id="5_3cjtb"]
 
 [node name="DrillingTest" type="Node2D" unique_id=1496016345]
 
@@ -35,6 +36,10 @@ position = Vector2(2, -98)
 
 [node name="Area2D" parent="Void" index="0" unique_id=1894625215 node_paths=PackedStringArray("drill")]
 drill = NodePath("../../DrillBoi")
+
+[node name="BackgroundSound" type="AudioStreamPlayer" parent="." unique_id=995721409]
+stream = ExtResource("5_3cjtb")
+autoplay = true
 
 [editable path="DrillBoi"]
 [editable path="Void"]

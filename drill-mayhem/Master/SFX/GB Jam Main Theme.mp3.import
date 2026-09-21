@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://xdi12iohkbff"
+path="res://.godot/imported/GB Jam Main Theme.mp3-0ea7cace0d6ddf236b63d75fc38a2fd4.mp3str"
+
+[deps]
+
+source_file="res://Master/SFX/GB Jam Main Theme.mp3"
+dest_files=["res://.godot/imported/GB Jam Main Theme.mp3-0ea7cace0d6ddf236b63d75fc38a2fd4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

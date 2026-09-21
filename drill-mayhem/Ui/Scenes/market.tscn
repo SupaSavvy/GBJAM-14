@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="6_h22jl"]
 [ext_resource type="Script" uid="uid://cwfk17i7nyi2" path="res://Ui/Scrips/menu_button.gd" id="7_6px0c"]
 [ext_resource type="AudioStream" uid="uid://rahh7x164krx" path="res://Master/SFX/ButtonClick.wav" id="8_6px0c"]
+[ext_resource type="AudioStream" uid="uid://5ivxjvipduhc" path="res://Master/SFX/GB Jam.mp3" id="8_h2apa"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yhxw7"]
 texture = ExtResource("6_h22jl")
@@ -134,6 +135,7 @@ script = ExtResource("7_6px0c")
 layout_mode = 2
 
 [node name="BackgroundSound" type="AudioStreamPlayer" parent="." unique_id=945981463]
+stream = ExtResource("8_h2apa")
 autoplay = true
 
 [node name="ButtonClick" type="AudioStreamPlayer" parent="." unique_id=1841831802]
