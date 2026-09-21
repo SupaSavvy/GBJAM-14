@@ -283,6 +283,7 @@ mouse_filter = 2
 script = ExtResource("10_bfvnm")
 
 [node name="Settings" type="NinePatchRect" parent="NinePatchRect/SettingsContainer" unique_id=1732416297]
+visible = false
 custom_minimum_size = Vector2(140, 122)
 layout_mode = 2
 size_flags_horizontal = 4
