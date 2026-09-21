@@ -19,36 +19,130 @@ script/source = "extends Control
 @onready var rocks_back = $NinePatchRect/RocksBG
 @onready var drill_front = $NinePatchRect/DrillMC
 
+# SHOP BUTTONS
+@export var health_button: Button
+@export var fuel_button: Button
+@export var speed_button: Button
+@export var shield_button: Button
+@export var gold_multiplier_button: Button
+
 var time_passed: float = 0.0
 
 var back_start_pos: Vector2
 var front_start_pos: Vector2
 
 var float_speed: float = 2.0
-var float_amplitude_y: float = 5.0 # How many pixels they bob up and down
-var float_amplitude_x: float = 3.0  # How many pixels they drift left and right
+var float_amplitude_y: float = 5.0
+var float_amplitude_x: float = 3.0
 
-func _ready():
+
+func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	
-	# Save the initial positions right when the game starts
+
+	# Save initial positions
 	back_start_pos = rocks_back.position
 	front_start_pos = drill_front.position
-	
 
-func _process(delta):
-	# Add the frame time to our total time tracker
+	# Connect shop buttons
+	health_button.pressed.connect(_on_health_pressed)
+	fuel_button.pressed.connect(_on_fuel_pressed)
+	speed_button.pressed.connect(_on_speed_pressed)
+	shield_button.pressed.connect(_on_shield_pressed)
+	gold_multiplier_button.pressed.connect(_on_gold_multiplier_pressed)
+
+	GameData.gold_changed.connect(_on_gold_changed)
+
+	update_shop()
+
+
+func _process(delta: float) -> void:
 	time_passed += delta
-	
-	#back astronot
+
+	# Back astronaut
 	var back_offset_y = sin(time_passed * float_speed * 0.8) * float_amplitude_y
 	var back_offset_x = cos(time_passed * float_speed * 0.5) * float_amplitude_x
-	rocks_back.position = back_start_pos + Vector2(back_offset_x, back_offset_y)
-	
-	#front astronot
+
+	rocks_back.position = back_start_pos + Vector2(
+		back_offset_x,
+		back_offset_y
+	)
+
+	# Front astronaut
 	var front_offset_y = sin(time_passed * float_speed) * (float_amplitude_y * 1.2)
 	var front_offset_x = cos(time_passed * float_speed * 0.7) * float_amplitude_x
-	drill_front.position = front_start_pos + Vector2(front_offset_x, front_offset_y)
+
+	drill_front.position = front_start_pos + Vector2(
+		front_offset_x,
+		front_offset_y
+	)
+
+
+func _on_health_pressed() -> void:
+	if GameData.upgrade_powerup(\"health\"):
+		print(\"Health Level: \", GameData.health_level)
+		update_shop()
+
+
+func _on_fuel_pressed() -> void:
+	if GameData.upgrade_powerup(\"fuel\"):
+		print(\"Fuel Level: \", GameData.fuel_level)
+		update_shop()
+
+
+func _on_speed_pressed() -> void:
+	if GameData.upgrade_powerup(\"speed\"):
+		print(\"Speed Level: \", GameData.speed_boost_level)
+		update_shop()
+
+
+func _on_shield_pressed() -> void:
+	if GameData.upgrade_powerup(\"shield\"):
+		print(\"Shield Level: \", GameData.shield_level)
+		update_shop()
+
+
+func _on_gold_multiplier_pressed() -> void:
+	if GameData.upgrade_powerup(\"gold_multiplier\"):
+		print(
+			\"Gold Multiplier Level: \",
+			GameData.gold_multiplier_level
+		)
+
+		print(
+			\"Gold Multiplier: \",
+			GameData.get_gold_multiplier()
+		)
+
+		update_shop()
+
+
+func _on_gold_changed(_amount: int) -> void:
+	update_shop()
+
+
+func update_shop() -> void:
+	update_upgrade(\"health\", health_button)
+	update_upgrade(\"fuel\", fuel_button)
+	update_upgrade(\"speed\", speed_button)
+	update_upgrade(\"shield\", shield_button)
+	update_upgrade(\"gold_multiplier\", gold_multiplier_button)
+
+
+func update_upgrade(
+	upgrade_name: String,
+	button: Button
+) -> void:
+	var level: int = GameData.get_upgrade_level(upgrade_name)
+
+	if level >= GameData.max_upgrade_level:
+		button.text = \"MAX\"
+		button.disabled = true
+		return
+
+	var cost: int = GameData.get_upgrade_cost(upgrade_name)
+
+	button.text = str(cost) + \" GOLD\"
+	button.disabled = GameData.gold < cost
 "
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yhxw7"]
@@ -75,7 +169,7 @@ texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 region_rect = Rect2(11, 107, 26, 28)
 
-[node name="Main Menu2" type="Control" unique_id=1709358907]
+[node name="Main Menu2" type="Control" unique_id=1709358907 node_paths=PackedStringArray("health_button", "fuel_button", "speed_button", "shield_button", "gold_multiplier_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -83,6 +177,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_3cjtb")
+health_button = NodePath("NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Gold/HBoxContainer/GoldButton")
+fuel_button = NodePath("NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Fuel/HBoxContainer/GoldButton")
+speed_button = NodePath("NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/SpeedAbility/HBoxContainer/SpeedButton")
+shield_button = NodePath("NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/ShieldAbility/HBoxContainer/ShieldButton")
+gold_multiplier_button = NodePath("NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GoldMulitplier/HBoxContainer/GoldMultiplierButton")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=107793175]
 layout_mode = 1
@@ -261,7 +360,8 @@ script = ExtResource("7_68abo")
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
 theme_override_fonts/font = ExtResource("5_nikpj")
-text = "-1 sec cd"
+text = "-1 sec cd
+  shield"
 
 [node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/ShieldAbility" unique_id=1520926901]
 layout_mode = 2
@@ -301,7 +401,8 @@ script = ExtResource("8_3fibo")
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
 theme_override_fonts/font = ExtResource("5_nikpj")
-text = "-1 sec cd"
+text = "-1 sec cd
+  Speed"
 
 [node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/SpeedAbility" unique_id=778444762]
 layout_mode = 2
@@ -341,7 +442,7 @@ script = ExtResource("9_5c424")
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
 theme_override_fonts/font = ExtResource("5_nikpj")
-text = "+0.2 gold
+text = "+0.5 gold
 mult "
 
 [node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GoldMulitplier" unique_id=975934606]

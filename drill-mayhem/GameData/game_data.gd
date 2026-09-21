@@ -12,12 +12,14 @@ var health_level: int = 3
 var fuel_level: int = 1
 var speed_boost_level: int = 1
 var shield_level: int = 1
+var gold_multiplier_level: int = 1
 
 # SHOP COSTS
 @export var health_base_cost: int = 100
 @export var fuel_base_cost: int = 100
 @export var speed_base_cost: int = 150
 @export var shield_base_cost: int = 150
+@export var gold_multiplier_base_cost: int = 200
 @export var max_upgrade_level: int = 5
 
 # EQUIPPED POWERUPS
@@ -76,6 +78,7 @@ func save_game() -> void:
 		"health_level": health_level,
 		"fuel_level": fuel_level,
 		"speed_boost_level": speed_boost_level,
+		"gold_multiplier_level": gold_multiplier_level,
 		"shield_level": shield_level,
 		"equipped_powerup_1": equipped_powerup_1,
 		"equipped_powerup_2": equipped_powerup_2,
@@ -125,6 +128,7 @@ func load_game() -> void:
 	fuel_level = int(save_data.get("fuel_level", 1))
 	speed_boost_level = int(save_data.get("speed_boost_level", 1))
 	shield_level = int(save_data.get("shield_level", 1))
+	gold_multiplier_level = int(save_data.get("gold_multiplier_level", 1))
 
 	# POWERUPS
 	equipped_powerup_1 = save_data.get("equipped_powerup_1", "speed")
@@ -214,6 +218,11 @@ func submit_online_score(depth: int) -> void:
 	print("Online score submitted!")
 	print("Depth: ", depth)
 
+func get_gold_multiplier() -> float:
+	return 1.5 + (float(gold_multiplier_level - 1) * 0.5)
+	
+	
+
 
 func get_upgrade_cost(upgrade_name: String) -> int:
 	match upgrade_name:
@@ -225,6 +234,8 @@ func get_upgrade_cost(upgrade_name: String) -> int:
 			return speed_base_cost * speed_boost_level
 		"shield":
 			return shield_base_cost * shield_level
+		"gold_multiplier":
+			return gold_multiplier_base_cost * gold_multiplier_level
 		_:
 			return 0
 
@@ -239,6 +250,8 @@ func get_upgrade_level(upgrade_name: String) -> int:
 			return speed_boost_level
 		"shield":
 			return shield_level
+		"gold_multiplier":
+			return gold_multiplier_level
 		_:
 			return 0
 
@@ -257,12 +270,19 @@ func upgrade_powerup(upgrade_name: String) -> bool:
 	match upgrade_name:
 		"health":
 			health_level += 1
+
 		"fuel":
 			fuel_level += 1
+
 		"speed":
 			speed_boost_level += 1
+
 		"shield":
 			shield_level += 1
+
+		"gold_multiplier":
+			gold_multiplier_level += 1
+
 		_:
 			return false
 

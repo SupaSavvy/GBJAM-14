@@ -22,7 +22,6 @@ var drilling_started: bool = false
 # REFERENCES
 @export var void_chaser: Void
 @export var ores: Ores
-
 @onready var drill_sound: AudioStreamPlayer2D = $DrillSound
 
 # DIGGING
@@ -76,14 +75,15 @@ var stones_mined: int = 0
 var bombs_hit: int = 0
 var gold_collected_this_run: int = 0
 
+# DEATH
 var is_dead: bool = false
+var death_cause: String = ""
 
 
 func _ready() -> void:
 	current_speed = min_speed
 	fuel = starting_fuel
 
-	# Health upgrades now directly equal total hearts.
 	max_hearts = clamp(GameData.health_level, 3, 5)
 	hearts = max_hearts
 
@@ -202,7 +202,7 @@ func _physics_process(delta: float) -> void:
 			health_changed.emit(hearts, max_hearts)
 
 			if hearts <= 0:
-				die()
+				die("fuel")
 				return
 
 	# DIGGING
@@ -262,7 +262,6 @@ func _physics_process(delta: float) -> void:
 
 func get_tiles_in_dig_radius() -> Array[Vector2i]:
 	var cells_in_radius: Array[Vector2i] = []
-
 	var tip_local_position: Vector2 = ores.to_local(global_position)
 	var center_cell: Vector2i = ores.local_to_map(tip_local_position)
 
@@ -283,7 +282,6 @@ func check_for_tar(delta: float) -> void:
 	var ore_type: String = ores.get_ore_type(cell)
 
 	if ore_type == "tar":
-		# Only boost the Void when first entering tar.
 		if not in_tar and void_chaser != null:
 			void_chaser.add_danger_boost()
 
@@ -310,8 +308,10 @@ func use_powerup(powerup_name: String) -> void:
 	match powerup_name:
 		"speed":
 			speedPU.use()
+
 		"shield":
 			shieldPU.use()
+
 		_:
 			pass
 
@@ -331,12 +331,8 @@ func _on_bomb_triggered(depth: int) -> void:
 	if bomb_hit:
 		bombs_hit += 1
 
-	# Use HEARTS, not the old health variable.
 	health_changed.emit(hearts, max_hearts)
-
-	speed_changed.emit(
-		current_speed + powerup_speed_bonus
-	)
+	speed_changed.emit(current_speed + powerup_speed_bonus)
 
 
 func _on_stone_mined() -> void:
@@ -369,21 +365,22 @@ func snap_x_to_grid(world_x: float) -> float:
 	return snapped_world.x
 
 
-func die() -> void:
+func die(cause: String = "unknown") -> void:
 	if is_dead:
 		return
 
 	is_dead = true
+	death_cause = cause
 
 	hearts = 0
 	health_changed.emit(hearts, max_hearts)
 
 	velocity = Vector2.ZERO
+
+	GameData.last_death_cause = death_cause
 	GameData.submit_depth(deepest_depth)
 
-	# Give UI one frame to display HEALTH: 0.
 	await get_tree().process_frame
-
 	queue_free()
 
 
