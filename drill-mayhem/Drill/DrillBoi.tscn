@@ -223,6 +223,37 @@ _data = {
 &"speed_boost": SubResource("Animation_7ccbv")
 }
 
+[sub_resource type="Gradient" id="Gradient_hetgd"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.89411765, 0.8392157, 0.654902, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1ftgy"]
+gradient = SubResource("Gradient_hetgd")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_rj7v0"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yuocy"]
+gradient = SubResource("Gradient_rj7v0")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_v16ho"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.60784316, 0.16078432, 0.08235294, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ui6mu"]
+gradient = SubResource("Gradient_v16ho")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_isuv3"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.9137255, 0.7058824, 0.29803923, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jbims"]
+gradient = SubResource("Gradient_isuv3")
+width = 1
+
 [node name="DrillBoi" type="CharacterBody2D" unique_id=64158737 groups=["drill"]]
 collision_mask = 64
 script = ExtResource("1_7v0r5")
@@ -250,6 +281,7 @@ libraries/ = SubResource("AnimationLibrary_477mk")
 script = ExtResource("5_oqhhk")
 drill = NodePath("../..")
 animation_player = NodePath("../../AnimationPlayer")
+base_boost_amount = 10.0
 
 [node name="Shield" type="Node" parent="Powerups" unique_id=1419155714 node_paths=PackedStringArray("drill", "animation_player")]
 script = ExtResource("6_d31kr")
@@ -257,12 +289,45 @@ drill = NodePath("../..")
 animation_player = NodePath("../../AnimationPlayer")
 
 [node name="DrillParticles" type="CPUParticles2D" parent="." unique_id=1813411747]
-position = Vector2(0.3035965, 2.949566)
+position = Vector2(0.01563263, 2.769308)
+amount = 10
+texture = SubResource("GradientTexture1D_1ftgy")
 emission_shape = 1
-emission_sphere_radius = 3.1
+emission_sphere_radius = 6.86
+gravity = Vector2(0, -80)
+orbit_velocity_min = -0.3
+orbit_velocity_max = 0.3
+scale_amount_max = 1.5
+
+[node name="Black" type="CPUParticles2D" parent="DrillParticles" unique_id=521498146]
+amount = 10
+texture = SubResource("GradientTexture1D_yuocy")
+emission_shape = 1
+emission_sphere_radius = 6.86
 gravity = Vector2(0, -80)
 orbit_velocity_min = -0.2
 orbit_velocity_max = 0.2
+scale_amount_max = 1.5
+
+[node name="Red" type="CPUParticles2D" parent="DrillParticles" unique_id=1842993408]
+amount = 19
+texture = SubResource("GradientTexture1D_ui6mu")
+emission_shape = 1
+emission_sphere_radius = 6.86
+gravity = Vector2(0, -80)
+orbit_velocity_min = -0.2
+orbit_velocity_max = 0.2
+scale_amount_max = 1.5
+
+[node name="Gold" type="CPUParticles2D" parent="DrillParticles" unique_id=949247401]
+amount = 12
+texture = SubResource("GradientTexture1D_jbims")
+emission_shape = 1
+emission_sphere_radius = 6.86
+gravity = Vector2(0, -80)
+orbit_velocity_min = -0.2
+orbit_velocity_max = 0.2
+scale_amount_max = 1.5
 
 [node name="DrillSound" type="AudioStreamPlayer2D" parent="." unique_id=523821715]
 volume_db = 0.1

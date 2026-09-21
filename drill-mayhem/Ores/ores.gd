@@ -1,26 +1,23 @@
 class_name Ores
 extends TileMapLayer
 
-
 signal gold_collected
 signal stardust_collected
 signal bomb_triggered(depth: int)
 signal stone_mined
 
-#SOUND
+# SOUND
 @onready var block_break: AudioStreamPlayer = $BlockBreak
-@export var block_break_sound_interval: float = 0.08
-var block_break_sound_timer: float = 0.0
 @onready var gold_break: AudioStreamPlayer = $GoldBreak
 
+@export var block_break_sound_interval: float = 0.08
+var block_break_sound_timer: float = 0.0
 
 # TILE HEALTH
 @export var default_tile_health: float = 3.0
 
-
 # GENERATION
 @export var source_id: int = 0
-
 @export var stone_tile: Vector2i
 @export var gold_tile: Vector2i
 @export var tar_tile: Vector2i
@@ -30,13 +27,13 @@ var block_break_sound_timer: float = 0.0
 
 @export var chunk_height: int = 12
 @export var chunks_ahead: int = 3
-
 @export var left_edge: int = -14
-@export var right_edge: int = 14
+@export var right_edge: int = 2
+@export var use_empty_side: bool = false
+@export var empty_side_start_x: int = 10
 @export var generation_padding: int = 5
 
 @export var drill: Drill
-
 
 # DEPTH PROGRESSION
 @export var tar_start_depth: int = 30
@@ -47,112 +44,72 @@ var block_break_sound_timer: float = 0.0
 @export var stardust_fade_start_depth: int = 80
 @export var stardust_gone_depth: int = 300
 
-
-# Stores HP for damaged tiles
+# STORED DATA
 var tile_health: Dictionary = {}
-
-# Keeps track of which chunks already exist
 var generated_chunks: Dictionary = {}
-
 
 # ORE BEHAVIORS
 @onready var bomb_behavior: BombBehavior = $Bomb
 @onready var stardust_behavior: StardustBehavior = $Stardust
 @onready var gold_behavior: GoldBehavior = $Gold
 
-#FEAT TRAKER
-var stones_mined: int = 0
-var gold_collected_this_run: int = 0
-var bombs_hit: int = 0
-
 
 func _process(delta: float) -> void:
+	if block_break_sound_timer > 0.0:
+		block_break_sound_timer -= delta
+
 	if drill == null:
 		return
 
-	# Convert the drill's world position into a TileMap cell
 	var drill_local_position: Vector2 = to_local(drill.global_position)
 	var drill_cell: Vector2i = local_to_map(drill_local_position)
+	var current_chunk_y: int = floori(float(drill_cell.y) / float(chunk_height))
 
-	# Figure out which vertical chunk the drill is inside
-	var current_chunk_y: int = floori(
-		float(drill_cell.y) / float(chunk_height)
-	)
-
-	# Keep several chunks generated below the player
 	for chunk_offset: int in range(chunks_ahead + 1):
 		var chunk_y: int = current_chunk_y + chunk_offset
 
 		if not generated_chunks.has(chunk_y):
 			generate_chunk(chunk_y)
-			
-	if block_break_sound_timer > 0.0:
-		block_break_sound_timer -= delta
 
 
 func generate_chunk(chunk_y: int) -> void:
-	# Don't generate the same chunk twice
 	generated_chunks[chunk_y] = true
 
 	var start_y: int = chunk_y * chunk_height
-
 	var generation_left: int = left_edge - generation_padding
 	var generation_right: int = right_edge + generation_padding
 
-
-	# Fill the chunk with normal ores
 	for y: int in range(start_y, start_y + chunk_height):
 		for x: int in range(generation_left, generation_right + 1):
 			var cell: Vector2i = Vector2i(x, y)
+			var tile: Vector2i = choose_random_tile(y, x)
 
-			var tile: Vector2i = choose_random_tile(y)
-
-			set_cell(
-				cell,
-				source_id,
-				tile
-			)
-
+			set_cell(cell, source_id, tile)
 
 	# TAR CLUSTERS
-	# Tar doesn't begin appearing until tar_start_depth
 	if start_y >= tar_start_depth:
 		var tar_cluster_amount: int = randi_range(1, 3)
 
 		for i: int in range(tar_cluster_amount):
-			var tar_x: int = randi_range(
-				left_edge + 2,
-				right_edge - 2
-			)
+			var tar_x: int = randi_range(left_edge + 2, right_edge - 2)
+			var tar_y: int = randi_range(start_y + 2, start_y + chunk_height - 3)
 
-			var tar_y: int = randi_range(
-				start_y + 2,
-				start_y + chunk_height - 3
-			)
-
-			generate_tar_cluster(
-				Vector2i(tar_x, tar_y)
-			)
+			generate_tar_cluster(Vector2i(tar_x, tar_y))
 
 
-func choose_random_tile(depth: int) -> Vector2i:
-	# --------------------------------------------------
-	# BOMBS
-	# --------------------------------------------------
-	# Bomb chance ramps from 0.2% at bomb_start_depth
-	# to 2% at bomb_full_rate_depth.
+func choose_random_tile(depth: int, x: int) -> Vector2i:
+	# Make this side only generate stone.
+	if use_empty_side and x >= empty_side_start_x:
+		return stone_tile
+
+	# Bomb chance ramps from 0.2% to 2%.
 	var bomb_depth_percent: float = clamp(
-		float(depth - bomb_start_depth)
-		/ float(bomb_full_rate_depth - bomb_start_depth),
+		float(depth - bomb_start_depth) / float(bomb_full_rate_depth - bomb_start_depth),
 		0.0,
 		1.0
 	)
 
-	var bomb_chance: float = lerp(
-		0.2,
-		2.0,
-		bomb_depth_percent
-	)
+	var bomb_chance: float = lerp(0.2, 2.0, bomb_depth_percent)
 
 	if depth >= bomb_start_depth:
 		var bomb_roll: float = randf() * 100.0
@@ -160,80 +117,52 @@ func choose_random_tile(depth: int) -> Vector2i:
 		if bomb_roll < bomb_chance:
 			return bomb_tile
 
-
-	# --------------------------------------------------
-	# STARDUST FADE
-	# --------------------------------------------------
-	# Starts at 100% of its normal spawn chance.
-	# Slowly fades to 0% as the player gets deeper.
+	# Stardust fades out with depth.
 	var stardust_multiplier: float = 1.0
 
 	if depth >= stardust_fade_start_depth:
 		stardust_multiplier = 1.0 - clamp(
 			float(depth - stardust_fade_start_depth)
-			/ float(
-				stardust_gone_depth
-				- stardust_fade_start_depth
-			),
+			/ float(stardust_gone_depth - stardust_fade_start_depth),
 			0.0,
 			1.0
 		)
 
-
-	# --------------------------------------------------
-	# NORMAL ORES
-	# --------------------------------------------------
 	var gold_chance: float = 0.0
 	var stardust_chance: float = 0.0
 
-
 	if depth < tar_start_depth:
-		# No gold yet.
 		stardust_chance = 4.0
 
 	elif depth < gold_start_depth:
-		# Still no gold.
 		stardust_chance = 4.0
 
 	elif depth < bomb_start_depth:
-		# Gold starts appearing, but it's rare.
-		gold_chance = 2.0
+		gold_chance = 1.0
 		stardust_chance = 5.0
 
 	elif depth < deep_start_depth:
-		gold_chance = 3.0
+		gold_chance = 1.5
 		stardust_chance = 5.0
 
 	else:
-		# Deep layer:
-		# Gold is still valuable and uncommon.
-		gold_chance = 4.0
+		gold_chance = 2.0
 		stardust_chance = 5.0
 
-
-	# Reduce stardust chance based on depth.
 	stardust_chance *= stardust_multiplier
-
 
 	var ore_roll: float = randf() * 100.0
 
-
-	# Gold
 	if ore_roll < gold_chance:
 		return gold_tile
 
-
-	# Stardust
 	if ore_roll < gold_chance + stardust_chance:
 		return stardust_tile
 
-
-	# Everything else is stone.
 	return stone_tile
 
 
 func generate_tar_cluster(center: Vector2i) -> void:
-	# Basic connected tar blob
 	var offsets: Array[Vector2i] = [
 		Vector2i.ZERO,
 		Vector2i.LEFT,
@@ -242,46 +171,42 @@ func generate_tar_cluster(center: Vector2i) -> void:
 		Vector2i.DOWN
 	]
 
-	# Random extras make each blob less uniform
-	if randf() < 0.5:
+	if randf() < 0.7:
 		offsets.append(Vector2i(-1, -1))
 
-	if randf() < 0.5:
+	if randf() < 0.7:
 		offsets.append(Vector2i(1, 1))
 
-	if randf() < 0.35:
+	if randf() < 0.5:
 		offsets.append(Vector2i(-2, 0))
 
-	if randf() < 0.35:
+	if randf() < 0.5:
 		offsets.append(Vector2i(2, 0))
-
 
 	for offset: Vector2i in offsets:
 		var cell: Vector2i = center + offset
 
-		set_cell(
-			cell,
-			source_id,
-			tar_tile
-		)
+		# Only replace stone so tar doesn't overwrite special ores.
+		var current_ore: String = get_ore_type(cell)
+
+		if current_ore != "stone":
+			continue
+
+		set_cell(cell, source_id, tar_tile)
 
 
 func damage_cell(cell: Vector2i, damage: float) -> void:
-	# Stop if there isn't a tile here
 	if get_cell_source_id(cell) == -1:
 		return
 
 	var ore_type: String = get_ore_type(cell)
 
-	# Tar doesn't use the normal HP system
 	if ore_type == "tar":
 		return
 
-	# Give the tile starting health the first time it's hit
 	if not tile_health.has(cell):
 		tile_health[cell] = get_tile_max_health(cell)
 
-	# Deal damage
 	tile_health[cell] -= damage
 
 	if tile_health[cell] <= 0.0:
@@ -323,18 +248,17 @@ func get_ore_type(cell: Vector2i) -> String:
 func break_cell(cell: Vector2i) -> void:
 	var ore_type: String = get_ore_type(cell)
 
-	# Spawn the effect BEFORE deleting the bomb tile.
 	if ore_type == "bomb":
 		spawn_bomb_explosion(cell)
 
 	erase_cell(cell)
 	tile_health.erase(cell)
-	
-	block_break_sound_timer = block_break_sound_interval
+
 	match ore_type:
 		"stone":
 			stone_mined.emit()
 			block_break.play()
+			block_break_sound_timer = block_break_sound_interval
 
 		"gold":
 			gold_collected.emit()
@@ -349,23 +273,16 @@ func break_cell(cell: Vector2i) -> void:
 		"tar":
 			pass
 
+
 func spawn_bomb_explosion(cell: Vector2i) -> void:
 	if bomb_explosion_scene == null:
-		#print("ERROR: Bomb explosion scene is not assigned!")
 		return
 
 	var explosion: BombExplosion = bomb_explosion_scene.instantiate()
 
 	get_tree().current_scene.add_child(explosion)
 
-	# Put the explosion at the bomb first.
 	var local_position: Vector2 = map_to_local(cell)
-
 	explosion.global_position = to_global(local_position)
 
-	# NOW fire the particles.
 	explosion.explode()
-
-	#print("Bomb explosion spawned at: ", explosion.global_position)
-	
-	

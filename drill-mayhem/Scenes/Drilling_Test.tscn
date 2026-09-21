@@ -16,7 +16,7 @@ bomb_start_depth = 150
 deep_start_depth = 400
 
 [node name="DrillBoi" parent="." unique_id=64158737 node_paths=PackedStringArray("ores") instance=ExtResource("1_fppky")]
-position = Vector2(76, -1)
+position = Vector2(78, -3)
 min_speed = 20.0
 max_speed = 300.0
 acceleration = 7.0

@@ -31,7 +31,7 @@ var drilling_started: bool = false
 
 # HORIZONTAL LIMITS
 @export var left_limit: float = -4.0
-@export var right_limit: float = 144.0
+@export var right_limit: float = 90
 
 
 # DIGGING
@@ -85,6 +85,10 @@ var tar_timer: float = 0.0
 @onready var shieldPU: ShieldPowerup = $Powerups/Shield
 
 @onready var drill_particles: CPUParticles2D = $DrillParticles
+@onready var black_particles: CPUParticles2D = $DrillParticles/Black
+@onready var red_particles: CPUParticles2D = $DrillParticles/Red
+@onready var gold_particles: CPUParticles2D = $DrillParticles/Gold
+
 
 #LEADERBOARD MECHANICS
 var current_depth: int = 0
@@ -96,11 +100,18 @@ var bombs_hit: int = 0
 var gold_collected_this_run: int = 0
 
 
+
+#PARTICLES CONTROL
+
+
 func _ready() -> void:
 	current_speed = min_speed
 	fuel = starting_fuel
 	health = max_health
 	drill_particles.emitting = false
+	black_particles.emitting = false
+	red_particles.emitting = false
+	gold_particles.emitting = false
 
 	# Ore signals
 	ores.gold_collected.connect(_on_gold_collected)
@@ -488,17 +499,20 @@ func _on_stone_mined() -> void:
 
 
 func update_drill_particles() -> void:
-	var cells: Array[Vector2i] = get_tiles_in_dig_radius()
-
-	for cell: Vector2i in cells:
-		var ore_type: String = ores.get_ore_type(cell)
-
-		if ore_type == "":
-			continue
-
-		set_particle_color(ore_type)
+	if not drilling_started:
+		drill_particles.emitting = false
+		gold_particles.emitting = false
+		red_particles.emitting = false
+		black_particles.emitting = false
 		return
 
+	# Original particles are always active once drilling starts.
+	drill_particles.emitting = true
+
+	# Add more colors as speed increases.
+	gold_particles.emitting = current_speed >= 40.0
+	red_particles.emitting = current_speed >= 70.0
+	black_particles.emitting = current_speed >= 150.0
 
 func set_particle_color(ore_type: String) -> void:
 	match ore_type:
