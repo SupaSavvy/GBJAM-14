@@ -50,8 +50,6 @@ chunk_height = 20
 
 [node name="Bomb" type="Node" parent="." unique_id=250812628]
 script = ExtResource("3_6bbuu")
-starting_damage = 0.0
-max_damage = 0.0
 
 [node name="Stardust" type="Node" parent="." unique_id=1069147352]
 script = ExtResource("4_1wc72")

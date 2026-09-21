@@ -2,7 +2,7 @@ class_name Drill
 extends CharacterBody2D
 
 
-signal health_changed(current_health: float, max_health: float)
+signal health_changed(current_health: float, max_hearts: float)
 signal fuel_changed(current_fuel: float, max_fuel: float)
 signal speed_changed(current_speed: float)
 
@@ -50,15 +50,19 @@ var drilling_started: bool = false
 # FUEL / HEALTH
 @export var starting_fuel: float = 50.0
 @export var max_fuel: float = 100.0
+@export var heart_drain_interval: float = 5.0
+var heart_drain_timer: float = 0.0
 @export var fuel_drain_rate: float = 2.0
 
-@export var max_health: float = 100.0
-@export var health_drain_rate: float = 10.0
+var max_hearts: int = 1
+var hearts: int = 1
+var health_drain_rate: float = 10.0
 
 
 # TAR
 @export var tar_recovery_time: float = 0.5
 @export var tar_speed_multiplier: float = 0.50
+@export var tar_slowdown_speed: float = 30.0
 
 
 # MOVEMENT STATE
@@ -101,13 +105,17 @@ var gold_collected_this_run: int = 0
 
 
 
+
+
+
+
 #PARTICLES CONTROL
 
 
 func _ready() -> void:
 	current_speed = min_speed
 	fuel = starting_fuel
-	health = max_health
+	health = max_hearts
 	drill_particles.emitting = false
 	black_particles.emitting = false
 	red_particles.emitting = false
@@ -119,10 +127,10 @@ func _ready() -> void:
 	ores.bomb_triggered.connect(_on_bomb_triggered)
 	ores.stone_mined.connect(_on_stone_mined)
 
-	# Starting UI values
+	# Starting UI Values
 	health_changed.emit(
 		health,
-		max_health
+		max_hearts
 	)
 
 	fuel_changed.emit(
@@ -135,13 +143,14 @@ func _ready() -> void:
 	)
 	tile_width = float(ores.tile_set.tile_size.x)
 	target_x = global_position.x
+	
+	# Health Stuff
+	max_hearts = clamp(GameData.health_level, 1, 5)
+	hearts = max_hearts
 
 
 func _physics_process(delta: float) -> void:
-
-	# --------------------------------------------------
 	# STARTING POSITION
-	# --------------------------------------------------
 	if not drilling_started:
 		if Input.is_action_just_pressed("ui_left"):
 			target_x -= tile_width
@@ -149,12 +158,7 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("ui_right"):
 			target_x += tile_width
 
-		target_x = clamp(
-			target_x,
-			left_limit,
-			right_limit
-		)
-
+		target_x = clamp(target_x, left_limit, right_limit)
 		target_x = snap_x_to_grid(target_x)
 
 		global_position.x = move_toward(
@@ -167,7 +171,6 @@ func _physics_process(delta: float) -> void:
 
 		if Input.is_action_just_pressed("ui_accept"):
 			drilling_started = true
-
 			target_x = snap_x_to_grid(global_position.x)
 			global_position.x = target_x
 
@@ -177,21 +180,15 @@ func _physics_process(delta: float) -> void:
 		return
 
 
-	# --------------------------------------------------
-	# POWERUP INPUT
-	# --------------------------------------------------
+	# POWERUPS
 	check_powerup_input()
 
 
-	# --------------------------------------------------
 	# TAR
-	# --------------------------------------------------
 	check_for_tar(delta)
 
 
-	# --------------------------------------------------
-	# GRID LEFT / RIGHT MOVEMENT
-	# --------------------------------------------------
+	# GRID MOVEMENT
 	if not in_tar:
 		if Input.is_action_just_pressed("ui_left"):
 			target_x -= tile_width
@@ -199,12 +196,7 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("ui_right"):
 			target_x += tile_width
 
-	target_x = clamp(
-		target_x,
-		left_limit,
-		right_limit
-	)
-
+	target_x = clamp(target_x, left_limit, right_limit)
 	target_x = snap_x_to_grid(target_x)
 
 	global_position.x = move_toward(
@@ -214,24 +206,25 @@ func _physics_process(delta: float) -> void:
 	)
 
 
-	# --------------------------------------------------
 	# SPEED
-	# --------------------------------------------------
 	var target_speed: float = max_speed
 
 	if in_tar:
 		target_speed = max_speed * tar_speed_multiplier
 
-	current_speed = move_toward(
-		current_speed,
-		target_speed,
-		acceleration * delta
-	)
+		current_speed = move_toward(
+			current_speed,
+			target_speed,
+			tar_slowdown_speed * delta
+		)
+	else:
+		current_speed = move_toward(
+			current_speed,
+			target_speed,
+			acceleration * delta
+		)
 
-	var final_speed: float = (
-		current_speed
-		+ powerup_speed_bonus
-	)
+	var final_speed: float = current_speed + powerup_speed_bonus
 
 	velocity.x = 0.0
 	velocity.y = final_speed
@@ -239,59 +232,50 @@ func _physics_process(delta: float) -> void:
 	speed_changed.emit(final_speed)
 
 
-	# --------------------------------------------------
-	# FUEL / HEALTH
-	# --------------------------------------------------
+	# FUEL / HEARTS
 	if fuel > 0.0:
 		fuel -= fuel_drain_rate * delta
 		fuel = max(fuel, 0.0)
 
-		fuel_changed.emit(
-			fuel,
-			max_fuel
-		)
+		heart_drain_timer = 0.0
+
+		fuel_changed.emit(fuel, max_fuel)
 
 	else:
-		health -= health_drain_rate * delta
-		health = max(health, 0.0)
+		heart_drain_timer += delta
 
-		health_changed.emit(
-			health,
-			max_health
-		)
+		if heart_drain_timer >= heart_drain_interval:
+			heart_drain_timer = 0.0
 
-		if health <= 0.0:
-			die()
+			hearts -= 1
+			hearts = max(hearts, 0)
+
+			health_changed.emit(hearts, max_hearts)
+
+			if hearts <= 0:
+				die()
+				return
 
 
-	# --------------------------------------------------
 	# DIGGING
-	# --------------------------------------------------
 	damage_timer -= delta
 
 	if damage_timer <= 0.0:
 		var cells: Array[Vector2i] = get_tiles_in_dig_radius()
-
 		var speed_damage: float = drill_damage
 
 		match current_speed:
 			var speed when speed >= 150.0:
 				speed_damage = 4.0
-
 			var speed when speed >= 70.0:
 				speed_damage = 3.0
-
 			var speed when speed >= 40.0:
 				speed_damage = 2.0
-
 			var speed when speed >= 20.0:
 				speed_damage = 1.0
 
 		for cell: Vector2i in cells:
-			ores.damage_cell(
-				cell,
-				speed_damage
-			)
+			ores.damage_cell(cell, speed_damage)
 
 		var speed_percent: float = clamp(
 			current_speed / interval_max_speed,
@@ -299,30 +283,22 @@ func _physics_process(delta: float) -> void:
 			1.0
 		)
 
-		var current_damage_interval: float = lerp(
+		damage_timer = lerp(
 			slow_damage_interval,
 			fast_damage_interval,
 			speed_percent
 		)
 
-		damage_timer = current_damage_interval
 
-
-	# --------------------------------------------------
 	# MOVEMENT
-	# --------------------------------------------------
 	move_and_slide()
 
 
-	# --------------------------------------------------
 	# PARTICLES
-	# --------------------------------------------------
 	update_drill_particles()
 
 
-	# --------------------------------------------------
-	# KEEP DRILL INSIDE HORIZONTAL LIMITS
-	# --------------------------------------------------
+	# HORIZONTAL LIMITS
 	global_position.x = clamp(
 		global_position.x,
 		left_limit,
@@ -330,23 +306,12 @@ func _physics_process(delta: float) -> void:
 	)
 
 
-	# --------------------------------------------------
-	# LEADERBOARD DEPTH TRACKING
-	# --------------------------------------------------
-	var drill_local_position: Vector2 = ores.to_local(
-		global_position
-	)
-
-	var drill_cell: Vector2i = ores.local_to_map(
-		drill_local_position
-	)
+	# DEPTH TRACKING
+	var drill_local_position: Vector2 = ores.to_local(global_position)
+	var drill_cell: Vector2i = ores.local_to_map(drill_local_position)
 
 	current_depth = drill_cell.y
-
-	deepest_depth = max(
-		deepest_depth,
-		current_depth
-	)
+	deepest_depth = max(deepest_depth, current_depth)
 	
 func get_tiles_in_dig_radius() -> Array[Vector2i]:
 	var cells_in_radius: Array[Vector2i] = []
@@ -462,7 +427,7 @@ func _on_bomb_triggered(depth: int) -> void:
 
 	health_changed.emit(
 		health,
-		max_health
+		max_hearts
 	)
 
 	speed_changed.emit(

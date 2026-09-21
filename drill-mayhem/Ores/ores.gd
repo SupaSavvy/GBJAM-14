@@ -105,7 +105,7 @@ func generate_chunk(chunk_y: int) -> void:
 
 	# TAR CLUSTERS
 	if start_y >= tar_start_depth:
-		var tar_cluster_amount: int = randi_range(2, 5)
+		var tar_cluster_amount: int = randi_range(1, 3)
 
 		for i: int in range(tar_cluster_amount):
 			var tar_x: int = randi_range(

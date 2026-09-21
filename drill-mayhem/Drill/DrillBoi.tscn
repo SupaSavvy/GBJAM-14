@@ -281,7 +281,8 @@ libraries/ = SubResource("AnimationLibrary_477mk")
 script = ExtResource("5_oqhhk")
 drill = NodePath("../..")
 animation_player = NodePath("../../AnimationPlayer")
-base_boost_amount = 10.0
+base_boost_amount = 30.0
+hold_duration = 5.0
 
 [node name="Shield" type="Node" parent="Powerups" unique_id=1419155714 node_paths=PackedStringArray("drill", "animation_player")]
 script = ExtResource("6_d31kr")
