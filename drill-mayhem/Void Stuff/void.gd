@@ -8,7 +8,11 @@ extends Area2D
 @export var starting_speed: float = 20.0
 @export var max_void_speed: float = 500.0
 @export var time_to_max_speed: float = 120.0
+@export var danger_boost_amount: float = 20.0
+@export var danger_boost_duration: float = 3.0
 
+var danger_boost: float = 0.0
+var danger_boost_timer: float = 0.0
 
 var current_speed: float = 0.0
 
@@ -23,31 +27,35 @@ func _physics_process(delta: float) -> void:
 	if drill == null:
 		return
 
-	# Don't move while the player is still choosing
-	# their starting position.
 	if not drill.drilling_started:
 		return
 
-
-	# Calculate how much speed the Void should gain each second.
 	var acceleration: float = (
 		max_void_speed - starting_speed
 	) / time_to_max_speed
 
-
-	# Slowly increase the Void's speed.
 	current_speed = move_toward(
 		current_speed,
 		max_void_speed,
 		acceleration * delta
 	)
 
+	if danger_boost_timer > 0.0:
+		danger_boost_timer -= delta
 
-	# Move downward.
-	global_position.y += current_speed * delta
+		if danger_boost_timer <= 0.0:
+			danger_boost_timer = 0.0
+			danger_boost = 0.0
 
+	var final_void_speed: float = current_speed + danger_boost
+
+	global_position.y += final_void_speed * delta
 
 func _on_body_entered(body: Node2D) -> void:
 	# Only kill the Drill.
 	if body is Drill:
 		body.die()
+		
+func add_danger_boost() -> void:
+	danger_boost = danger_boost_amount
+	danger_boost_timer = danger_boost_duration

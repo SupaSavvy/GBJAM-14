@@ -33,7 +33,7 @@ var drilling_started: bool = false
 @export var left_limit: float = 6
 @export var right_limit: float = 48
 
-
+@export var void_chaser: Void
 # DIGGING
 @export var ores: Ores
 @onready var drill_sound: AudioStreamPlayer2D = $DrillSound

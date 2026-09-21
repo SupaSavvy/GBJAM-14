@@ -36,8 +36,8 @@ func trigger(drill: Drill, depth: int) -> bool:
 	)
 
 	# BOOST THE VOID
-	if drill.void != null:
-		drill.void.add_danger_boost()
+	if drill.void_chaser != null:
+		drill.void_chaser.add_danger_boost()
 
 	# DEATH
 	if drill.hearts <= 0:
