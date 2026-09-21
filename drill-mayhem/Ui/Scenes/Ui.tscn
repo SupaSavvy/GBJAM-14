@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://dxbjmefgcn2sk"]
+[gd_scene format=3 uid="uid://rvo05e8evw34"]
 
 [ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="1_au7og"]
+[ext_resource type="Script" uid="uid://cedfsbsau3ukp" path="res://Ui/Scrips/InGameInfo.gd" id="1_fqmg6"]
 [ext_resource type="FontFile" uid="uid://b52kyl2lgwk0y" path="res://Ui/Spirtes/fonts/pixelFont-7-8x14-sproutLands.ttf" id="2_ryils"]
 
 [node name="Ui" type="Control" unique_id=1673883677]
@@ -10,6 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_fqmg6")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=2102547962]
 layout_mode = 0
