@@ -5,12 +5,13 @@
 [ext_resource type="PackedScene" uid="uid://b5kuhcao4dw8j" path="res://Ores/bomb/bomb_explosion.tscn" id="2_d0bd1"]
 [ext_resource type="PackedScene" uid="uid://c8aykun2hj71p" path="res://Void Stuff/void.tscn" id="3_5fdol"]
 [ext_resource type="AudioStream" uid="uid://xdi12iohkbff" path="res://Master/SFX/GB Jam Main Theme.mp3" id="5_3cjtb"]
-[ext_resource type="PackedScene" uid="uid://rvo05e8evw34" path="res://Ui/Scenes/ui.tscn" id="6_j68oq"]
+[ext_resource type="PackedScene" uid="uid://dxbjmefgcn2sk" path="res://Ui/Scenes/ui.tscn" id="6_j68oq"]
 [ext_resource type="Texture2D" uid="uid://dplh63sgork5i" path="res://Ui/Spirtes/Sprite sheets/Setting menu.png" id="7_8xe4c"]
 [ext_resource type="FontFile" uid="uid://b52kyl2lgwk0y" path="res://Ui/Spirtes/fonts/pixelFont-7-8x14-sproutLands.ttf" id="8_edjnp"]
 [ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="9_1snbn"]
 [ext_resource type="Script" uid="uid://dtkr0jkn4kp7y" path="res://Scenes/death_market_button.gd" id="10_1snbn"]
 [ext_resource type="AudioStream" uid="uid://rahh7x164krx" path="res://Master/SFX/ButtonClick.wav" id="11_fwhig"]
+[ext_resource type="FontFile" uid="uid://bu7v6ceh0gpmn" path="res://Ui/Spirtes/fonts/pixel-it.ttf" id="12_gwjw8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1snbn"]
 font = ExtResource("8_edjnp")
@@ -45,6 +46,13 @@ texture_margin_top = 4.0
 texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 region_rect = Rect2(11, 107, 26, 28)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wrfeb"]
+font = ExtResource("8_edjnp")
+font_size = 12
+font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+outline_size = 3
+outline_color = Color(0.10980392, 0.06666667, 0.039215688, 1)
 
 [node name="DrillingTest" type="Node2D" unique_id=1496016345]
 
@@ -218,6 +226,18 @@ layout_mode = 2
 
 [node name="ButtonClick" type="AudioStreamPlayer" parent="." unique_id=821256066]
 stream = ExtResource("11_fwhig")
+
+[node name="Label" type="Label" parent="." unique_id=913563680]
+offset_left = 4.0
+offset_top = -28.0
+offset_right = 112.0
+offset_bottom = 1.0
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_fonts/font = ExtResource("12_gwjw8")
+theme_override_font_sizes/font_size = 12
+text = "Press z to start
+     "
+label_settings = SubResource("LabelSettings_wrfeb")
 
 [editable path="DrillBoi"]
 [editable path="Void"]
