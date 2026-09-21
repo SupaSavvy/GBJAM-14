@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://dm606noscln2s" path="res://Ui/Scrips/settings_button.gd" id="8_kqfwc"]
 [ext_resource type="Texture2D" uid="uid://dplh63sgork5i" path="res://Ui/Spirtes/Sprite sheets/Setting menu.png" id="8_t1dhk"]
 [ext_resource type="Texture2D" uid="uid://5npk8pwtnrhq" path="res://Ui/Spirtes/Sprite sheets/Sprite sheet for Basic Pack.png" id="9_5egv6"]
+[ext_resource type="Script" uid="uid://d3loeyuui3i07" path="res://Ui/Scrips/Volume_Stuff.gd" id="10_bfvnm"]
 [ext_resource type="Texture2D" uid="uid://dl2e8harc512d" path="res://Ui/Spirtes/Sprite sheets/UI Settings Buttons.png" id="10_vtepg"]
 [ext_resource type="Script" uid="uid://3kargrdqb72m" path="res://Ui/Scrips/controls_button_main_menu.gd" id="13_bfvnm"]
 [ext_resource type="AudioStream" uid="uid://0xc8elagykkr" path="res://Master/SFX/GB Jam Market.mp3" id="14_lgjky"]
@@ -279,9 +280,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("10_bfvnm")
 
 [node name="Settings" type="NinePatchRect" parent="NinePatchRect/SettingsContainer" unique_id=1732416297]
-visible = false
 custom_minimum_size = Vector2(140, 122)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -332,6 +333,7 @@ theme_override_styles/grabber_area = SubResource("StyleBoxTexture_ujyyl")
 theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_ujyyl")
 max_value = 1.5
 step = 0.1
+value = 0.8
 
 [node name="ControlsButton" type="HBoxContainer" parent="NinePatchRect/SettingsContainer/Settings/SettingsContainer/SettingsStuff" unique_id=356849197]
 layout_mode = 2

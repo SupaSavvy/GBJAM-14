@@ -47,6 +47,9 @@ var leaderboard_scores: Array[int] = []
 var lootlocker_player_id: String = ""
 
 
+# SETTINGS SAVE STUFF
+var master_volume: float = 0.5
+
 func _ready() -> void:
 	load_game()
 	start_lootlocker_guest_session()
@@ -106,7 +109,8 @@ func save_game() -> void:
 		"equipped_powerup_2": equipped_powerup_2,
 	
 		"best_depth": best_depth,
-		"leaderboard_scores" :leaderboard_scores
+		"leaderboard_scores" :leaderboard_scores,
+		"master_volume": master_volume
 	
 	}
 
@@ -178,6 +182,9 @@ func load_game() -> void:
 	# UPDATE UI
 	gold_changed.emit(gold)
 	leaderboard_changed.emit(leaderboard_scores)
+	
+	#UPDATE VOLUME
+	master_volume = save_data.get("master_volume", 0.5)
 
 	print("Loaded Gold: ", gold)
 	print("Health Level: ", health_level)
