@@ -6,14 +6,17 @@
 [ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="2_n45e2"]
 [ext_resource type="Texture2D" uid="uid://b1eycvicd84g7" path="res://Ui/MainMenuImages/minermainmenurocks.png" id="3_4lxpt"]
 [ext_resource type="Texture2D" uid="uid://6udlxlrpsscb" path="res://Ui/MainMenuImages/minermainmenudrill.png" id="4_0m3lg"]
+[ext_resource type="FontFile" uid="uid://bu7v6ceh0gpmn" path="res://Ui/Spirtes/fonts/pixel-it.ttf" id="5_0m3lg"]
 [ext_resource type="Script" uid="uid://t073pj50jws7" path="res://Ui/Scrips/start_button.gd" id="7_kqfwc"]
 [ext_resource type="Script" uid="uid://dqwoqd7wrgrnd" path="res://Ui/Scrips/market_burron.gd" id="8_bfvnm"]
 [ext_resource type="Script" uid="uid://dm606noscln2s" path="res://Ui/Scrips/settings_button.gd" id="8_kqfwc"]
 [ext_resource type="Texture2D" uid="uid://dplh63sgork5i" path="res://Ui/Spirtes/Sprite sheets/Setting menu.png" id="8_t1dhk"]
 [ext_resource type="Texture2D" uid="uid://5npk8pwtnrhq" path="res://Ui/Spirtes/Sprite sheets/Sprite sheet for Basic Pack.png" id="9_5egv6"]
+[ext_resource type="Script" uid="uid://c2rtyrxaal4xv" path="res://Ui/Scenes/guide_button.gd" id="9_bfvnm"]
 [ext_resource type="Script" uid="uid://d3loeyuui3i07" path="res://Ui/Scrips/Volume_Stuff.gd" id="10_bfvnm"]
 [ext_resource type="Script" uid="uid://3kargrdqb72m" path="res://Ui/Scrips/controls_button_main_menu.gd" id="13_bfvnm"]
 [ext_resource type="AudioStream" uid="uid://0xc8elagykkr" path="res://Master/SFX/GB Jam Market.mp3" id="14_lgjky"]
+[ext_resource type="Texture2D" uid="uid://ctrplw0kk75sw" path="res://Ores/sprites/MinerSpriteSheet (2).png" id="15_4lxpt"]
 [ext_resource type="AudioStream" uid="uid://rahh7x164krx" path="res://Master/SFX/ButtonClick.wav" id="16_bfvnm"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yhxw7"]
@@ -45,6 +48,10 @@ font = ExtResource("2_ce3w2")
 font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wyh8j"]
+atlas = ExtResource("9_5egv6")
+region = Rect2(65, 197, 14, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwjw8"]
 atlas = ExtResource("9_5egv6")
 region = Rect2(79, 218, 14, 21)
 
@@ -88,6 +95,12 @@ font = ExtResource("2_ce3w2")
 font_size = 8
 font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_mtyx3"]
+font = ExtResource("5_0m3lg")
+font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+outline_size = 3
+outline_color = Color(0.89411765, 0.8392157, 0.654902, 1)
+
 [node name="Main Menu" type="Control" unique_id=1709358907]
 layout_mode = 3
 anchors_preset = 15
@@ -114,8 +127,10 @@ texture = ExtResource("3_4lxpt")
 
 [node name="DrillMC" type="TextureRect" parent="NinePatchRect" unique_id=1957403159]
 layout_mode = 0
-offset_right = 160.0
-offset_bottom = 144.0
+offset_left = 6.0
+offset_top = -6.0
+offset_right = 166.0
+offset_bottom = 138.0
 texture = ExtResource("4_0m3lg")
 
 [node name="MarginContainer2" type="HBoxContainer" parent="NinePatchRect" unique_id=238999201]
@@ -123,10 +138,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -44.0
-offset_top = -23.0
-offset_right = 271.0
-offset_bottom = 461.0
+offset_left = -55.0
+offset_top = -19.0
+offset_right = 388.0
+offset_bottom = 465.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.28274757, 0.2832237)
@@ -172,8 +187,8 @@ offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_constants/outline_size = 0
 theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("2_ce3w2")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("5_0m3lg")
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
@@ -195,15 +210,15 @@ theme_override_constants/separation = 100
 layout_mode = 2
 
 [node name="MarketBurron" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Market" unique_id=198622088]
-custom_minimum_size = Vector2(175, 50)
+custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
 size_flags_vertical = 4
 offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_constants/outline_size = 0
 theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("2_ce3w2")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("5_0m3lg")
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
@@ -214,6 +229,38 @@ expand_icon = true
 script = ExtResource("8_bfvnm")
 
 [node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Market" unique_id=82433071]
+layout_mode = 2
+
+[node name="Guide" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1505923361]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 100
+
+[node name="serperator" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Guide" unique_id=1226599140]
+layout_mode = 2
+
+[node name="GuideButton" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Guide" unique_id=1993201000]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_constants/outline_size = 0
+theme_override_constants/icon_max_width = 64
+theme_override_fonts/font = ExtResource("5_0m3lg")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
+text = "Guide
+"
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("9_bfvnm")
+
+[node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Guide" unique_id=1018841332]
 layout_mode = 2
 
 [node name="LeaderboardButton" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=570126649]
@@ -256,15 +303,15 @@ theme_override_constants/separation = 100
 layout_mode = 2
 
 [node name="SettingsButton" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Settings" unique_id=897955764]
-custom_minimum_size = Vector2(175, 50)
+custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
 size_flags_vertical = 4
 offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_constants/outline_size = 0
 theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("2_ce3w2")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("5_0m3lg")
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
@@ -334,7 +381,7 @@ custom_minimum_size = Vector2(50, 20)
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../../ControlsButton/ControlsButtonMainMenu")
 theme_override_icons/grabber = SubResource("AtlasTexture_wyh8j")
-theme_override_icons/grabber_highlight = SubResource("AtlasTexture_wyh8j")
+theme_override_icons/grabber_highlight = SubResource("AtlasTexture_gwjw8")
 theme_override_styles/grabber_area = SubResource("StyleBoxFlat_bfvnm")
 theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_4lxpt")
 max_value = 1.5
@@ -447,6 +494,192 @@ label_settings = SubResource("LabelSettings_0m3lg")
 [node name="Seperator2" type="Control" parent="NinePatchRect/ControlsContainer/Controls/VBoxContainer/HBoxContainer" unique_id=1950066413]
 layout_mode = 2
 
+[node name="GuideContainer" type="MarginContainer" parent="NinePatchRect" unique_id=1258071937]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = -7.0
+offset_right = -1.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Guide" type="NinePatchRect" parent="NinePatchRect/GuideContainer" unique_id=601489170]
+visible = false
+custom_minimum_size = Vector2(140, 144)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("8_t1dhk")
+region_rect = Rect2(139, 12, 106, 122)
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect/GuideContainer/Guide" unique_id=1736449230]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 11
+
+[node name="Seperator" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer" unique_id=1924107313]
+layout_mode = 2
+
+[node name="ControlsLabel" type="HBoxContainer" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer" unique_id=1975524246]
+layout_mode = 2
+theme_override_constants/separation = 200
+
+[node name="Seperator" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/ControlsLabel" unique_id=30939533]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/ControlsLabel" unique_id=560825099]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 16
+text = "GUide"
+label_settings = SubResource("LabelSettings_4lxpt")
+
+[node name="Seperator2" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/ControlsLabel" unique_id=1192963319]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer" unique_id=426311475]
+layout_mode = 2
+
+[node name="Rock" type="HBoxContainer" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2" unique_id=399235279]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Seperator" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Rock" unique_id=1697142450]
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Rock" unique_id=334026811]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("15_4lxpt")
+region_rect = Rect2(0, 12, 12, 12)
+
+[node name="Label" type="Label" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Rock" unique_id=925954505]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Normal rock"
+label_settings = SubResource("LabelSettings_0m3lg")
+
+[node name="Seperator2" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Rock" unique_id=2081705810]
+layout_mode = 2
+
+[node name="Gold" type="HBoxContainer" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2" unique_id=1984418910]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Seperator" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Gold" unique_id=2005894893]
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Gold" unique_id=1907210467]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("15_4lxpt")
+region_rect = Rect2(0, 0, 12, 12)
+
+[node name="Label" type="Label" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Gold" unique_id=259019798]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "give you a gold"
+label_settings = SubResource("LabelSettings_0m3lg")
+
+[node name="Seperator2" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Gold" unique_id=1627437001]
+layout_mode = 2
+
+[node name="Fuel" type="HBoxContainer" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2" unique_id=2001260500]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Seperator" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Fuel" unique_id=1179878320]
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Fuel" unique_id=1314288778]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("15_4lxpt")
+region_rect = Rect2(12, 12, 12, 12)
+
+[node name="Label" type="Label" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Fuel" unique_id=589338717]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "gives you some fuel"
+label_settings = SubResource("LabelSettings_0m3lg")
+
+[node name="Seperator2" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Fuel" unique_id=1151115049]
+layout_mode = 2
+
+[node name="Tar" type="HBoxContainer" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2" unique_id=1206004494]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Seperator" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Tar" unique_id=1374636151]
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Tar" unique_id=290458193]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("15_4lxpt")
+region_rect = Rect2(12, 0, 12, 12)
+
+[node name="Label" type="Label" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Tar" unique_id=1781081895]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "temporarily removes your
+controls, slightly slows
+               you down."
+label_settings = SubResource("LabelSettings_0m3lg")
+
+[node name="Seperator2" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Tar" unique_id=699519768]
+layout_mode = 2
+
+[node name="Bomb" type="HBoxContainer" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2" unique_id=716133622]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Seperator" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Bomb" unique_id=1577679381]
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Bomb" unique_id=1255102869]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("15_4lxpt")
+region_rect = Rect2(24, 12, 12, 12)
+
+[node name="Label" type="Label" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Bomb" unique_id=1197058282]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Removes 1 hp, slows you
+down considerably."
+label_settings = SubResource("LabelSettings_0m3lg")
+
+[node name="Seperator2" type="Control" parent="NinePatchRect/GuideContainer/Guide/VBoxContainer/VBoxContainer2/Bomb" unique_id=1906041241]
+layout_mode = 2
+
 [node name="BackgroundSound" type="AudioStreamPlayer" parent="." unique_id=945981463]
 stream = ExtResource("14_lgjky")
 autoplay = true
@@ -454,3 +687,14 @@ parameters/looping = true
 
 [node name="ButtonClick" type="AudioStreamPlayer" parent="." unique_id=1841831802]
 stream = ExtResource("16_bfvnm")
+
+[node name="Label" type="Label" parent="." unique_id=486502709]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_fonts/font = ExtResource("5_0m3lg")
+theme_override_font_sizes/font_size = 16
+text = "Highscore:
+     "
+label_settings = SubResource("LabelSettings_mtyx3")

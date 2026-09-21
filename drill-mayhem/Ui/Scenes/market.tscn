@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://dem8qcjo54bfi" path="res://Ui/MainMenuImages/shopbackground.png" id="2_5c424"]
 [ext_resource type="Texture2D" uid="uid://b1eycvicd84g7" path="res://Ui/MainMenuImages/minermainmenurocks.png" id="3_tdxxs"]
+[ext_resource type="FontFile" uid="uid://bu7v6ceh0gpmn" path="res://Ui/Spirtes/fonts/pixel-it.ttf" id="4_68abo"]
 [ext_resource type="Texture2D" uid="uid://cfymx4ccqo6n2" path="res://Ui/MainMenuImages/shopbackgroundgirl.png" id="4_xo7pe"]
-[ext_resource type="FontFile" uid="uid://b52kyl2lgwk0y" path="res://Ui/Spirtes/fonts/pixelFont-7-8x14-sproutLands.ttf" id="5_nikpj"]
 [ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="6_h22jl"]
 [ext_resource type="Script" uid="uid://cqctaipabaop2" path="res://Ui/Scenes/gold_button.gd" id="6_y1ime"]
 [ext_resource type="Script" uid="uid://cwfk17i7nyi2" path="res://Ui/Scrips/menu_button.gd" id="7_6px0c"]
@@ -212,10 +212,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -49.0
-offset_top = -22.0
-offset_right = 383.0
-offset_bottom = 462.0
+offset_left = -10.0
+offset_top = -30.000002
+offset_right = 485.0
+offset_bottom = 454.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.28274757, 0.2832237)
@@ -265,8 +265,8 @@ offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_constants/outline_size = 0
 theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("5_nikpj")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
@@ -279,7 +279,8 @@ script = ExtResource("6_y1ime")
 [node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Gold/HBoxContainer" unique_id=185671449]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
-theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 32
 text = "+1 Health"
 
 [node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Gold" unique_id=932570904]
@@ -305,8 +306,8 @@ offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_constants/outline_size = 0
 theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("5_nikpj")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
@@ -319,7 +320,8 @@ script = ExtResource("6_y1ime")
 [node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Fuel/HBoxContainer" unique_id=133203614]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
-theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 32
 text = "+20 fuel"
 
 [node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Fuel" unique_id=1710084136]
@@ -345,8 +347,8 @@ offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_constants/outline_size = 0
 theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("5_nikpj")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
@@ -359,7 +361,8 @@ script = ExtResource("7_68abo")
 [node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/ShieldAbility/HBoxContainer" unique_id=1716017769]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
-theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 32
 text = "-1 sec cd
   shield"
 
@@ -386,8 +389,8 @@ offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_constants/outline_size = 0
 theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("5_nikpj")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
@@ -400,7 +403,8 @@ script = ExtResource("8_3fibo")
 [node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/SpeedAbility/HBoxContainer" unique_id=14183947]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
-theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 32
 text = "-1 sec cd
   Speed"
 
@@ -427,8 +431,8 @@ offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_constants/outline_size = 0
 theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("5_nikpj")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
@@ -441,7 +445,8 @@ script = ExtResource("9_5c424")
 [node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GoldMulitplier/HBoxContainer" unique_id=841976403]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
-theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 32
 text = "+0.5 gold
 mult "
 
@@ -464,8 +469,8 @@ offset_transform_enabled = true
 theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_constants/outline_size = 0
 theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("5_nikpj")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("4_68abo")
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")

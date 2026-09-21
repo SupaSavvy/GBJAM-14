@@ -21,6 +21,9 @@ extends Control
 # Controls Popup Nodes
 @onready var controls_container: NinePatchRect = $NinePatchRect/ControlsContainer/Controls
 
+# New Display Popup Node (Update path to match your node tree)
+@onready var new_thing_container: NinePatchRect = $NinePatchRect/GuideContainer/Guide
+
 
 var time_passed: float = 0.0
 
@@ -41,6 +44,7 @@ func _ready():
 	# Hide popups when scene opens
 	settings_container.hide()
 	controls_container.hide()
+	new_thing_container.hide()
 	
 	# Focus start button immediately for keyboard/gamepad navigation
 	start_button.grab_focus()
@@ -71,6 +75,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			$ButtonClick.play()
 			close_settings()
 			get_viewport().set_input_as_handled()
+		elif new_thing_container.visible:
+			$ButtonClick.play()
+			close_new_thing()
+			get_viewport().set_input_as_handled()
 
 # --- POPUP & FOCUS MANAGEMENT ---
 
@@ -94,3 +102,9 @@ func open_controls() -> void:
 func close_controls() -> void:
 	controls_container.hide()
 	settings_first_control.grab_focus()
+
+func open_new_thing() -> void:
+	new_thing_container.show()
+
+func close_new_thing() -> void:
+	new_thing_container.hide()
