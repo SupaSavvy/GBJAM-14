@@ -22,6 +22,7 @@ var drilling_started: bool = false
 # REFERENCES
 @export var void_chaser: Void
 @export var ores: Ores
+
 @onready var drill_sound: AudioStreamPlayer2D = $DrillSound
 
 # DIGGING
@@ -106,6 +107,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_dead:
+		return
+
 	# STARTING POSITION
 	if not drilling_started:
 		if Input.is_action_just_pressed("ui_left"):
@@ -163,11 +167,13 @@ func _physics_process(delta: float) -> void:
 
 	if in_tar:
 		target_speed = max_speed * tar_speed_multiplier
+
 		current_speed = move_toward(
 			current_speed,
 			target_speed,
 			tar_slowdown_speed * delta
 		)
+
 	else:
 		current_speed = move_toward(
 			current_speed,
@@ -215,10 +221,13 @@ func _physics_process(delta: float) -> void:
 		match current_speed:
 			var speed when speed >= 150.0:
 				speed_damage = 4.0
+
 			var speed when speed >= 70.0:
 				speed_damage = 3.0
+
 			var speed when speed >= 40.0:
 				speed_damage = 2.0
+
 			var speed when speed >= 20.0:
 				speed_damage = 1.0
 
@@ -237,13 +246,10 @@ func _physics_process(delta: float) -> void:
 			speed_percent
 		)
 
-	# MOVEMENT
 	move_and_slide()
 
-	# PARTICLES
 	update_drill_particles()
 
-	# LIMITS
 	global_position.x = clamp(
 		global_position.x,
 		left_limit,
@@ -257,11 +263,10 @@ func _physics_process(delta: float) -> void:
 	current_depth = drill_cell.y
 	deepest_depth = max(deepest_depth, current_depth)
 
-	queue_redraw()
-
 
 func get_tiles_in_dig_radius() -> Array[Vector2i]:
 	var cells_in_radius: Array[Vector2i] = []
+
 	var tip_local_position: Vector2 = ores.to_local(global_position)
 	var center_cell: Vector2i = ores.local_to_map(tip_local_position)
 
@@ -365,40 +370,30 @@ func snap_x_to_grid(world_x: float) -> float:
 	return snapped_world.x
 
 
-func die(cause: String = "unknown") -> void:
+func die(cause: String) -> void:
 	if is_dead:
 		return
 
 	is_dead = true
 	death_cause = cause
 
+	print("DIED FROM: ", death_cause)
+
 	hearts = 0
 	health_changed.emit(hearts, max_hearts)
 
 	velocity = Vector2.ZERO
 
+	# SAVE THE RUN INFO BEFORE THE DRILL DISAPPEARS
 	GameData.last_death_cause = death_cause
+	GameData.last_stones_mined = stones_mined
+	GameData.last_gold_collected = gold_collected_this_run
+	GameData.last_depth = deepest_depth
+
+	# TELL THE UI TO OPEN THE DEATH MENU
+	GameData.player_died.emit()
+
 	GameData.submit_depth(deepest_depth)
 
 	await get_tree().process_frame
 	queue_free()
-
-
-# DEBUG LIMIT LINES
-func _draw() -> void:
-	var left_x: float = left_limit - global_position.x
-	var right_x: float = right_limit - global_position.x
-
-	draw_line(
-		Vector2(left_x, -1000),
-		Vector2(left_x, 1000),
-		Color.RED,
-		2.0
-	)
-
-	draw_line(
-		Vector2(right_x, -1000),
-		Vector2(right_x, 1000),
-		Color.GREEN,
-		2.0
-	)

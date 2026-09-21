@@ -63,6 +63,7 @@ acceleration = 7.0
 right_limit = 98.0
 void_chaser = NodePath("../Void/Area2D")
 ores = NodePath("../Ores")
+fuel_drain_rate = 20.0
 
 [node name="CollisionShape2D" parent="DrillBoi" index="0" unique_id=503879945]
 scale = Vector2(0.8049767, 0.8049767)
@@ -89,10 +90,12 @@ position = Vector2(106, -1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1734020741]
 
-[node name="Ui" parent="CanvasLayer" unique_id=1673883677 node_paths=PackedStringArray("drill") instance=ExtResource("6_j68oq")]
+[node name="Ui" parent="CanvasLayer" unique_id=1673883677 node_paths=PackedStringArray("drill", "death_menu", "death_info_label") instance=ExtResource("6_j68oq")]
 offset_left = 16.0
 offset_right = 16.0
 drill = NodePath("../../DrillBoi")
+death_menu = NodePath("../DeathMenu")
+death_info_label = NodePath("../DeathMenu/VBoxContainer/HBoxContainer/Death_Info_Label")
 
 [node name="Hp" parent="CanvasLayer/Ui/NinePatchRect" parent_id_path=PackedInt32Array(1673883677, 2102547962) index="0" unique_id=210761816]
 offset_left = 4.0
@@ -170,7 +173,7 @@ size_flags_horizontal = 4
 [node name="Seperator" type="Control" parent="CanvasLayer/DeathMenu/VBoxContainer/HBoxContainer" unique_id=454427932]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/DeathMenu/VBoxContainer/HBoxContainer" unique_id=1138738643]
+[node name="Death_Info_Label" type="Label" parent="CanvasLayer/DeathMenu/VBoxContainer/HBoxContainer" unique_id=1138738643]
 custom_minimum_size = Vector2(100, 25)
 layout_mode = 2
 size_flags_horizontal = 4

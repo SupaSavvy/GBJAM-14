@@ -3,6 +3,7 @@ extends Node
 signal gold_changed(amount: int)
 signal powerup_equipped(slot_number: int, powerup_name: String)
 signal leaderboard_changed(scores: Array[int])
+signal player_died
 
 # GOLD
 var gold: int = 0
@@ -37,6 +38,11 @@ var lootlocker_player_id: String = ""
 # SETTINGS
 var master_volume: float = 0.5
 
+# DEATH STUFF
+var last_death_cause: String = ""
+var last_stones_mined: int = 0
+var last_gold_collected: int = 0
+var last_depth: int = 0
 
 func _ready() -> void:
 	load_game()
