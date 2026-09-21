@@ -30,6 +30,7 @@ var block_break_sound_timer: float = 0.0
 @export var left_edge: int = -14
 @export var generation_padding: int = 5
 
+
 @export var drill: Drill
 @export var generation_cutoff: Marker2D
 
@@ -89,7 +90,7 @@ func generate_chunk(chunk_y: int) -> void:
 		cutoff_local
 	).x
 
-	var generation_left: int = left_edge - generation_padding
+	var generation_left: int = left_edge - generation_padding 
 
 	for y: int in range(start_y, start_y + chunk_height):
 		for x: int in range(generation_left, cutoff_x):

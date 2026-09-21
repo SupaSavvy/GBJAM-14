@@ -9,7 +9,9 @@
 [node name="DrillingTest" type="Node2D" unique_id=1496016345]
 
 [node name="Ores" parent="." unique_id=1976111818 node_paths=PackedStringArray("drill", "generation_cutoff") instance=ExtResource("1_5fdol")]
+position = Vector2(-2, 0)
 bomb_explosion_scene = ExtResource("2_d0bd1")
+left_edge = 5
 drill = NodePath("../DrillBoi")
 generation_cutoff = NodePath("../Generation Cut Offf")
 
@@ -18,7 +20,7 @@ position = Vector2(78, -3)
 min_speed = 20.0
 max_speed = 300.0
 acceleration = 7.0
-right_limit = 150.0
+right_limit = 98.0
 ores = NodePath("../Ores")
 fuel_drain_rate = 5.0
 
