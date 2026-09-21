@@ -1,131 +1,9 @@
 [gd_scene format=3 uid="uid://rvo05e8evw34"]
 
-[ext_resource type="Texture2D" uid="uid://5a4l7ckoafch" path="res://Ui/Spirtes/emojis-free/emoji style ui/Inventory_Herat_Spritesheet.png" id="1_sjmnu"]
-[ext_resource type="FontFile" uid="uid://b52kyl2lgwk0y" path="res://Ui/Spirtes/fonts/pixelFont-7-8x14-sproutLands.ttf" id="2_cgmvo"]
-[ext_resource type="Texture2D" uid="uid://dplh63sgork5i" path="res://Ui/Spirtes/Sprite sheets/Setting menu.png" id="3_btyrf"]
-[ext_resource type="Script" uid="uid://cfsq8w2sod0re" path="res://Ui/Scrips/health.gd" id="3_s0hrr"]
-[ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="3_vh8u0"]
-[ext_resource type="Texture2D" uid="uid://5npk8pwtnrhq" path="res://Ui/Spirtes/Sprite sheets/Sprite sheet for Basic Pack.png" id="4_dqysy"]
-[ext_resource type="Texture2D" uid="uid://dplacijxlvgls" path="res://Ui/Spirtes/Sprite sheets/Icons/All Icons.png" id="4_wpaqk"]
-[ext_resource type="Texture2D" uid="uid://dl2e8harc512d" path="res://Ui/Spirtes/Sprite sheets/UI Settings Buttons.png" id="5_1tcje"]
-[ext_resource type="Script" uid="uid://dn251m7kkd87s" path="res://Ui/Scrips/difficulty_containers.gd" id="6_fx7jt"]
-[ext_resource type="Script" uid="uid://cdpysdri3hewu" path="res://Ui/Scrips/controls_button.gd" id="7_2sgh3"]
-[ext_resource type="Script" uid="uid://dbnvma77b5kii" path="res://Ui/Scrips/main_menu_button.gd" id="7_mcjw1"]
-[ext_resource type="Script" uid="uid://nmiqoqlh3tds" path="res://Ui/Scrips/settings_button_ingame.gd" id="8_vxodi"]
-[ext_resource type="Script" uid="uid://lem78fnd3d62" path="res://Ui/Scrips/close_button.gd" id="12_ivx16"]
-[ext_resource type="Script" uid="uid://bltsnlg638hoh" path="res://Ui/Scrips/reload_button.gd" id="12_yok78"]
-[ext_resource type="AudioStream" uid="uid://bl8cr8u58mfh6" path="res://Sounds/ButtonClick.wav" id="13_cf4ou"]
+[ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="1_au7og"]
+[ext_resource type="FontFile" uid="uid://b52kyl2lgwk0y" path="res://Ui/Spirtes/fonts/pixelFont-7-8x14-sproutLands.ttf" id="2_ryils"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_sbff0"]
-font = ExtResource("2_cgmvo")
-font_size = 32
-
-[sub_resource type="LabelSettings" id="LabelSettings_46gnf"]
-font = ExtResource("2_cgmvo")
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vxodi"]
-atlas = ExtResource("4_dqysy")
-region = Rect2(65, 197, 14, 21)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qtfct"]
-texture = ExtResource("5_1tcje")
-region_rect = Rect2(51, 195, 2, 10)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2sgh3"]
-texture = ExtResource("3_vh8u0")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
-region_rect = Rect2(11, 155, 26, 28)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ivx16"]
-texture = ExtResource("3_vh8u0")
-texture_margin_left = 3.0
-texture_margin_top = 3.0
-texture_margin_right = 3.0
-texture_margin_bottom = 3.0
-region_rect = Rect2(59, 155, 26, 26)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cf4ou"]
-texture = ExtResource("3_vh8u0")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
-region_rect = Rect2(11, 107, 26, 28)
-
-[sub_resource type="LabelSettings" id="LabelSettings_1tcje"]
-font = ExtResource("2_cgmvo")
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fx7jt"]
-atlas = ExtResource("4_dqysy")
-region = Rect2(372, 148, 9, 9)
-
-[sub_resource type="LabelSettings" id="LabelSettings_vxodi"]
-font = ExtResource("2_cgmvo")
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mft5f"]
-atlas = ExtResource("4_dqysy")
-region = Rect2(434, 71, 28, 18)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qtfct"]
-atlas = ExtResource("4_dqysy")
-region = Rect2(434, 103, 28, 18)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_46gnf"]
-atlas = ExtResource("4_dqysy")
-region = Rect2(388, 148, 9, 9)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0yuog"]
-atlas = ExtResource("4_dqysy")
-region = Rect2(420, 148, 9, 9)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hbdlx"]
-texture = ExtResource("3_vh8u0")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
-region_rect = Rect2(11, 155, 26, 28)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wpaqk"]
-texture = ExtResource("3_vh8u0")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
-region_rect = Rect2(59, 155, 26, 26)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fx7jt"]
-texture = ExtResource("3_vh8u0")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
-region_rect = Rect2(11, 107, 26, 28)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2sgh3"]
-atlas = ExtResource("4_wpaqk")
-region = Rect2(162, 34, 12, 12)
-
-[sub_resource type="LabelSettings" id="LabelSettings_yok78"]
-font = ExtResource("2_cgmvo")
-font_size = 24
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_sbff0"]
-atlas = ExtResource("4_wpaqk")
-region = Rect2(146, 2, 12, 12)
-margin = Rect2(0, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_mcjw1"]
-font = ExtResource("2_cgmvo")
-font_size = 32
-
-[sub_resource type="LabelSettings" id="LabelSettings_2sgh3"]
-font = ExtResource("2_cgmvo")
-
-[node name="Ui" type="Control" unique_id=1682253996]
+[node name="Ui" type="Control" unique_id=1673883677]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -133,462 +11,58 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PopUpMenu" type="MarginContainer" parent="." unique_id=1631535576]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Health_GravityBarContainer" type="HBoxContainer" parent="PopUpMenu" unique_id=666818088]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-
-[node name="HealthBar" type="NinePatchRect" parent="PopUpMenu/Health_GravityBarContainer" unique_id=1498047959]
-custom_minimum_size = Vector2(325, 75)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-texture = ExtResource("1_sjmnu")
-region_rect = Rect2(1, 307, 110, 29)
-patch_margin_left = 5
-patch_margin_top = 5
-patch_margin_right = 5
-
-[node name="Label" type="Label" parent="PopUpMenu/Health_GravityBarContainer/HealthBar" unique_id=1389469262]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Health - "
-label_settings = SubResource("LabelSettings_sbff0")
-horizontal_alignment = 1
-vertical_alignment = 1
-script = ExtResource("3_s0hrr")
-
-[node name="MainMenu" type="HBoxContainer" parent="PopUpMenu" unique_id=522282240]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Settings" type="NinePatchRect" parent="PopUpMenu/MainMenu" unique_id=108415880]
-visible = false
-custom_minimum_size = Vector2(350, 500)
-layout_mode = 2
-texture = ExtResource("3_btyrf")
-region_rect = Rect2(11, 12, 106, 122)
-patch_margin_left = 4
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=2102547962]
+layout_mode = 0
+offset_left = 92.0
+offset_right = 144.0
+offset_bottom = 160.0
+texture = ExtResource("1_au7og")
+region_rect = Rect2(11, 155, 26, 28)
+patch_margin_left = 3
 patch_margin_top = 4
 patch_margin_right = 4
-patch_margin_bottom = 4
+patch_margin_bottom = 6
 
-[node name="SettingsContainer" type="VBoxContainer" parent="PopUpMenu/MainMenu/Settings" unique_id=483069056]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 112
-
-[node name="Seperator" type="Control" parent="PopUpMenu/MainMenu/Settings/SettingsContainer" unique_id=940015544]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-
-[node name="SettingsStuff" type="VBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer" unique_id=658752111]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="VolumeDisplay_Slider" type="VBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff" unique_id=1339939462]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = -7
-
-[node name="Label" type="Label" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/VolumeDisplay_Slider" unique_id=1019777425]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Volume: "
-label_settings = SubResource("LabelSettings_46gnf")
-
-[node name="HSlider" type="HSlider" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/VolumeDisplay_Slider" unique_id=2090808460]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-theme_override_icons/grabber = SubResource("AtlasTexture_vxodi")
-theme_override_icons/grabber_highlight = SubResource("AtlasTexture_vxodi")
-theme_override_styles/grabber_area = SubResource("StyleBoxTexture_qtfct")
-theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_qtfct")
-max_value = 1.5
-step = 0.001
-
-[node name="ControlsButton" type="HBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff" unique_id=662379048]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 100
-
-[node name="serperator" type="Control" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/ControlsButton" unique_id=794081963]
-layout_mode = 2
-
-[node name="ControlsButton" type="Button" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/ControlsButton" unique_id=1156826386]
-custom_minimum_size = Vector2(175, 100)
-layout_mode = 2
-size_flags_vertical = 4
-offset_transform_enabled = true
-theme_override_constants/outline_size = 0
-theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("2_cgmvo")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxTexture_2sgh3")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_ivx16")
-theme_override_styles/hover = SubResource("StyleBoxTexture_cf4ou")
-text = "Controls"
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("7_2sgh3")
-
-[node name="serperator2" type="Control" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/ControlsButton" unique_id=562597220]
-layout_mode = 2
-
-[node name="ReturnToMainMenu" type="HBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff" unique_id=2086053732]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 100
-
-[node name="serperator" type="Control" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/ReturnToMainMenu" unique_id=651499731]
-layout_mode = 2
-
-[node name="MainMenuButton" type="Button" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/ReturnToMainMenu" unique_id=584235665]
-custom_minimum_size = Vector2(175, 100)
-layout_mode = 2
-size_flags_vertical = 4
-offset_transform_enabled = true
-theme_override_constants/outline_size = 0
-theme_override_constants/icon_max_width = 64
-theme_override_fonts/font = ExtResource("2_cgmvo")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxTexture_2sgh3")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_ivx16")
-theme_override_styles/hover = SubResource("StyleBoxTexture_cf4ou")
-text = "Main Menu"
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("7_mcjw1")
-
-[node name="serperator2" type="Control" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/ReturnToMainMenu" unique_id=1701586028]
-layout_mode = 2
-
-[node name="DifficultyContainers" type="VBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff" unique_id=34648922]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 25
-script = ExtResource("6_fx7jt")
-
-[node name="Label" type="Label" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers" unique_id=296817246]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Difficulty: "
-label_settings = SubResource("LabelSettings_1tcje")
-
-[node name="Easy" type="HBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers" unique_id=401009986]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 55
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Easy" unique_id=749006286]
-layout_mode = 2
-
-[node name="EasyIcon" type="NinePatchRect" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Easy/HBoxContainer" unique_id=358059363]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("4_dqysy")
-region_rect = Rect2(201, 57, 30, 30)
-
-[node name="MarginContainer" type="MarginContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Easy/HBoxContainer/EasyIcon" unique_id=1656113706]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="EasyTexture" type="TextureRect" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Easy/HBoxContainer/EasyIcon/MarginContainer" unique_id=369714148]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = SubResource("AtlasTexture_fx7jt")
-
-[node name="Seperator" type="Label" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Easy/HBoxContainer" unique_id=1726804466]
-layout_mode = 2
-text = "Easy"
-label_settings = SubResource("LabelSettings_vxodi")
-
-[node name="EasySwitch" type="CheckButton" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Easy" unique_id=722283057]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_icons/checked = SubResource("AtlasTexture_mft5f")
-theme_override_icons/unchecked = SubResource("AtlasTexture_qtfct")
-
-[node name="Medium" type="HBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers" unique_id=443837461]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 38
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Medium" unique_id=941883911]
-layout_mode = 2
-
-[node name="MediumIcon" type="NinePatchRect" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Medium/HBoxContainer" unique_id=2016009941]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("4_dqysy")
-region_rect = Rect2(201, 57, 30, 30)
-
-[node name="MarginContainer" type="MarginContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Medium/HBoxContainer/MediumIcon" unique_id=606026564]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MediumTexture" type="TextureRect" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Medium/HBoxContainer/MediumIcon/MarginContainer" unique_id=390195596]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = SubResource("AtlasTexture_46gnf")
-
-[node name="Seperator" type="Label" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Medium/HBoxContainer" unique_id=734640211]
-layout_mode = 2
-text = "Medium"
-label_settings = SubResource("LabelSettings_vxodi")
-
-[node name="MediumSwitch" type="CheckButton" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Medium" unique_id=2081712517]
-layout_mode = 2
-theme_override_icons/checked = SubResource("AtlasTexture_mft5f")
-theme_override_icons/unchecked = SubResource("AtlasTexture_qtfct")
-
-[node name="Hard" type="HBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers" unique_id=1389431902]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 55
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Hard" unique_id=291616057]
-layout_mode = 2
-
-[node name="HardIcon" type="NinePatchRect" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Hard/HBoxContainer" unique_id=589750098]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("4_dqysy")
-region_rect = Rect2(201, 57, 30, 30)
-
-[node name="MarginContainer" type="MarginContainer" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Hard/HBoxContainer/HardIcon" unique_id=1235866368]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HardTexture" type="TextureRect" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Hard/HBoxContainer/HardIcon/MarginContainer" unique_id=1186926283]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = SubResource("AtlasTexture_0yuog")
-
-[node name="Seperator" type="Label" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Hard/HBoxContainer" unique_id=709393308]
-layout_mode = 2
-text = "Hard"
-label_settings = SubResource("LabelSettings_vxodi")
-
-[node name="HardSwitch" type="CheckButton" parent="PopUpMenu/MainMenu/Settings/SettingsContainer/SettingsStuff/DifficultyContainers/Hard" unique_id=241981742]
-layout_mode = 2
-theme_override_icons/checked = SubResource("AtlasTexture_mft5f")
-theme_override_icons/unchecked = SubResource("AtlasTexture_qtfct")
-
-[node name="CloseButtonSettingInGame" type="Button" parent="PopUpMenu/MainMenu/Settings" unique_id=1558397763]
-custom_minimum_size = Vector2(100, 100)
+[node name="Hp" type="Label" parent="NinePatchRect" unique_id=210761816]
 layout_mode = 0
-offset_left = 237.0
-offset_top = 388.0
-offset_right = 337.0
-offset_bottom = 488.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-theme_override_constants/icon_max_width = 64
-theme_override_styles/normal = SubResource("StyleBoxTexture_hbdlx")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_wpaqk")
-theme_override_styles/hover = SubResource("StyleBoxTexture_fx7jt")
-icon = SubResource("AtlasTexture_2sgh3")
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("12_ivx16")
+offset_left = 6.0
+offset_top = 7.0
+offset_right = 46.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_fonts/font = ExtResource("2_ryils")
+theme_override_font_sizes/font_size = 8
+text = "Health"
 
-[node name="SettingsButtonContainer" type="HBoxContainer" parent="PopUpMenu" unique_id=1844281156]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-theme_override_constants/separation = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PopUpMenu/SettingsButtonContainer" unique_id=1554241961]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="seperator2" type="Control" parent="PopUpMenu/SettingsButtonContainer/VBoxContainer" unique_id=2054416810]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PopUpMenu/SettingsButtonContainer/VBoxContainer" unique_id=1112838691]
-layout_mode = 2
-theme_override_constants/separation = 9
-
-[node name="ReloadButton" type="Button" parent="PopUpMenu/SettingsButtonContainer/VBoxContainer/HBoxContainer" unique_id=1135524630]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-theme_override_constants/icon_max_width = 64
-theme_override_styles/normal = SubResource("StyleBoxTexture_hbdlx")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_wpaqk")
-theme_override_styles/hover = SubResource("StyleBoxTexture_fx7jt")
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("12_yok78")
-
-[node name="Label" type="Label" parent="PopUpMenu/SettingsButtonContainer/VBoxContainer/HBoxContainer/ReloadButton" unique_id=244067767]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Reload
-Level"
-label_settings = SubResource("LabelSettings_yok78")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="settings_button_ingame2" type="Button" parent="PopUpMenu/SettingsButtonContainer/VBoxContainer/HBoxContainer" unique_id=2027418594]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-theme_override_constants/icon_max_width = 64
-theme_override_styles/normal = SubResource("StyleBoxTexture_hbdlx")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_wpaqk")
-theme_override_styles/hover = SubResource("StyleBoxTexture_fx7jt")
-icon = SubResource("AtlasTexture_sbff0")
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("8_vxodi")
-
-[node name="seperator" type="Control" parent="PopUpMenu/SettingsButtonContainer" unique_id=583476250]
-layout_mode = 2
-
-[node name="ControlsContainer" type="MarginContainer" parent="PopUpMenu" unique_id=70043667]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Credits" type="NinePatchRect" parent="PopUpMenu/ControlsContainer" unique_id=1250030075]
-visible = false
-custom_minimum_size = Vector2(350, 500)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("3_btyrf")
-region_rect = Rect2(139, 12, 106, 122)
-patch_margin_left = 4
-patch_margin_top = 4
-patch_margin_right = 4
-patch_margin_bottom = 4
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PopUpMenu/ControlsContainer/Credits" unique_id=2137531508]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 40
-
-[node name="Seperator" type="Control" parent="PopUpMenu/ControlsContainer/Credits/VBoxContainer" unique_id=1636571402]
-layout_mode = 2
-
-[node name="ControlsLabel" type="HBoxContainer" parent="PopUpMenu/ControlsContainer/Credits/VBoxContainer" unique_id=24055026]
-layout_mode = 2
-theme_override_constants/separation = 200
-
-[node name="Seperator" type="Control" parent="PopUpMenu/ControlsContainer/Credits/VBoxContainer/ControlsLabel" unique_id=844306283]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PopUpMenu/ControlsContainer/Credits/VBoxContainer/ControlsLabel" unique_id=1034704774]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Controls
-"
-label_settings = SubResource("LabelSettings_mcjw1")
-
-[node name="Seperator2" type="Control" parent="PopUpMenu/ControlsContainer/Credits/VBoxContainer/ControlsLabel" unique_id=431890077]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PopUpMenu/ControlsContainer/Credits/VBoxContainer" unique_id=16009501]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Seperator" type="Control" parent="PopUpMenu/ControlsContainer/Credits/VBoxContainer/HBoxContainer" unique_id=1875968781]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PopUpMenu/ControlsContainer/Credits/VBoxContainer/HBoxContainer" unique_id=472025696]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Move right - A / Right Arrow
-
-Move left - S / Left Arrow
-
-Jump - Space
-
-Change Gravity - G
-
-Continue Dialogue - Enter
-"
-label_settings = SubResource("LabelSettings_2sgh3")
-
-[node name="Seperator2" type="Control" parent="PopUpMenu/ControlsContainer/Credits/VBoxContainer/HBoxContainer" unique_id=1709801050]
-layout_mode = 2
-
-[node name="CloseButtonControlsInGame" type="Button" parent="PopUpMenu/ControlsContainer/Credits" unique_id=2044688382]
-custom_minimum_size = Vector2(100, 100)
+[node name="Gold" type="Label" parent="NinePatchRect" unique_id=1358346310]
 layout_mode = 0
-offset_left = 237.0
-offset_top = 388.0
-offset_right = 337.0
-offset_bottom = 488.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-theme_override_constants/icon_max_width = 64
-theme_override_styles/normal = SubResource("StyleBoxTexture_hbdlx")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_wpaqk")
-theme_override_styles/hover = SubResource("StyleBoxTexture_fx7jt")
-icon = SubResource("AtlasTexture_2sgh3")
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("12_ivx16")
+offset_left = 4.0
+offset_top = 88.0
+offset_right = 57.0
+offset_bottom = 111.0
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_fonts/font = ExtResource("2_ryils")
+theme_override_font_sizes/font_size = 8
+text = "Gold"
 
-[node name="ButtonClick" type="AudioStreamPlayer" parent="." unique_id=292981152]
-stream = ExtResource("13_cf4ou")
+[node name="Fuel" type="Label" parent="NinePatchRect" unique_id=1228771985]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 34.0
+offset_right = 46.0
+offset_bottom = 57.0
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_fonts/font = ExtResource("2_ryils")
+theme_override_font_sizes/font_size = 8
+text = "Fuel"
+
+[node name="Distance" type="Label" parent="NinePatchRect" unique_id=1504751618]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 68.0
+offset_right = 47.0
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_fonts/font = ExtResource("2_ryils")
+theme_override_font_sizes/font_size = 8
+text = "Distance"

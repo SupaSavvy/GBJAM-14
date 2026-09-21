@@ -65,5 +65,5 @@ max_polyphony = 8
 
 [node name="GoldBreak" type="AudioStreamPlayer" parent="." unique_id=2093815725]
 stream = ExtResource("7_ui6mu")
-volume_db = -15.0
+volume_db = 0.5
 max_polyphony = 8
