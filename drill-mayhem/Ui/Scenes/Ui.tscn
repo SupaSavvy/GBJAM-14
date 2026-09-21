@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://rvo05e8evw34"]
+[gd_scene format=3 uid="uid://dxbjmefgcn2sk"]
 
 [ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="1_au7og"]
 [ext_resource type="Script" uid="uid://cedfsbsau3ukp" path="res://Ui/Scrips/InGameInfo.gd" id="1_fqmg6"]

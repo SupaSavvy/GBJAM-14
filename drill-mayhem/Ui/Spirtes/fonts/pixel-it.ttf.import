@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://b52kyl2lgwk0y"
-path="res://.godot/imported/pixelFont-7-8x14-sproutLands.ttf-0847f7afa8e3e520ede1d8962502fb05.fontdata"
+uid="uid://bu7v6ceh0gpmn"
+path="res://.godot/imported/pixel-it.ttf-af74136e5f2cba01673928e4114aa9aa.fontdata"
 
 [deps]
 
-source_file="res://Ui/Spirtes/fonts/pixelFont-7-8x14-sproutLands.ttf"
-dest_files=["res://.godot/imported/pixelFont-7-8x14-sproutLands.ttf-0847f7afa8e3e520ede1d8962502fb05.fontdata"]
+source_file="res://Ui/Spirtes/fonts/pixel-it.ttf"
+dest_files=["res://.godot/imported/pixel-it.ttf-af74136e5f2cba01673928e4114aa9aa.fontdata"]
 
 [params]
 
@@ -22,8 +22,8 @@ msdf_size=48
 allow_system_fallback=true
 force_autohinter=false
 modulate_color_glyphs=false
-hinting=0
-subpixel_positioning=0
+hinting=3
+subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
@@ -34,8 +34,7 @@ preload=[{
 "chars": [],
 "glyphs": [],
 "name": "New Configuration",
-"size": Vector2i(16, 0),
-&"variation_embolden": 0.0
+"size": Vector2i(16, 0)
 }]
 language_support={}
 script_support={}

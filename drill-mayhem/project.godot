@@ -22,12 +22,12 @@ LootLockerSDK="*uid://bkq3fmp26k1k6"
 
 [display]
 
-window/size/viewport_width=144
-window/size/viewport_height=160
-window/size/window_width_override=640
-window/size/window_height_override=640
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/size/viewport_width=160
+window/size/viewport_height=144
+window/size/resizable=false
+window/size/window_width_override=960
+window/size/window_height_override=864
+window/stretch/mode="viewport"
 
 [dotnet]
 
@@ -107,3 +107,5 @@ power_up_2={
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 environment/defaults/default_clear_color=Color(0.60784316, 0.16078432, 0.08235294, 1)
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
