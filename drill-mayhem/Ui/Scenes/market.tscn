@@ -5,9 +5,13 @@
 [ext_resource type="Texture2D" uid="uid://cfymx4ccqo6n2" path="res://Ui/MainMenuImages/shopbackgroundgirl.png" id="4_xo7pe"]
 [ext_resource type="FontFile" uid="uid://b52kyl2lgwk0y" path="res://Ui/Spirtes/fonts/pixelFont-7-8x14-sproutLands.ttf" id="5_nikpj"]
 [ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="6_h22jl"]
+[ext_resource type="Script" uid="uid://cqctaipabaop2" path="res://Ui/Scenes/gold_button.gd" id="6_y1ime"]
 [ext_resource type="Script" uid="uid://cwfk17i7nyi2" path="res://Ui/Scrips/menu_button.gd" id="7_6px0c"]
+[ext_resource type="Script" uid="uid://b520ecveyr1jk" path="res://Ui/Scenes/shield_button.gd" id="7_68abo"]
+[ext_resource type="Script" uid="uid://bysqqy8alvax5" path="res://Ui/Scenes/speed_button.gd" id="8_3fibo"]
 [ext_resource type="AudioStream" uid="uid://rahh7x164krx" path="res://Master/SFX/ButtonClick.wav" id="8_6px0c"]
 [ext_resource type="AudioStream" uid="uid://5ivxjvipduhc" path="res://Master/SFX/GB Jam.mp3" id="8_h2apa"]
+[ext_resource type="Script" uid="uid://ccv6r7spih64h" path="res://Ui/Scenes/gold_multiplier_button.gd" id="9_5c424"]
 
 [sub_resource type="GDScript" id="GDScript_3cjtb"]
 script/source = "extends Control
@@ -71,7 +75,7 @@ texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 region_rect = Rect2(11, 107, 26, 28)
 
-[node name="Main Menu" type="Control" unique_id=1709358907]
+[node name="Main Menu2" type="Control" unique_id=1709358907]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -109,10 +113,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -44.0
-offset_top = -23.0
-offset_right = 271.0
-offset_bottom = 461.0
+offset_left = -49.0
+offset_top = -22.0
+offset_right = 383.0
+offset_bottom = 462.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.28274757, 0.2832237)
@@ -132,7 +136,7 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer" unique_id=882979758]
 layout_mode = 2
-theme_override_constants/separation = 300
+theme_override_constants/separation = 150
 
 [node name="seperator" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=670871702]
 layout_mode = 2
@@ -142,15 +146,19 @@ size_flags_vertical = 4
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="MainMenu" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1875360364]
+[node name="Gold" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1875360364]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 100
 
-[node name="serperator" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/MainMenu" unique_id=2070814222]
+[node name="serperator" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Gold" unique_id=2070814222]
 layout_mode = 2
 
-[node name="MenuButton" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/MainMenu" unique_id=751765190]
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Gold" unique_id=198637432]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="GoldButton" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Gold/HBoxContainer" unique_id=751765190]
 custom_minimum_size = Vector2(175, 50)
 layout_mode = 2
 size_flags_vertical = 4
@@ -163,17 +171,216 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
+text = "Cost"
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("6_y1ime")
+
+[node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Gold/HBoxContainer" unique_id=185671449]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
+theme_override_fonts/font = ExtResource("5_nikpj")
+text = "+1 Health"
+
+[node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Gold" unique_id=932570904]
+layout_mode = 2
+
+[node name="Fuel" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=2058859017]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 100
+
+[node name="serperator" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Fuel" unique_id=969734804]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Fuel" unique_id=558079157]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="GoldButton" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Fuel/HBoxContainer" unique_id=1586363728]
+custom_minimum_size = Vector2(175, 50)
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_constants/outline_size = 0
+theme_override_constants/icon_max_width = 64
+theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
+text = "Cost"
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("6_y1ime")
+
+[node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Fuel/HBoxContainer" unique_id=133203614]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
+theme_override_fonts/font = ExtResource("5_nikpj")
+text = "+20 fuel"
+
+[node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/Fuel" unique_id=1710084136]
+layout_mode = 2
+
+[node name="ShieldAbility" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=2071681765]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 100
+
+[node name="serperator" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/ShieldAbility" unique_id=1274152263]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/ShieldAbility" unique_id=1530821483]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ShieldButton" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/ShieldAbility/HBoxContainer" unique_id=832008604]
+custom_minimum_size = Vector2(175, 50)
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_constants/outline_size = 0
+theme_override_constants/icon_max_width = 64
+theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
+text = "Cost"
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("7_68abo")
+
+[node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/ShieldAbility/HBoxContainer" unique_id=1716017769]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
+theme_override_fonts/font = ExtResource("5_nikpj")
+text = "-1 sec cd"
+
+[node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/ShieldAbility" unique_id=1520926901]
+layout_mode = 2
+
+[node name="SpeedAbility" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1931920674]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 100
+
+[node name="serperator" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/SpeedAbility" unique_id=1430559116]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/SpeedAbility" unique_id=149902774]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SpeedButton" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/SpeedAbility/HBoxContainer" unique_id=531922429]
+custom_minimum_size = Vector2(175, 50)
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_constants/outline_size = 0
+theme_override_constants/icon_max_width = 64
+theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
+text = "Cost"
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("8_3fibo")
+
+[node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/SpeedAbility/HBoxContainer" unique_id=14183947]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
+theme_override_fonts/font = ExtResource("5_nikpj")
+text = "-1 sec cd"
+
+[node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/SpeedAbility" unique_id=778444762]
+layout_mode = 2
+
+[node name="GoldMulitplier" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1306641060]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 100
+
+[node name="serperator" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GoldMulitplier" unique_id=445277549]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GoldMulitplier" unique_id=1463108854]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="GoldMultiplierButton" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GoldMulitplier/HBoxContainer" unique_id=2094982215]
+custom_minimum_size = Vector2(175, 50)
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_constants/outline_size = 0
+theme_override_constants/icon_max_width = 64
+theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
+text = "Cost"
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("9_5c424")
+
+[node name="Label" type="Label" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GoldMulitplier/HBoxContainer" unique_id=841976403]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89411765, 0.8392157, 0.654902, 1)
+theme_override_fonts/font = ExtResource("5_nikpj")
+text = "+0.2 gold
+mult "
+
+[node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GoldMulitplier" unique_id=975934606]
+layout_mode = 2
+
+[node name="MainMenu" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=89918869]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 100
+
+[node name="serperator" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/MainMenu" unique_id=1436673987]
+layout_mode = 2
+
+[node name="MenuButton" type="Button" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/MainMenu" unique_id=37852892]
+custom_minimum_size = Vector2(175, 50)
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_constants/outline_size = 0
+theme_override_constants/icon_max_width = 64
+theme_override_fonts/font = ExtResource("5_nikpj")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
 text = "main menu"
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("7_6px0c")
 
-[node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/MainMenu" unique_id=932570904]
+[node name="serperator2" type="Control" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/MainMenu" unique_id=698445067]
 layout_mode = 2
 
 [node name="BackgroundSound" type="AudioStreamPlayer" parent="." unique_id=945981463]
 stream = ExtResource("8_h2apa")
 autoplay = true
+parameters/looping = true
 
 [node name="ButtonClick" type="AudioStreamPlayer" parent="." unique_id=1841831802]
 stream = ExtResource("8_6px0c")

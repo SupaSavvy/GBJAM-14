@@ -12,7 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://dplh63sgork5i" path="res://Ui/Spirtes/Sprite sheets/Setting menu.png" id="8_t1dhk"]
 [ext_resource type="Texture2D" uid="uid://5npk8pwtnrhq" path="res://Ui/Spirtes/Sprite sheets/Sprite sheet for Basic Pack.png" id="9_5egv6"]
 [ext_resource type="Script" uid="uid://d3loeyuui3i07" path="res://Ui/Scrips/Volume_Stuff.gd" id="10_bfvnm"]
-[ext_resource type="Texture2D" uid="uid://dl2e8harc512d" path="res://Ui/Spirtes/Sprite sheets/UI Settings Buttons.png" id="10_vtepg"]
 [ext_resource type="Script" uid="uid://3kargrdqb72m" path="res://Ui/Scrips/controls_button_main_menu.gd" id="13_bfvnm"]
 [ext_resource type="AudioStream" uid="uid://0xc8elagykkr" path="res://Master/SFX/GB Jam Market.mp3" id="14_lgjky"]
 [ext_resource type="AudioStream" uid="uid://rahh7x164krx" path="res://Master/SFX/ButtonClick.wav" id="16_bfvnm"]
@@ -47,11 +46,13 @@ font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wyh8j"]
 atlas = ExtResource("9_5egv6")
-region = Rect2(65, 197, 14, 21)
+region = Rect2(79, 218, 14, 21)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ujyyl"]
-texture = ExtResource("10_vtepg")
-region_rect = Rect2(51, 195, 2, 10)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfvnm"]
+bg_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4lxpt"]
+bg_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4lxpt"]
 texture = ExtResource("2_n45e2")
@@ -84,7 +85,7 @@ font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_0m3lg"]
 font = ExtResource("2_ce3w2")
-font_size = 4
+font_size = 8
 font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 
 [node name="Main Menu" type="Control" unique_id=1709358907]
@@ -176,6 +177,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
 text = "Start Game"
 icon_alignment = 1
 expand_icon = true
@@ -205,6 +207,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
 text = "Market"
 icon_alignment = 1
 expand_icon = true
@@ -235,6 +238,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
 text = "Leaderboard"
 icon_alignment = 1
 expand_icon = true
@@ -264,6 +268,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
 theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
 text = "Settings"
 icon_alignment = 1
 expand_icon = true
@@ -330,8 +335,8 @@ layout_mode = 2
 focus_neighbor_bottom = NodePath("../../ControlsButton/ControlsButtonMainMenu")
 theme_override_icons/grabber = SubResource("AtlasTexture_wyh8j")
 theme_override_icons/grabber_highlight = SubResource("AtlasTexture_wyh8j")
-theme_override_styles/grabber_area = SubResource("StyleBoxTexture_ujyyl")
-theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_ujyyl")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_bfvnm")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_4lxpt")
 max_value = 1.5
 step = 0.1
 value = 0.8
@@ -361,6 +366,7 @@ theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxTexture_4lxpt")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_0m3lg")
 theme_override_styles/hover = SubResource("StyleBoxTexture_mtyx3")
+theme_override_styles/focus = SubResource("StyleBoxTexture_mtyx3")
 text = "Controls"
 icon_alignment = 1
 expand_icon = true
@@ -432,16 +438,10 @@ layout_mode = 2
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Move right - A / Right Arrow
-
-Move left - S / Left Arrow
-
-Jump - Space
-
-Change Gravity - G
-
-Continue Dialogue - Enter
-"
+text = "z - accept, speed ability
+      Start game
+x - cancel, shield ability
+arrows  - select stuff"
 label_settings = SubResource("LabelSettings_0m3lg")
 
 [node name="Seperator2" type="Control" parent="NinePatchRect/ControlsContainer/Controls/VBoxContainer/HBoxContainer" unique_id=1950066413]
@@ -450,6 +450,7 @@ layout_mode = 2
 [node name="BackgroundSound" type="AudioStreamPlayer" parent="." unique_id=945981463]
 stream = ExtResource("14_lgjky")
 autoplay = true
+parameters/looping = true
 
 [node name="ButtonClick" type="AudioStreamPlayer" parent="." unique_id=1841831802]
 stream = ExtResource("16_bfvnm")

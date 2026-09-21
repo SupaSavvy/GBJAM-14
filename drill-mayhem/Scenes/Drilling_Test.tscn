@@ -6,6 +6,46 @@
 [ext_resource type="PackedScene" uid="uid://c8aykun2hj71p" path="res://Void Stuff/void.tscn" id="3_5fdol"]
 [ext_resource type="AudioStream" uid="uid://xdi12iohkbff" path="res://Master/SFX/GB Jam Main Theme.mp3" id="5_3cjtb"]
 [ext_resource type="PackedScene" uid="uid://rvo05e8evw34" path="res://Ui/Scenes/Ui.tscn" id="6_j68oq"]
+[ext_resource type="PackedScene" uid="uid://dxbjmefgcn2sk" path="res://Ui/Scenes/ui.tscn" id="6_j68oq"]
+[ext_resource type="Texture2D" uid="uid://dplh63sgork5i" path="res://Ui/Spirtes/Sprite sheets/Setting menu.png" id="7_8xe4c"]
+[ext_resource type="FontFile" uid="uid://b52kyl2lgwk0y" path="res://Ui/Spirtes/fonts/pixelFont-7-8x14-sproutLands.ttf" id="8_edjnp"]
+[ext_resource type="Texture2D" uid="uid://cburb6oeeou5d" path="res://Ui/Spirtes/Sprite sheets/buttons/Square Buttons 26x26.png" id="9_1snbn"]
+[ext_resource type="Script" uid="uid://dtkr0jkn4kp7y" path="res://Scenes/death_market_button.gd" id="10_1snbn"]
+[ext_resource type="AudioStream" uid="uid://rahh7x164krx" path="res://Master/SFX/ButtonClick.wav" id="11_fwhig"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1snbn"]
+font = ExtResource("8_edjnp")
+font_size = 12
+font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fwhig"]
+font = ExtResource("8_edjnp")
+font_size = 8
+font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yhxw7"]
+texture = ExtResource("9_1snbn")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(11, 155, 26, 28)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_16hvj"]
+texture = ExtResource("9_1snbn")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 3.0
+region_rect = Rect2(59, 155, 26, 26)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_trj04"]
+texture = ExtResource("9_1snbn")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(11, 107, 26, 28)
 
 [node name="DrillingTest" type="Node2D" unique_id=1496016345]
 
@@ -41,6 +81,7 @@ drill = NodePath("../../DrillBoi")
 [node name="BackgroundSound" type="AudioStreamPlayer" parent="." unique_id=995721409]
 stream = ExtResource("5_3cjtb")
 autoplay = true
+parameters/looping = true
 
 [node name="Generation Cut Offf" type="Marker2D" parent="." unique_id=1224108668]
 position = Vector2(106, -1)
@@ -50,6 +91,103 @@ position = Vector2(106, -1)
 [node name="Ui" parent="CanvasLayer" unique_id=1673883677 instance=ExtResource("6_j68oq")]
 offset_left = 16.0
 offset_right = 16.0
+
+[node name="DeathMenu" type="NinePatchRect" parent="CanvasLayer" unique_id=418463025]
+visible = false
+custom_minimum_size = Vector2(140, 122)
+offset_left = 10.0
+offset_top = 19.0
+offset_right = 150.0
+offset_bottom = 141.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_8xe4c")
+region_rect = Rect2(139, 12, 106, 122)
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DeathMenu" unique_id=441188390]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 11
+
+[node name="Seperator" type="Control" parent="CanvasLayer/DeathMenu/VBoxContainer" unique_id=158094941]
+layout_mode = 2
+
+[node name="ControlsLabel" type="HBoxContainer" parent="CanvasLayer/DeathMenu/VBoxContainer" unique_id=1893299036]
+layout_mode = 2
+theme_override_constants/separation = 200
+
+[node name="Seperator" type="Control" parent="CanvasLayer/DeathMenu/VBoxContainer/ControlsLabel" unique_id=1480888589]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/DeathMenu/VBoxContainer/ControlsLabel" unique_id=213214926]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 16
+text = "You died"
+label_settings = SubResource("LabelSettings_1snbn")
+
+[node name="Seperator2" type="Control" parent="CanvasLayer/DeathMenu/VBoxContainer/ControlsLabel" unique_id=387175894]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/DeathMenu/VBoxContainer" unique_id=1618890321]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Seperator" type="Control" parent="CanvasLayer/DeathMenu/VBoxContainer/HBoxContainer" unique_id=454427932]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/DeathMenu/VBoxContainer/HBoxContainer" unique_id=1138738643]
+custom_minimum_size = Vector2(100, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "You died to: "
+label_settings = SubResource("LabelSettings_fwhig")
+
+[node name="Seperator2" type="Control" parent="CanvasLayer/DeathMenu/VBoxContainer/HBoxContainer" unique_id=163337854]
+layout_mode = 2
+
+[node name="Market" type="HBoxContainer" parent="CanvasLayer/DeathMenu/VBoxContainer" unique_id=951428414]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 100
+
+[node name="serperator" type="Control" parent="CanvasLayer/DeathMenu/VBoxContainer/Market" unique_id=355374081]
+layout_mode = 2
+
+[node name="DeathMarketButton" type="Button" parent="CanvasLayer/DeathMenu/VBoxContainer/Market" unique_id=180151535]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
+theme_override_constants/outline_size = 0
+theme_override_constants/icon_max_width = 64
+theme_override_fonts/font = ExtResource("8_edjnp")
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxTexture_yhxw7")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_trj04")
+theme_override_styles/focus = SubResource("StyleBoxTexture_trj04")
+text = "Market"
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("10_1snbn")
+
+[node name="serperator2" type="Control" parent="CanvasLayer/DeathMenu/VBoxContainer/Market" unique_id=915749324]
+layout_mode = 2
+
+[node name="ButtonClick" type="AudioStreamPlayer" parent="." unique_id=821256066]
+stream = ExtResource("11_fwhig")
 
 [editable path="DrillBoi"]
 [editable path="Void"]
