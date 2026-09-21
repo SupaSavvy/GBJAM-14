@@ -47,7 +47,6 @@ tar_tile = Vector2i(1, 0)
 stardust_tile = Vector2i(1, 1)
 bomb_tile = Vector2i(2, 1)
 chunk_height = 20
-use_empty_side = true
 
 [node name="Bomb" type="Node" parent="." unique_id=250812628]
 script = ExtResource("3_6bbuu")
@@ -64,7 +63,6 @@ script = ExtResource("5_52s1d")
 
 [node name="BlockBreak" type="AudioStreamPlayer" parent="." unique_id=1255460969]
 stream = ExtResource("6_0grod")
-volume_db = -10.0
 max_polyphony = 8
 
 [node name="GoldBreak" type="AudioStreamPlayer" parent="." unique_id=2093815725]

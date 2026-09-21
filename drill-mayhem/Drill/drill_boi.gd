@@ -30,8 +30,8 @@ var drilling_started: bool = false
 
 
 # HORIZONTAL LIMITS
-@export var left_limit: float = -4.0
-@export var right_limit: float = 90
+@export var left_limit: float = 6
+@export var right_limit: float = 48
 
 
 # DIGGING
@@ -58,7 +58,7 @@ var drilling_started: bool = false
 
 # TAR
 @export var tar_recovery_time: float = 0.5
-@export var tar_speed_multiplier: float = 0.35
+@export var tar_speed_multiplier: float = 0.50
 
 
 # MOVEMENT STATE
@@ -142,32 +142,34 @@ func _physics_process(delta: float) -> void:
 	# --------------------------------------------------
 	# STARTING POSITION
 	# --------------------------------------------------
-	# Before drilling starts, the player can move left/right.
 	if not drilling_started:
-		var start_direction: float = Input.get_axis(
-			"ui_left",
-			"ui_right"
-		)
+		if Input.is_action_just_pressed("ui_left"):
+			target_x -= tile_width
 
-		velocity.x = start_direction * starting_move_speed
-		velocity.y = 0.0
+		if Input.is_action_just_pressed("ui_right"):
+			target_x += tile_width
 
-		move_and_slide()
-
-		global_position.x = clamp(
-			global_position.x,
+		target_x = clamp(
+			target_x,
 			left_limit,
 			right_limit
 		)
 
+		target_x = snap_x_to_grid(target_x)
+
+		global_position.x = move_toward(
+			global_position.x,
+			target_x,
+			grid_move_speed * delta
+		)
+
+		velocity = Vector2.ZERO
+
 		if Input.is_action_just_pressed("ui_accept"):
 			drilling_started = true
 
-			# Start the grid from wherever the player chose.
-			target_x = global_position.x
-
-			velocity = Vector2.ZERO
-			rotation = 0.0
+			target_x = snap_x_to_grid(global_position.x)
+			global_position.x = target_x
 
 			drill_particles.emitting = true
 			drill_sound.play()
@@ -191,25 +193,20 @@ func _physics_process(delta: float) -> void:
 	# GRID LEFT / RIGHT MOVEMENT
 	# --------------------------------------------------
 	if not in_tar:
-
-		# One press = one tile left.
 		if Input.is_action_just_pressed("ui_left"):
 			target_x -= tile_width
 
-		# One press = one tile right.
 		if Input.is_action_just_pressed("ui_right"):
 			target_x += tile_width
 
-
-	# Don't allow the target to go outside the level.
 	target_x = clamp(
 		target_x,
 		left_limit,
 		right_limit
 	)
 
+	target_x = snap_x_to_grid(target_x)
 
-	# Smoothly slide toward the selected column.
 	global_position.x = move_toward(
 		global_position.x,
 		target_x,
@@ -231,22 +228,15 @@ func _physics_process(delta: float) -> void:
 		acceleration * delta
 	)
 
-
-	# Add temporary powerup speed on top of normal speed.
 	var final_speed: float = (
 		current_speed
 		+ powerup_speed_bonus
 	)
 
-
-	# Drill now always travels straight downward.
 	velocity.x = 0.0
 	velocity.y = final_speed
 
-
-	speed_changed.emit(
-		final_speed
-	)
+	speed_changed.emit(final_speed)
 
 
 	# --------------------------------------------------
@@ -254,11 +244,7 @@ func _physics_process(delta: float) -> void:
 	# --------------------------------------------------
 	if fuel > 0.0:
 		fuel -= fuel_drain_rate * delta
-
-		fuel = max(
-			fuel,
-			0.0
-		)
+		fuel = max(fuel, 0.0)
 
 		fuel_changed.emit(
 			fuel,
@@ -267,11 +253,7 @@ func _physics_process(delta: float) -> void:
 
 	else:
 		health -= health_drain_rate * delta
-
-		health = max(
-			health,
-			0.0
-		)
+		health = max(health, 0.0)
 
 		health_changed.emit(
 			health,
@@ -290,8 +272,6 @@ func _physics_process(delta: float) -> void:
 	if damage_timer <= 0.0:
 		var cells: Array[Vector2i] = get_tiles_in_dig_radius()
 
-
-		# Damage increases at specific speed thresholds.
 		var speed_damage: float = drill_damage
 
 		match current_speed:
@@ -307,15 +287,12 @@ func _physics_process(delta: float) -> void:
 			var speed when speed >= 20.0:
 				speed_damage = 1.0
 
-
 		for cell: Vector2i in cells:
 			ores.damage_cell(
 				cell,
 				speed_damage
 			)
 
-
-		# Faster movement = shorter time between damage ticks.
 		var speed_percent: float = clamp(
 			current_speed / interval_max_speed,
 			0.0,
@@ -338,13 +315,13 @@ func _physics_process(delta: float) -> void:
 
 
 	# --------------------------------------------------
-	# DRILLING PARTICLES
+	# PARTICLES
 	# --------------------------------------------------
 	update_drill_particles()
 
 
 	# --------------------------------------------------
-	# KEEP DRILL INSIDE HORIZONTAL BOUNDARIES
+	# KEEP DRILL INSIDE HORIZONTAL LIMITS
 	# --------------------------------------------------
 	global_position.x = clamp(
 		global_position.x,
@@ -354,7 +331,7 @@ func _physics_process(delta: float) -> void:
 
 
 	# --------------------------------------------------
-	# STUFF TO TRACK LEADERBOARD
+	# LEADERBOARD DEPTH TRACKING
 	# --------------------------------------------------
 	var drill_local_position: Vector2 = ores.to_local(
 		global_position
@@ -514,28 +491,40 @@ func update_drill_particles() -> void:
 	red_particles.emitting = current_speed >= 70.0
 	black_particles.emitting = current_speed >= 150.0
 
-func set_particle_color(ore_type: String) -> void:
-	match ore_type:
-		"stone":
-			drill_particles.color = Color.GRAY
 
-		"gold":
-			drill_particles.color = Color.GOLD
+func snap_x_to_grid(world_x: float) -> float:
+	var local_pos: Vector2 = ores.to_local(
+		Vector2(world_x, global_position.y)
+	)
 
-		"stardust":
-			drill_particles.color = Color.WHITE
+	var cell: Vector2i = ores.local_to_map(local_pos)
+	var snapped_local: Vector2 = ores.map_to_local(cell)
+	var snapped_world: Vector2 = ores.to_global(snapped_local)
 
-		"bomb":
-			drill_particles.color = Color.WHITE
-
-		"tar":
-			drill_particles.color = Color.BLACK
-
-		_:
-			drill_particles.color = Color.WHITE
+	return snapped_world.x
 
 
 func die() -> void:
 	GameData.submit_depth(deepest_depth)
 
 	queue_free()
+	
+	
+#DEBUGS
+func _draw() -> void:
+	var left_x: float = left_limit - global_position.x
+	var right_x: float = right_limit - global_position.x
+
+	draw_line(
+		Vector2(left_x, -1000),
+		Vector2(left_x, 1000),
+		Color.RED,
+		2.0
+	)
+
+	draw_line(
+		Vector2(right_x, -1000),
+		Vector2(right_x, 1000),
+		Color.GREEN,
+		2.0
+	)

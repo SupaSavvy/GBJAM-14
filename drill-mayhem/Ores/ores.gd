@@ -28,23 +28,21 @@ var block_break_sound_timer: float = 0.0
 @export var chunk_height: int = 12
 @export var chunks_ahead: int = 3
 @export var left_edge: int = -14
-@export var right_edge: int = 2
-@export var use_empty_side: bool = false
-@export var empty_side_start_x: int = 10
 @export var generation_padding: int = 5
 
 @export var drill: Drill
+@export var generation_cutoff: Marker2D
 
 # DEPTH PROGRESSION
 @export var tar_start_depth: int = 30
-@export var gold_start_depth: int = 50
-@export var bomb_start_depth: int = 74
+@export var gold_start_depth: int = 100
+@export var bomb_start_depth: int = 150
 @export var bomb_full_rate_depth: int = 8000
-@export var deep_start_depth: int = 1000
+@export var deep_start_depth: int = 400
 @export var stardust_fade_start_depth: int = 80
 @export var stardust_gone_depth: int = 300
 
-# STORED DATA
+# TILE DATA
 var tile_health: Dictionary = {}
 var generated_chunks: Dictionary = {}
 
@@ -63,7 +61,10 @@ func _process(delta: float) -> void:
 
 	var drill_local_position: Vector2 = to_local(drill.global_position)
 	var drill_cell: Vector2i = local_to_map(drill_local_position)
-	var current_chunk_y: int = floori(float(drill_cell.y) / float(chunk_height))
+
+	var current_chunk_y: int = floori(
+		float(drill_cell.y) / float(chunk_height)
+	)
 
 	for chunk_offset: int in range(chunks_ahead + 1):
 		var chunk_y: int = current_chunk_y + chunk_offset
@@ -73,43 +74,68 @@ func _process(delta: float) -> void:
 
 
 func generate_chunk(chunk_y: int) -> void:
+	if generation_cutoff == null:
+		return
+
 	generated_chunks[chunk_y] = true
 
 	var start_y: int = chunk_y * chunk_height
+
+	var cutoff_local: Vector2 = to_local(
+		generation_cutoff.global_position
+	)
+
+	var cutoff_x: int = local_to_map(
+		cutoff_local
+	).x
+
 	var generation_left: int = left_edge - generation_padding
-	var generation_right: int = right_edge + generation_padding
 
 	for y: int in range(start_y, start_y + chunk_height):
-		for x: int in range(generation_left, generation_right + 1):
+		for x: int in range(generation_left, cutoff_x):
 			var cell: Vector2i = Vector2i(x, y)
-			var tile: Vector2i = choose_random_tile(y, x)
+			var tile: Vector2i = choose_random_tile(y)
 
-			set_cell(cell, source_id, tile)
+			set_cell(
+				cell,
+				source_id,
+				tile
+			)
 
 	# TAR CLUSTERS
 	if start_y >= tar_start_depth:
-		var tar_cluster_amount: int = randi_range(1, 3)
+		var tar_cluster_amount: int = randi_range(2, 5)
 
 		for i: int in range(tar_cluster_amount):
-			var tar_x: int = randi_range(left_edge + 2, right_edge - 2)
-			var tar_y: int = randi_range(start_y + 2, start_y + chunk_height - 3)
+			var tar_x: int = randi_range(
+				generation_left + 2,
+				cutoff_x - 3
+			)
 
-			generate_tar_cluster(Vector2i(tar_x, tar_y))
+			var tar_y: int = randi_range(
+				start_y + 2,
+				start_y + chunk_height - 3
+			)
+
+			generate_tar_cluster(
+				Vector2i(tar_x, tar_y)
+			)
 
 
-func choose_random_tile(depth: int, x: int) -> Vector2i:
-	# Make this side only generate stone.
-	if use_empty_side and x >= empty_side_start_x:
-		return stone_tile
-
+func choose_random_tile(depth: int) -> Vector2i:
 	# Bomb chance ramps from 0.2% to 2%.
 	var bomb_depth_percent: float = clamp(
-		float(depth - bomb_start_depth) / float(bomb_full_rate_depth - bomb_start_depth),
+		float(depth - bomb_start_depth)
+		/ float(bomb_full_rate_depth - bomb_start_depth),
 		0.0,
 		1.0
 	)
 
-	var bomb_chance: float = lerp(0.2, 2.0, bomb_depth_percent)
+	var bomb_chance: float = lerp(
+		0.2,
+		2.0,
+		bomb_depth_percent
+	)
 
 	if depth >= bomb_start_depth:
 		var bomb_roll: float = randf() * 100.0
@@ -163,6 +189,9 @@ func choose_random_tile(depth: int, x: int) -> Vector2i:
 
 
 func generate_tar_cluster(center: Vector2i) -> void:
+	if generation_cutoff == null:
+		return
+
 	var offsets: Array[Vector2i] = [
 		Vector2i.ZERO,
 		Vector2i.LEFT,
@@ -183,16 +212,30 @@ func generate_tar_cluster(center: Vector2i) -> void:
 	if randf() < 0.5:
 		offsets.append(Vector2i(2, 0))
 
+	var cutoff_local: Vector2 = to_local(
+		generation_cutoff.global_position
+	)
+
+	var cutoff_x: int = local_to_map(
+		cutoff_local
+	).x
+
 	for offset: Vector2i in offsets:
 		var cell: Vector2i = center + offset
 
-		# Only replace stone so tar doesn't overwrite special ores.
-		var current_ore: String = get_ore_type(cell)
-
-		if current_ore != "stone":
+		# Don't let tar cross the cutoff.
+		if cell.x >= cutoff_x:
 			continue
 
-		set_cell(cell, source_id, tar_tile)
+		# Only replace stone.
+		if get_ore_type(cell) != "stone":
+			continue
+
+		set_cell(
+			cell,
+			source_id,
+			tar_tile
+		)
 
 
 func damage_cell(cell: Vector2i, damage: float) -> void:
@@ -283,6 +326,9 @@ func spawn_bomb_explosion(cell: Vector2i) -> void:
 	get_tree().current_scene.add_child(explosion)
 
 	var local_position: Vector2 = map_to_local(cell)
-	explosion.global_position = to_global(local_position)
+
+	explosion.global_position = to_global(
+		local_position
+	)
 
 	explosion.explode()
