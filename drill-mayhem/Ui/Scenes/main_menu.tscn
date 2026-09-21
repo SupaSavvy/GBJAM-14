@@ -696,5 +696,6 @@ theme_override_colors/font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 theme_override_fonts/font = ExtResource("5_0m3lg")
 theme_override_font_sizes/font_size = 16
 text = "Highscore:
+
      "
 label_settings = SubResource("LabelSettings_mtyx3")
