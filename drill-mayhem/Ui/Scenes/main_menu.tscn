@@ -96,10 +96,10 @@ font_size = 8
 font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_mtyx3"]
-font = ExtResource("5_0m3lg")
+font = ExtResource("2_ce3w2")
 font_color = Color(0.60784316, 0.16078432, 0.08235294, 1)
 outline_size = 3
-outline_color = Color(0.89411765, 0.8392157, 0.654902, 1)
+outline_color = Color(0.10980392, 0.06666667, 0.039215688, 1)
 
 [node name="Main Menu" type="Control" unique_id=1709358907]
 layout_mode = 3
