@@ -2,6 +2,7 @@ extends Control
 
 @onready var rocks_back = $NinePatchRect/RocksBG
 @onready var drill_front = $NinePatchRect/DrillMC
+@onready var high_score_label: Label = $Label
 
 # --- SCENE NODE PATHS FROM YOUR TREES ---
 @onready var start_button: Button = $NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/StartGame/StartButton
@@ -34,7 +35,9 @@ var float_speed: float = 2.0
 var float_amplitude_y: float = 5.0 # How many pixels they bob up and down
 var float_amplitude_x: float = 3.0  # How many pixels they drift left and right
 
-func _ready():
+
+func _ready() -> void:
+	high_score_label.text = "HIGHSCORE:\n" + str(GameData.best_depth)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
 	# Save the initial positions right when the game starts
