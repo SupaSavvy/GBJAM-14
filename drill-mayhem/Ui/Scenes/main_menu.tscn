@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://5npk8pwtnrhq" path="res://Ui/Spirtes/Sprite sheets/Sprite sheet for Basic Pack.png" id="9_5egv6"]
 [ext_resource type="Texture2D" uid="uid://dl2e8harc512d" path="res://Ui/Spirtes/Sprite sheets/UI Settings Buttons.png" id="10_vtepg"]
 [ext_resource type="Script" uid="uid://3kargrdqb72m" path="res://Ui/Scrips/controls_button_main_menu.gd" id="13_bfvnm"]
+[ext_resource type="AudioStream" uid="uid://d02ouuu46euei" path="res://Master/SFX/GB Jam Market.mp3" id="14_lgjky"]
 [ext_resource type="AudioStream" uid="uid://rahh7x164krx" path="res://Master/SFX/ButtonClick.wav" id="16_bfvnm"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yhxw7"]
@@ -212,6 +213,7 @@ script = ExtResource("8_bfvnm")
 layout_mode = 2
 
 [node name="LeaderboardButton" type="HBoxContainer" parent="NinePatchRect/MarginContainer2/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=570126649]
+visible = false
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 100
@@ -427,22 +429,16 @@ layout_mode = 2
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Move right - A / Right Arrow
-
-Move left - S / Left Arrow
-
-Jump - Space
-
-Change Gravity - G
-
-Continue Dialogue - Enter
-"
+text = "z - accept
+x - cancel
+arrow keys - move around"
 label_settings = SubResource("LabelSettings_0m3lg")
 
 [node name="Seperator2" type="Control" parent="NinePatchRect/ControlsContainer/Controls/VBoxContainer/HBoxContainer" unique_id=1950066413]
 layout_mode = 2
 
 [node name="BackgroundSound" type="AudioStreamPlayer" parent="." unique_id=945981463]
+stream = ExtResource("14_lgjky")
 autoplay = true
 
 [node name="ButtonClick" type="AudioStreamPlayer" parent="." unique_id=1841831802]
