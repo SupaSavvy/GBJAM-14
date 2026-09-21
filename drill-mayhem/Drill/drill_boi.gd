@@ -35,12 +35,15 @@ var drilling_started: bool = false
 var damage_timer: float = 0.0
 
 # FUEL
-@export var starting_fuel: float = 50.0
-@export var max_fuel: float = 100.0
+@export var base_max_fuel: float = 100.0
+@export var fuel_per_level: float = 25.0
+
+var max_fuel: float = 100.0
+var fuel: float = 0.0
 @export var fuel_drain_rate: float = 2.0
 @export var heart_drain_interval: float = 5.0
 
-var fuel: float = 0.0
+
 var heart_drain_timer: float = 0.0
 
 # HEARTS
@@ -83,7 +86,11 @@ var death_cause: String = ""
 
 func _ready() -> void:
 	current_speed = min_speed
-	fuel = starting_fuel
+	max_fuel = base_max_fuel + (
+	float(GameData.fuel_level - 1) * fuel_per_level
+	)
+
+	fuel = max_fuel
 
 	max_hearts = clamp(GameData.health_level, 3, 5)
 	hearts = max_hearts

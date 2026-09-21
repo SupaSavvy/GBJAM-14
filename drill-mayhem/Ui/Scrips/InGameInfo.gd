@@ -56,11 +56,12 @@ func show_death_screen() -> void:
 			cause_text = "UNKNOWN"
 
 	death_info_label.text = (
-		"YOU DIED TO: " + cause_text
-		+ "\nSTONES MINED: " + str(GameData.last_stones_mined)
-		+ "\nGOLD COLLECTED: " + str(GameData.last_gold_collected)
-		+ "\nDEPTH: " + str(GameData.last_depth)
-	)
+	"YOU DIED TO: " + cause_text
+	+ "\nSTONES MINED: " + str(GameData.last_stones_mined)
+	+ "\nGOLD COLLECTED: " + str(GameData.last_gold_collected)
+	+ "\nDEPTH: " + str(GameData.last_depth)
+	+ "\nHIGH SCORE: " + str(GameData.best_depth)
+)
 
 	if market_button != null:
 		market_button.grab_focus()
@@ -72,3 +73,8 @@ func _on_market_pressed() -> void:
 		return
 
 	get_tree().change_scene_to_packed(market_scene)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if death_menu.visible:
+		if event.is_action_pressed("power_up_1"):
+			_on_market_pressed()

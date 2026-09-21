@@ -1,11 +1,15 @@
 class_name GoldBehavior
 extends Node
 
-
-@export var gold_amount: int = 1
+@export var gold_amount: int = 10
 
 
 func collect(_drill: Drill) -> void:
-	GameData.add_gold(gold_amount)
+	var multiplied_gold: int = roundi(
+		float(gold_amount) * GameData.get_gold_multiplier()
+	)
 
-	#print("Gold: ", GameData.gold)
+	GameData.add_gold(multiplied_gold)
+
+	print("Gold Multiplier: ", GameData.get_gold_multiplier())
+	print("Gold Earned: ", multiplied_gold)
