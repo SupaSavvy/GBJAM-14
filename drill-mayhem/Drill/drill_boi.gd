@@ -54,8 +54,8 @@ var drilling_started: bool = false
 var heart_drain_timer: float = 0.0
 @export var fuel_drain_rate: float = 2.0
 
-var max_hearts: int = 1
-var hearts: int = 1
+var max_hearts: int = 3
+var hearts: int = 3
 var health_drain_rate: float = 10.0
 
 

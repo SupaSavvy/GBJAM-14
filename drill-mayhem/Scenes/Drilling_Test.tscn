@@ -16,14 +16,15 @@ left_edge = 5
 drill = NodePath("../DrillBoi")
 generation_cutoff = NodePath("../Generation Cut Offf")
 
-[node name="DrillBoi" parent="." unique_id=64158737 node_paths=PackedStringArray("ores") instance=ExtResource("1_fppky")]
+[node name="DrillBoi" parent="." unique_id=64158737 node_paths=PackedStringArray("void_chaser", "ores") instance=ExtResource("1_fppky")]
 position = Vector2(78, -3)
 min_speed = 20.0
 max_speed = 300.0
 acceleration = 7.0
 right_limit = 98.0
+void_chaser = NodePath("../Void/Area2D")
 ores = NodePath("../Ores")
-fuel_drain_rate = 5.0
+fuel_drain_rate = 0.0
 
 [node name="CollisionShape2D" parent="DrillBoi" index="0" unique_id=503879945]
 scale = Vector2(0.8049767, 0.8049767)
